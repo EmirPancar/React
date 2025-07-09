@@ -35,7 +35,7 @@ function App() {
 
   const kahve_ekle = () => {
 
-    if (yeniCesit.trim() === '' || isNaN(yeniFiyat) || yeniFiyat.trim() ==='') {
+    if (yeniCesit.trim() === '' || isNaN(yeniFiyat) || String(yeniFiyat).trim() ==='') {
       alert("Geçerli bir çeşit ve fiyat giriniz.");
       return;
     }
@@ -85,7 +85,7 @@ function App() {
           type="text"
           placeholder="Fiyat"
           value={yeniFiyat}
-          onChange={(e) => setYeniFiyat(e.target.value)}
+          onChange={(e) => setYeniFiyat(Number(e.target.value))}
         />
         <button onClick={kahve_ekle} className="AddButton">Ekle</button>
       </div>
