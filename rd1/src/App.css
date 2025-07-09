@@ -63,14 +63,14 @@ th,td{
 }
 
 
-/* Genel yazı tipi ve arka plan */
+
 body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(to right, #f9f9f9, #e0e0e0);
   padding: 20px;
 }
 
-/* Masaüstü görünüm için tablo */
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -87,7 +87,7 @@ th, td {
   border-right: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-/* Başlıklar */
+
 thead {
   background-color: #3f51b5;
   color: white;
@@ -102,40 +102,31 @@ tbody tr:hover {
   transition: background 0.3s;
 }
 
-/* Mobil uyum */
-@media (max-width: 600px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
-    width: 100%;
-  }
 
-  thead {
-    display: none;
-  }
+.AddButton{
 
-  tr {
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
+  width: 100px;
+  height: 50px;
+  border-width: 5px;
+  border-color:#5464c4;
+  background-color:#6389d5;
+  color:#ffffff;
+}
 
-  td {
-    text-align: left;
-    padding-left: 50%;
-    position: relative;
-    border: none;
-    border-bottom: 1px solid #eee;
-  }
+.AddButton:hover{
+  cursor:pointer;
+  background-color:#85a5eb;
+}
 
-  td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 15px;
-    top: 12px;
-    font-weight: bold;
-    color: #3f51b5;
-  }
+.AddButtonDiv{
+
+  margin-top: 10px;         
+  text-align: center;
+}
+
+
+.KahveInput{
+  height: 40px;
+  margin-top: 10px;
+  margin-right: 10px;
 }
