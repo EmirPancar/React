@@ -83,7 +83,8 @@ table {
 th, td {
   padding: 15px 20px;
   text-align: center;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 /* Başlıklar */
