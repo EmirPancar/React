@@ -19,8 +19,8 @@ function Cmp1(props){
                         {props.urunler.map((urun,index) => 
 
                             <tr key={index}>
-                                <td data-label="Ürün">{urun.cesit}</td>
-                                <td data-label="Fiyat">{urun.fiyat}</td>
+                                <td>{urun.cesit}</td>
+                                <td>{urun.fiyat}</td>
                             </tr>
                         
                         )}

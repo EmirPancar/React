@@ -1,11 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
 import Cmp1 from './comp1';
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 
 
 
 function App() {
+
+  
 
   const [urunler, setUrunler]=useState([
     {
@@ -29,11 +31,11 @@ function App() {
 
 
   const [yeniCesit, setYeniCesit] = useState('');
-  const [yeniFiyat, setYeniFiyat] = useState('');
+  const [yeniFiyat, setYeniFiyat] = useState(0);
 
   const kahve_ekle = () => {
 
-    if (yeniCesit.trim() === '' || isNaN(parseFloat(yeniFiyat))) {
+    if (yeniCesit.trim() === '' || isNaN(yeniFiyat) || yeniFiyat.trim() ==='') {
       alert("Geçerli bir çeşit ve fiyat giriniz.");
       return;
     }
@@ -42,14 +44,27 @@ function App() {
       ...prev,
       {
         cesit: yeniCesit,
-        fiyat: parseFloat(yeniFiyat)
+        fiyat: yeniFiyat
       }
     ]);
+   
 
-    
-    setYeniCesit('');
-    setYeniFiyat('');
   };
+
+
+    useEffect(() => {
+
+      if (yeniCesit.trim() !== '' && !isNaN(yeniFiyat)) {
+            console.log(`Tabloya eklendi: Ürün: ${yeniCesit} / Fiyat: ${yeniFiyat}`);
+      }
+
+
+      setYeniCesit('');
+      setYeniFiyat('');
+
+    }, [urunler]);
+
+
 
   return (
     <div>
