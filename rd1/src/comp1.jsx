@@ -1,19 +1,5 @@
 import React from "react";
 
-
- export const users = [{
-
-    ad: "Emo",
-    no: 1
-
- },
- {
-    ad: "Neco",
-    no: 2
- }
-
-] 
-
 function Cmp1(props){
 
     return(

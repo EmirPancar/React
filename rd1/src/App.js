@@ -2,7 +2,6 @@ import logo from './logo.svg';
 import './App.css';
 import Cmp1 from './comp1';
 import React from 'react';
-import { users } from './comp1';
 
 const urunler=[
     {
@@ -32,14 +31,6 @@ function App() {
   return (
     <div>
       <Cmp1 urunler={urunler}/>
-
-      {/* {users.map((user, index) => (
-        <p key={index}>
-          {user.ad} = {user.no}
-        </p>
-      ))} */}
-
-
     </div>
   );
 }
