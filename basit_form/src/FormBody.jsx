@@ -117,7 +117,7 @@ function FormBody() {
                 <div className='FormFooter'>
 
                     <input type="submit" value="Kaydet" />
-                    <input type="reset" value="Temizle" />
+                    <input type="reset" value="Temizle" onClick={()=>{setAd(''); setSoyad('');}} />
 
                 </div>
 
