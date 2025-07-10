@@ -67,7 +67,7 @@ body {
 table {
   width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.4);
   background-color: white;
   border-radius: 10px;
   overflow: hidden;
@@ -106,17 +106,19 @@ tbody tr:hover {
   border-color:#5464c4;
   background-color:#6389d5;
   color:#ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .AddButton:hover{
   cursor:pointer;
-  background-color:#85a5eb;
+  background-color:#7c9feb;
 }
 
 .AddButtonDiv{
 
   margin-top: 10px;         
   text-align: center;
+  
 }
 
 
@@ -124,4 +126,5 @@ tbody tr:hover {
   height: 40px;
   margin-top: 10px;
   margin-right: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
