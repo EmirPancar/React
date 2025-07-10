@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 
 function FormBody() {
+
+    const formRef = useRef(null);
 
     const [secilenSehir, setSecilenSehir] = useState('');
     const [secilenIlce, setSecilenIlce] = useState('');
@@ -9,17 +11,21 @@ function FormBody() {
     const [Ad, setAd] = useState("");
     const [Soyad, setSoyad] = useState("");
 
-    const textControl = () =>{
 
-        if(Ad.trim() === "" || Soyad.trim() ==="" || !isNaN(Ad) || !isNaN(Soyad) ){
-            alert("Geçerli bir Ad veya Soyad giriniz!")
-            return;
-        }
-        else{
-            alert("Kullanıcı Bilgileri başarıyla kaydedildi")
+    const handleSubmit = (e) => {
+         e.preventDefault();
+
+
+        if (formRef.current.checkValidity() && Ad.trim() !== "" && Soyad.trim() !== "" && isNaN(Ad) && isNaN(Soyad)) {
+            
+            alert("Bilgiler kaydedildi");
+        } else {
+            formRef.current.reportValidity();
+            alert("Lütfen geçerli ad ve soyad girin");
         }
 
-    }
+    };
+
 
     const sehirVeIlceler = {
         İstanbul: ['Kağıthane', 'Beşiktaş', 'Üsküdar'],
@@ -37,14 +43,14 @@ function FormBody() {
     return (
 
         <div>
-            <form className="Form">
+            <form className="Form" ref={formRef} onSubmit={handleSubmit}>
 
                 <p className="pBaslik"><b>KİŞİSEL BİLGİLER</b></p>
 
                 <div className="form-row">
 
                     <label>Ad:</label>
-                    <input type="text" className="FormInput" placeholder="Adınızı Girin" value={Ad} onChange={(e)=>setAd(e.target.value)} required />
+                    <input type="text" className="FormInput" placeholder="Adınızı Girin" value={Ad} onChange={(e) => setAd(e.target.value)} required />
 
                     <label2>Tel No:</label2>
                     <input type="tel" className="FormInput" pattern="^5\d{2} \d{3} \d{2} \d{2}$" placeholder="5xx xxx xx xx" required />
@@ -55,7 +61,7 @@ function FormBody() {
                 <div className="form-row">
 
                     <label>Soyad:</label>
-                    <input type="text" className="FormInput" placeholder="Soyadınızı Girin" value={Soyad} onChange={(e)=>setSoyad(e.target.value)} required />
+                    <input type="text" className="FormInput" placeholder="Soyadınızı Girin" value={Soyad} onChange={(e) => setSoyad(e.target.value)} required />
 
                     <label2>E-mail:</label2>
                     <input type="email" className="FormInput" placeholder="ornek@gmail.com" required />
@@ -110,7 +116,7 @@ function FormBody() {
 
                 <div className='FormFooter'>
 
-                    <input type="submit" value="Kaydet" onClick={textControl}/>
+                    <input type="submit" value="Kaydet" />
                     <input type="reset" value="Temizle" />
 
                 </div>
