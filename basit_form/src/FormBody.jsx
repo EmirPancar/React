@@ -76,7 +76,7 @@ function FormBody() {
                     <label2>Kadın</label2><input type="radio" name="cinsiyet" />
 
                     <label style={{ marginLeft: 230, marginRight: 15 }}>Doğum Tarihi:</label>
-                    <input type="date" className="FormInput" style={{ fontSize: 18, paddingLeft: 20, paddingRight: 20, height: 25 }} required />
+                    <input type="date" className="FormInput" style={{ fontSize: 18, paddingTop:5, paddingLeft: 20, paddingRight: 20, height: 25, paddingBottom:5 }} required />
 
                 </div>
 
