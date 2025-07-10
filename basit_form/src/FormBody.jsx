@@ -85,7 +85,7 @@ function FormBody() {
                         onChange={handleSehirChange}
                         required
                     >
-                        <option value="" disabled hidden>Şehir Seç</option>
+                        <option value="disabled hidden">Şehir Seç</option>
                         {Object.keys(sehirVeIlceler).map((sehir) => (
                             <option key={sehir} value={sehir}>{sehir}</option>
                         ))}
@@ -99,7 +99,7 @@ function FormBody() {
                         required
                         disabled={!secilenSehir}
                     >
-                        <option value="" disabled hidden>İlçe Seç</option>
+                        <option value="disabled hidden">İlçe Seç</option>
                         {secilenSehir &&
                             sehirVeIlceler[secilenSehir].map((ilce) => (
                                 <option key={ilce} value={ilce}>{ilce}</option>
