@@ -18,19 +18,19 @@ function Forms({ ekran, setIsFormValid, formData, setFormData }) {
 
             {ekran === 2 && (
 
-                <Form2/>
+                <Form2 formData={formData} setFormData={setFormData} setIsFormValid={setIsFormValid} />
 
             )}
 
             {ekran === 3 && (
 
-                <Form3/>
+                <Form3 formData={formData} setFormData={setFormData} setIsFormValid={setIsFormValid} />
 
             )}
 
             {ekran === 4 && (
 
-                <Form4/>
+                <Form4 formData={formData} />
 
             )}
         </div>

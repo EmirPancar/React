@@ -158,7 +158,6 @@ Body,html{
   padding: 40px 80px; 
   border-radius: 15px;
   width: fit-content;
- 
 }
 
 .form-header {
@@ -166,7 +165,7 @@ Body,html{
   font-size: 32px; 
   font-weight: bold;
   text-align: center;
-  margin-bottom: 20px; 
+  margin-bottom: -30px; 
   margin-top: 40px;
   color: #222;
 }
@@ -183,7 +182,8 @@ Body,html{
   width: 80px;
   font-weight: bold;
   color: #444;
-  margin-right: -20px;
+  margin-right: -12px;
+  font-size: 20px;
 }
 
 
@@ -227,3 +227,21 @@ Body,html{
   color: red;
 }
 
+.kullanimSelect,
+.urunSelect{
+  width:200px;
+  height: 30px;
+}
+
+.urunSelect{
+  margin-left: 20px;
+}
+
+.kullanimSelect{
+  margin-left: 40px;
+}
+
+textarea {
+  font-family: inherit;
+  line-height: 1.5;
+}
