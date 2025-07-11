@@ -1,0 +1,229 @@
+Body,html{
+  height: 100%;
+
+  display:flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #e3e2e2;
+  font-family:Arial, Helvetica, sans-serif;
+
+}
+
+.Container{
+
+  display: flex;
+  flex-direction: column; 
+  justify-content: space-between; 
+  width: 1000px;
+  height: 650px;
+
+  background-color: rgb(218, 219, 219);
+  box-shadow: 0 0 10px 10px rgba(55, 56, 56, 0.4);
+  border-radius: 40px;
+  border-color: rgb(70, 70, 72);
+  border-style: solid double;
+  border-width: 8px;
+
+}
+
+.Header{
+
+  margin-top: 20px;
+  padding-left:120px;
+
+  font-size: 40px;
+  font-weight: 700;
+
+}
+
+.hrF {
+  border: none;
+  height: 3px;
+  background: linear-gradient(to right, rgb(0, 0, 0), rgb(74, 76, 76));
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 960px;
+  /* margin-left: 10px; */
+}
+
+
+.Mid {
+  flex: 1; 
+}
+
+
+.Footer{
+  display: flex;
+  width: 100%;
+  height: 65px;
+  margin-bottom: 10px;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.nextBut,
+.prevBut{
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgb(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  font-weight: 520;
+}
+
+.prevBut{
+  margin-left: 50px;
+}
+
+.nextBut{
+  margin-left: auto;
+  margin-right: 50px;
+}
+
+.nextBut:hover,
+.prevBut:hover {
+  background-color: rgb(213, 212, 212);
+}
+
+
+
+.step-wrapper {
+  position: relative;
+  width: fit-content; 
+  margin: -5px auto;
+}
+
+.step-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 100px; 
+  position: relative;
+  z-index: 2;
+  margin-left: 50px;
+}
+
+.step {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: lightgray;
+  color: white;
+  text-align: center;
+  line-height: 50px;
+  font-weight: bold;
+  transition: background-color 0.4s, transform 0.3s;
+}
+
+.step.active {
+  background-color: rgb(34, 60, 78);
+  transform: scale(1.2);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.step.completed {
+  background-color: #4caf50;
+}
+
+.step.inactive {
+  background-color: #bbb;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 33%;
+  left: 25px; 
+  right: 25px; 
+  height: 4px;
+  background-color: #ddd;
+  z-index: 1;
+  border-radius: 5px;
+  margin-left: 50px;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.4s ease;
+  width: 0%;
+  border-radius: 5px;
+}
+
+
+/* ------------------------------------------------------------------------------------------------------------------------------------ */
+
+
+.form-grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px 40px; 
+  margin: 80px auto 50px;
+  padding: 40px 80px; 
+  border-radius: 15px;
+  width: fit-content;
+ 
+}
+
+.form-header {
+  grid-column: 1 / -1;
+  font-size: 32px; 
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px; 
+  margin-top: 40px;
+  color: #222;
+}
+
+
+.form-cell {
+  display: flex;
+  align-items: center;
+  gap: 5px; 
+}
+
+
+.form-cell label {
+  width: 80px;
+  font-weight: bold;
+  color: #444;
+  margin-right: -20px;
+}
+
+
+.input-wrapper {
+  position: relative;
+}
+
+
+.input-wrapper input {
+  width: 230px;
+  padding: 10px 35px 10px 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  transition: border 0.3s;
+  margin-right:80px;
+  background-color: #f8f8f8;
+}
+
+.input-wrapper input:focus {
+  outline: none;
+  border-color: #666;
+}
+
+
+.icon {
+  position: absolute;
+  right: 90px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+}
+
+.icon.success::after {
+  content: "✔";
+  color: green;
+}
+
+.icon.error::after {
+  content: "✖";
+  color: red;
+}
+
