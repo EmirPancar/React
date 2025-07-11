@@ -15,17 +15,27 @@ function Footer({ ekran, setEkran, ileriAktif }) {
 
   return (
     <div className="Footer">
-      <button onClick={geri} className="prevBut">Önceki Sayfa</button>
+      <button
+        onClick={geri}
+        className="prevBut"
+        disabled={ekran === 1}
+        style={{
+          opacity: ekran === 1 ? 0.5 : 1,
+          pointerEvents: ekran === 1 ? "none" : "auto",
+        }}
+      >
+        Önceki Sayfa
+      </button>
 
       <StepIndicator ekran={ekran} />
 
       <button
         onClick={ileri}
         className="nextBut"
-        disabled={!ileriAktif}
+        disabled={ekran === 4 || !ileriAktif}
         style={{
-          opacity: ileriAktif ? 1 : 0.5,
-          pointerEvents: ileriAktif ? "auto" : "none",
+          opacity: ekran === 4 || !ileriAktif ? 0.5 : 1,
+          pointerEvents: ekran === 4 || !ileriAktif ? "none" : "auto",
         }}
       >
         Sonraki Sayfa

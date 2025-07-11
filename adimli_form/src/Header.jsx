@@ -3,7 +3,7 @@ function Header(){
 
     return(
 <>
-        <div className="Header">FORM</div>
+        <div className="Header">TEKNİK DESTEK</div>
         <hr className="hrF"/>
 </>
     );
