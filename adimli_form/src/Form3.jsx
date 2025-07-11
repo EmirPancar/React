@@ -41,7 +41,7 @@ function Form3({ formData, setFormData, setIsFormValid }) {
           margin: "0 auto",
         }}
       >
-        {/* Sol: Özet + Radyo */}
+        
         <div style={{ display: "flex", flexDirection: "column", gap: "60px" }}>
           <div className="form-cell">
             <label style={{ width: "100px", marginRight:"-30px" }}>Özet:</label>
@@ -85,7 +85,7 @@ function Form3({ formData, setFormData, setIsFormValid }) {
           </div>
         </div>  
 
-        {/* Sağ: Açıklama */}
+        
         <div className="form-cell" style={{ alignItems: "flex-start", marginLeft: "-100px" }}>
           <label style={{ marginTop: "8px", width: "100px",marginRight:"5px" }}>Açıklama:</label>
           <div className="input-wrapper" style={{ position: "relative" }}>

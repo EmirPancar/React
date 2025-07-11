@@ -13,7 +13,7 @@ function Form1({ formData, setFormData, setIsFormValid }) {
 
     const allValid = Object.values(isValid).every(Boolean);
 
-    useEffect(() => {
+    useEffect(() => {   
         setIsFormValid(allValid);
     }, [formData, touched]);
 
