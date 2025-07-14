@@ -1,0 +1,111 @@
+body , html{
+    height:100%;
+    margin:0;
+    padding:0;
+    font-family:"Inter", sans-serif;
+}
+
+
+.Container {
+  min-height: 100vh;
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  /* background-color: #e7e8ea; */
+  background: linear-gradient(to bottom, #a3bcd6, #d9e3ec);
+
+}
+
+.Main{
+    width: 1200px;
+    height: 580px;
+
+    /* background-color: #f4f4f5; */
+    background-color: #d9e3ec;
+
+    box-shadow: 0 0 10px 12px rgb(0, 0, 0, 0.5);
+    border-radius: 20px;
+}
+
+.Footer{
+
+    width: 1200px;
+    height: auto;
+
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* background-color: #7d9dcb; */
+    
+}
+
+.Fbutton {
+    width: 250px;
+    height: 100px;
+
+    font-size: 40px;
+
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px; 
+    border: none;
+    background-color: #7d9cb2;
+    box-shadow: 0 0 10px rgb(0, 0, 0, 0.5);
+    border-radius: 50px;
+}
+
+.label {
+    font-size: 20px; 
+    color: #f2f5f8; 
+}
+
+.Fbutton:hover{
+    background-color: #5d7b9d;
+}
+
+.TaskMain{
+
+    width: 1200px;
+    height: 580px;
+
+    display: flex;
+    flex-direction: row;
+
+    border-radius: 20px;
+
+    background-color: black;
+
+}
+
+.TaskMainLeft{
+    width: 30%;
+    height: 580px;
+
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-right-style:solid;
+    border-width: 2px;
+    border-right-color: rgb(0, 0, 0, 0.2);
+
+    background-color: #b7c1ca;
+
+}
+
+.TaskMainRight{
+    width: 70%;
+    height: 580px; 
+
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+
+    background-color: #d9e2eb;
+}
