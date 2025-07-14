@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Tasks.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { addTask, deleteTask, updateTask, setSelectedTaskId } from './redux/taskSlice';
@@ -19,7 +19,19 @@ export default function Tasks() {
         setEditing(false);
     };
 
+    // useEffect(() => {
+    //     dispatch(deleteTask(""));
+
+    // });
+
     const handleSaveTask = () => {
+        const { title, content, date } = newTask;
+
+        if (title.trim() === '' || content.trim() === '' || date.trim() === '') {
+            alert("Lütfen tüm alanları doldurun.");
+            return;
+        }
+
         if (editing) {
             dispatch(updateTask({ id: selectedTaskId, updatedTask: newTask }));
         } else {
