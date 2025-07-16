@@ -360,12 +360,33 @@
   font-family: 'Nunito, sans-serif';
 }
 
-.rbc-month-view .rbc-day-bg {
-  border: 1px solid rgba(0, 0, 0, 0.4); 
+.rbc-month-view {
+  border: 1px solid #ccc;
+}
+
+.rbc-month-row {
+  border-top: 2px solid #000000;
+}
+
+.rbc-day-bg {
+  border-right: 1px solid #212121;
+  border-bottom: 1px solid #212121;
 }
 
 
-.rbc-header {
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  background-color: #f7f9fa; 
+.rbc-day-bg:first-child,
+.rbc-day-bg:last-child {
+  border-right: 1px solid #000000;
+  border-left: 1px solid #000000;
+}
+
+
+.rbc-date-cell {
+  font-weight: 600;
+  color: #000000;
+}
+
+
+.rbc-event {
+  z-index: 1;
 }
