@@ -62,6 +62,8 @@ export default function CalendarPage() {
       newDate.setMonth(currentDate.getMonth() - 1);
     } else if (action === 'NEXT') {
       newDate.setMonth(currentDate.getMonth() + 1);
+    } else if (action === 'TODAY') {
+      newDate.setTime(new Date().getTime());
     }
     setCurrentDate(newDate);
   };
@@ -70,10 +72,13 @@ export default function CalendarPage() {
 
   return (
     <div className='CalendarContainer'>
-      <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <button onClick={() => handleNavigate('PREV')} className='CalendarButton'>← Önceki Ay</button>
-        <h2 style={{ fontFamily: 'Nunito, sans-serif' }}>{monthYearLabel}</h2>
-        <button onClick={() => handleNavigate('NEXT')} className='CalendarButton'>Sonraki Ay →</button>
+        <h2 style={{ fontFamily: 'Nunito, sans-serif', marginLeft:'130px' }}>{monthYearLabel}</h2>
+        <div>
+          <button onClick={() => handleNavigate('TODAY')} className='CalendarButton' style={{marginRight:'10px'}}>Bugün</button>
+          <button onClick={() => handleNavigate('NEXT')} className='CalendarButton'>Sonraki Ay →</button>
+        </div>
       </div>
 
       <div style={{ height: '420px' }}>
