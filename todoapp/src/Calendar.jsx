@@ -66,26 +66,30 @@ export default function CalendarPage() {
     setCurrentDate(newDate);
   };
 
+  const monthYearLabel = format(currentDate, "MMMM yyyy", { locale: tr });
+
   return (
     <div className='CalendarContainer'>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between'}}>
         <button onClick={() => handleNavigate('PREV')} className='CalendarButton'>← Önceki Ay</button>
-        <h2 style={{ fontFamily: 'Nunito, sans-serif' }}>📅 Görev Takvimi</h2>
+        <h2 style={{ fontFamily: 'Nunito, sans-serif' }}>{monthYearLabel}</h2>
         <button onClick={() => handleNavigate('NEXT')} className='CalendarButton'>Sonraki Ay →</button>
       </div>
 
-      <div style={{ height: '400px' }}>
+      <div style={{ height: '420px' }}>
         <Calendar
-          localizer={localizer} 
+          localizer={localizer}
           events={events}
           startAccessor="start"
           endAccessor="end"
-          views={{ month: true }} 
+          views={{ month: true }}
           defaultView={Views.MONTH}
           date={currentDate}
-          onNavigate={() => {}} 
+          onNavigate={() => {}}
           eventPropGetter={eventStyleGetter}
-          toolbar={false} 
+          toolbar={false}
+          culture='tr-TR'
+          popup={true}
         />
       </div>
     </div>
