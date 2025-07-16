@@ -336,3 +336,36 @@
   color: darkgreen;
   transform: translateY(-50%) scale(1.2);
 }
+
+.CalendarContainer{
+  max-Width: 1100px;
+  margin: 0 auto;
+  margin-Top: 25px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.CalendarButton{
+  width: 120px;
+  height: 50px;
+  padding: 8px 16px;
+  background-color: #4b6587;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Nunito, sans-serif';
+}
+
+.rbc-month-view .rbc-day-bg {
+  border: 1px solid rgba(0, 0, 0, 0.4); 
+}
+
+
+.rbc-header {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background-color: #f7f9fa; 
+}

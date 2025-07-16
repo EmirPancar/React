@@ -1,12 +1,15 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { markAsUncompleted } from './redux/taskSlice';
+import { setSelectedTaskId, markAsUncompleted } from './redux/taskSlice';
+import './Tasks.css'; // Mevcut stilleri kullanmak için
 
 export default function Completed() {
   const dispatch = useDispatch();
   const completedTasks = useSelector(state =>
     state.task.tasks.filter(task => task.completed)
   );
+  const selectedTaskId = useSelector(state => state.task.selectedTaskId);
+  const selectedTask = completedTasks.find(task => task.id === selectedTaskId);
 
   return (
     <div className="TaskMain">
@@ -18,47 +21,41 @@ export default function Completed() {
             <div
               key={task.id}
               className="taskItem"
+              onClick={() => dispatch(setSelectedTaskId(task.id))}
               style={{
-                backgroundColor: '#e1f5e5',
+                backgroundColor: selectedTaskId === task.id ? '#d0ecd8' : '#e1f5e5',
                 borderLeft: '4px solid green',
-                paddingBottom: '10px',
+                textDecoration: 'line-through',
+                color: '#526d60',
               }}
             >
-              <div style={{ fontWeight: 'bold', textDecoration: 'line-through', color: '#526d60' }}>
-                {task.title}
-              </div>
-              <div style={{ fontStyle: 'italic', fontSize: '14px', color: '#6e7f73' }}>
-                {task.content}
-              </div>
-              <button
-                onClick={() => dispatch(markAsUncompleted(task.id))}
-                style={{
-                  marginTop: '8px',
-                  padding: '6px 10px',
-                  backgroundColor: '#95a5a6',
-                  border: 'none',
-                  borderRadius: '6px',
-                  color: '#fff',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                }}
-              >
-                Geri Al
-              </button>
+              {task.title}
             </div>
           ))}
         </div>
       </div>
 
       <div className="TaskMainRight">
-        {completedTasks.length > 0 ? (
+        {selectedTask ? (
           <div className="taskDetail">
-            <p style={{ fontStyle: 'italic', color: '#5d6d7e' }}>
-              Tamamlanmış görevler arşivlendi. Dilerseniz geri alabilirsiniz.
-            </p>
+            <div className="taskHeader enhanced">
+              <span className="taskTitle">{selectedTask.title} ✔</span>
+              <span className="taskDate">
+                {new Intl.DateTimeFormat('tr-TR').format(new Date(selectedTask.date))} 📅
+              </span>
+            </div>
+            <div className="taskContent padded">{selectedTask.content}</div>
+            <div className="taskActions styled">
+              <button
+                className="editBtn"
+                onClick={() => dispatch(markAsUncompleted(selectedTask.id))}
+              >
+                Geri Al
+              </button>
+            </div>
           </div>
         ) : (
-          <p style={{ padding: '20px' }}>Tamamlanan görev yok.</p>
+          <p style={{ padding: '20px' }}>Bir görev seçin...</p>
         )}
       </div>
     </div>
