@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSelectedTaskId, markAsUncompleted } from './redux/taskSlice';
+import { setSelectedTaskId } from './redux/taskSlice';
 
 export default function Important() {
   const dispatch = useDispatch();

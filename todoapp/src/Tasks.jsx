@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './Tasks.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTask, deleteTask, updateTask, setSelectedTaskId, toggleImportant, markAsCompleted, markAsUncompleted } from './redux/taskSlice';
+import { addTask, deleteTask, updateTask, setSelectedTaskId, toggleImportant, markAsCompleted } from './redux/taskSlice';
 
 export default function Tasks() {
     const dispatch = useDispatch();
     const tasks = useSelector(state => state.task.tasks);
     const selectedTaskId = useSelector(state => state.task.selectedTaskId);
     const selectedTask = tasks.find(task => task.id === selectedTaskId);
-
+ 
     const [showModal, setShowModal] = useState(false);
     const [newTask, setNewTask] = useState({ id: '', title: '', content: '', date: '' });
     const [editing, setEditing] = useState(false);
