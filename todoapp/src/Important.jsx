@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSelectedTaskId } from './redux/taskSlice';
+import { setSelectedTaskId, markAsUncompleted } from './redux/taskSlice';
 
 export default function Important() {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ export default function Important() {
               key={task.id}
               className="taskItem"
               onClick={() => dispatch(setSelectedTaskId(task.id))}
-              style={{ borderLeft: '4px solid gold', backgroundColor: '#fff9e6' }}
+              style={{ borderLeft: '4px solid gold', backgroundColor: '#fff9e6'}}
             >
               {task.title}
             </div>
@@ -33,7 +33,7 @@ export default function Important() {
             <div className="taskHeader enhanced">
               <span className="taskTitle">{selectedTask.title} ⭐</span>
               <span className="taskDate">
-                {new Intl.DateTimeFormat('tr-TR').format(new Date(selectedTask.date))}
+                {new Intl.DateTimeFormat('tr-TR').format(new Date(selectedTask.date))} 📅
               </span>
             </div>
             <div className="taskContent padded">{selectedTask.content}</div>

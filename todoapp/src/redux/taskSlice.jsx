@@ -45,6 +45,24 @@ export const taskSlice = createSlice({
         task.important = !task.important;
         saveTasks(state.tasks);
       }
+    },
+    markAsCompleted: (state, action) => {
+      const task = state.tasks.find(t => t.id === action.payload);
+      if (task) {
+        task.completed = true;
+        task.important = false;
+        if (state.selectedTaskId === task.id) {
+          state.selectedTaskId = null;
+        }
+        saveTasks(state.tasks);
+      }
+    },
+    markAsUncompleted: (state, action) => {
+      const task = state.tasks.find(t => t.id === action.payload);
+      if (task) {
+        task.completed = false;
+        saveTasks(state.tasks);
+      }
     }
   }
 });
@@ -54,7 +72,9 @@ export const {
   deleteTask,
   updateTask,
   setSelectedTaskId,
-  toggleImportant
+  toggleImportant,
+  markAsCompleted,
+  markAsUncompleted
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

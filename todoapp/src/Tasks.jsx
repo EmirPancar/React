@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Tasks.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTask, deleteTask, updateTask, setSelectedTaskId, toggleImportant } from './redux/taskSlice';
+import { addTask, deleteTask, updateTask, setSelectedTaskId, toggleImportant, markAsCompleted, markAsUncompleted } from './redux/taskSlice';
 
 export default function Tasks() {
     const dispatch = useDispatch();
@@ -13,6 +13,7 @@ export default function Tasks() {
     const [newTask, setNewTask] = useState({ id: '', title: '', content: '', date: '' });
     const [editing, setEditing] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+
 
     const handleAddTask = () => {
         setShowModal(true);
@@ -49,7 +50,7 @@ export default function Tasks() {
     };
 
     const filteredTasks = tasks.filter(task =>
-        task.title.toLowerCase().includes(searchTerm.toLowerCase())
+        !task.completed && task.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
@@ -65,15 +66,24 @@ export default function Tasks() {
                     onChange={e => setSearchTerm(e.target.value)}
                 />
 
-                <div className="taskList">
+                <div className="taskList" style={{ height: '420px' }}>
                     {filteredTasks.map((task) => (
                         <div
                             key={task.id}
                             className="taskItem"
                             onClick={() => dispatch(setSelectedTaskId(task.id))}
-                            style={{ position: 'relative', paddingRight: '30px' }}
+                            style={{ position: 'relative', paddingRight: '50px' }}
                         >
                             <span>{task.title}</span>
+                            <span
+                                className="Checkmark"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    dispatch(markAsCompleted(task.id));
+                                }}
+                            >
+                                ✔
+                            </span>
                             <span
                                 className={`Star ${task.important ? 'important' : ''}`}
                                 onClick={(e) => {
