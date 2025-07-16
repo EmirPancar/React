@@ -1,3 +1,4 @@
+// Yeni aksiyon: toggleImportant
 import { createSlice } from "@reduxjs/toolkit";
 
 const loadTasks = () => {
@@ -37,6 +38,13 @@ export const taskSlice = createSlice({
     },
     setSelectedTaskId: (state, action) => {
       state.selectedTaskId = action.payload;
+    },
+    toggleImportant: (state, action) => {
+      const task = state.tasks.find(t => t.id === action.payload);
+      if (task) {
+        task.important = !task.important;
+        saveTasks(state.tasks);
+      }
     }
   }
 });
@@ -45,7 +53,8 @@ export const {
   addTask,
   deleteTask,
   updateTask,
-  setSelectedTaskId
+  setSelectedTaskId,
+  toggleImportant
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

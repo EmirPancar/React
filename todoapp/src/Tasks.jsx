@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Tasks.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTask, deleteTask, updateTask, setSelectedTaskId } from './redux/taskSlice';
+import { addTask, deleteTask, updateTask, setSelectedTaskId, toggleImportant } from './redux/taskSlice';
 
 export default function Tasks() {
     const dispatch = useDispatch();
@@ -12,17 +12,13 @@ export default function Tasks() {
     const [showModal, setShowModal] = useState(false);
     const [newTask, setNewTask] = useState({ id: '', title: '', content: '', date: '' });
     const [editing, setEditing] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const handleAddTask = () => {
         setShowModal(true);
         setNewTask({ id: crypto.randomUUID(), title: '', content: '', date: '' });
         setEditing(false);
     };
-
-    // useEffect(() => {
-    //     dispatch(deleteTask(""));
-
-    // });
 
     const handleSaveTask = () => {
         const { title, content, date } = newTask;
@@ -35,7 +31,7 @@ export default function Tasks() {
         if (editing) {
             dispatch(updateTask({ id: selectedTaskId, updatedTask: newTask }));
         } else {
-            dispatch(addTask(newTask));
+            dispatch(addTask({ ...newTask, important: false }));
         }
         setShowModal(false);
     };
@@ -52,17 +48,41 @@ export default function Tasks() {
         setShowModal(true);
     };
 
+    const filteredTasks = tasks.filter(task =>
+        task.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <div className="TaskMain">
             <div className="TaskMainLeft">
                 <button className="addTaskButton" onClick={handleAddTask}>+ Görev Oluştur</button>
+
+                <input
+                    type="text"
+                    className="SearchBox"
+                    placeholder="Başlığa göre ara..."
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                />
+
                 <div className="taskList">
-                    {tasks.map((task) => (
+                    {filteredTasks.map((task) => (
                         <div
                             key={task.id}
                             className="taskItem"
-                            onClick={() => dispatch(setSelectedTaskId(task.id))}>
-                            {task.title}
+                            onClick={() => dispatch(setSelectedTaskId(task.id))}
+                            style={{ position: 'relative', paddingRight: '30px' }}
+                        >
+                            <span>{task.title}</span>
+                            <span
+                                className={`Star ${task.important ? 'important' : ''}`}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    dispatch(toggleImportant(task.id));
+                                }}
+                            >
+                                {task.important ? '★' : '☆'}
+                            </span>
                         </div>
                     ))}
                 </div>
@@ -78,7 +98,7 @@ export default function Tasks() {
                         <div className="taskContent padded">{selectedTask.content}</div>
                         <div className="taskActions styled">
                             <button className="editBtn" onClick={handleEditTask}>Düzenle </button>
-                            <button className="deleteBtn" onClick={handleDeleteTask}>Sil </button> {/*🗑️ ✏️*/}
+                            <button className="deleteBtn" onClick={handleDeleteTask}>Sil </button>
                         </div>
                     </div>
                 ) : (
