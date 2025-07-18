@@ -1,6 +1,5 @@
 import './App.css';
 import Header from './Header';
-import Form1 from './Form1'
 import Footer from './Footer'
 import Forms from './Forms';
 import { useSelector } from 'react-redux';

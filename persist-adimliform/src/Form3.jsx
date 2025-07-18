@@ -18,7 +18,7 @@ function Form3() {
 
   useEffect(() => {
     dispatch(setFormValid(allValid));
-  }, [formData, touched]);
+  }, [formData, touched, allValid, dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
