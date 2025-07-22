@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts, setCategory, setSelectedProduct } from './redux/catalogSlice';
+import { addToCart } from './redux/cartSlice'; 
 import './redux/store';
 import './CatalogStyle.css'
 
 const Catalog = () => {
-
   const dispatch = useDispatch();
 
   const {
@@ -44,8 +44,13 @@ const Catalog = () => {
   const closeModal = () => {
     dispatch(setSelectedProduct(null)); 
   };
-
   
+  
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+    closeModal(); 
+  };
+
   if (status === 'loading') {
     return <div className="CatalogContainer"><p className="status-info">Katalog yükleniyor...</p></div>;
   }
@@ -104,6 +109,13 @@ const Catalog = () => {
                   ({selectedProduct.rating.count} değerlendirme)
                 </span>
               </div>
+              
+              <button 
+                className="add-to-cart-button" 
+                onClick={() => handleAddToCart(selectedProduct)}
+              >
+                Sepete Ekle
+              </button>
             </div>
           </div>
         </div>
