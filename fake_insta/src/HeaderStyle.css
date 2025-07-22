@@ -58,6 +58,10 @@ body, html {
   max-width: 500px;
 }
 
+.SearchBar-container{
+    margin-left: 340px;
+}
+
 .SearchBar input {
   border: none;
   background: transparent;
