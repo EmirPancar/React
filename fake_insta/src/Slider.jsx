@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import './SliderStyle.css';
-import slide1 from './images/slide1.png';
-import slide2 from './images/slide2.jpeg';
-import slide3 from './images/slide3.jpeg';
-import slide4 from './images/slide4.jpeg';
+import slide1 from './images/PCSlide.png';
+import slide2 from './images/KadınSlide.png';
+import slide3 from './images/MücevherSlide.png';
+import slide4 from './images/ErkekSlide.png';
 
 
 const defaultSlides = [
-  { id: 1, image: slide1, title: 'Modern Mimari', description: 'Şehir silüetini yeniden tanımlayan cesur tasarımlar.' },
-  { id: 2, image: slide2, title: 'Doğayla İç İçe', description: 'Sakin ve huzurlu bir yaşam için yeşilin tonları.' },
-  { id: 3, image: slide3, title: 'Fütüristik Konseptler', description: 'Geleceğin teknolojisi ile şekillenen yenilikçi yapılar.' },
-  { id: 4, image: slide4, title: 'Minimalist Detaylar', description: 'Az daha çoktur felsefesiyle tasarlanmış estetik.' }
+  { id: 1, image: slide1, title: 'Gücün Işığını Keşfet', description: 'RGB aydınlatmalı, yüksek performanslı sistemlerle teknolojiyi stilinle birleştir. Oyundan üretkenliğe, her an seninle.' },
+  { id: 2, image: slide2, title: 'Baharın Zarafeti', description: 'Doğal tonlar ve modern kesimlerle ilkbaharın tazeliğini stiline yansıt. Yeni sezon kombinlerini şimdi keşfet.' },
+  { id: 3, image: slide3, title: 'Işıltının Yeni Yüzü', description: 'Zarif tasarımlar ve büyüleyici detaylarla her anına ışıltı kat. Kendini özel hissetmenin tam zamanı.' },
+  { id: 4, image: slide4, title: 'Sonbaharın Şıklığı', description: 'Modern dokular, sıcak tonlar. Yeni sezon erkek koleksiyonuyla stilinize güçlü bir dokunuş yapın.' }
 ];
 
 const Slider = ({ slides = defaultSlides }) => {

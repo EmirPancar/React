@@ -1,81 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import './CatalogStyle.css'; 
-
+import React, { useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchProducts, setCategory, setSelectedProduct } from './redux/catalogSlice';
+import './redux/store';
+import './CatalogStyle.css'
 
 const Catalog = () => {
-  
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  
+  const dispatch = useDispatch();
+
+  const {
+    products,
+    categories,
+    selectedCategory,
+    selectedProduct,
+    status,
+    error
+  } = useSelector((state) => state.catalog);
+
+ 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('https://fakestoreapi.com/products');
-        if (!response.ok) {
-          throw new Error('Veri alınamadı, ağ yanıtı başarısız.');
-        }
-        const data = await response.json();
-        
-        
-        setProducts(data);
-        setFilteredProducts(data);
+    if (status === 'idle') {
+      dispatch(fetchProducts());
+    }
+  }, [status, dispatch]);
+  
 
-        
-        const uniqueCategories = [...new Set(data.map(item => item.category))];
-        setCategories(['All', ...uniqueCategories]);
-
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []); 
+  const filteredProducts = useMemo(() => {
+    if (selectedCategory === 'All') {
+      return products;
+    }
+    return products.filter(product => product.category === selectedCategory);
+  }, [products, selectedCategory]);
 
   
   const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-    if (category === 'All') {
-      setFilteredProducts(products);
-    } else {
-      const filtered = products.filter(product => product.category === category);
-      setFilteredProducts(filtered);
-    }
+    dispatch(setCategory(category));
   };
 
-  
   const openModal = (product) => {
-    setSelectedProduct(product);
+    dispatch(setSelectedProduct(product));
   };
 
   const closeModal = () => {
-    setSelectedProduct(null);
+    dispatch(setSelectedProduct(null)); 
   };
 
   
-  if (isLoading) {
+  if (status === 'loading') {
     return <div className="CatalogContainer"><p className="status-info">Katalog yükleniyor...</p></div>;
   }
 
-  
-  if (error) {
+  if (status === 'failed') {
     return <div className="CatalogContainer"><p className="status-info">Hata: {error}</p></div>;
   }
 
-  
+ 
   return (
     <div className="CatalogContainer">
       <h2 className="catalog-title">Mağaza Kataloğu</h2>
 
-      
       <div className="CategoryFilter">
         {categories.map(category => (
           <button
@@ -88,7 +71,6 @@ const Catalog = () => {
         ))}
       </div>
 
-     
       <div className="ProductGrid">
         {filteredProducts.map(product => (
           <div key={product.id} className="ProductCard" onClick={() => openModal(product)}>
@@ -103,7 +85,6 @@ const Catalog = () => {
         ))}
       </div>
 
-      
       {selectedProduct && (
         <div className="ModalOverlay" onClick={closeModal}>
           <div className="ModalContent" onClick={(e) => e.stopPropagation()}>

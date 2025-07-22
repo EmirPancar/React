@@ -17,7 +17,7 @@
   justify-content: space-between;
   position: relative;
   overflow: hidden;
-  background: radial-gradient(circle, #fdfcfb, #f3f1ec);
+  /* background: radial-gradient(circle, #fdfcfb, #f3f1ec); */
 }
 
 .slider-container::before {
@@ -28,7 +28,7 @@
   right: 0;
   bottom: 0;
   z-index: 2;
-  background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.15) 100%);
+  /* background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.15) 100%); */
   pointer-events: none;
 }
 

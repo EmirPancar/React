@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import './App.css';
-import axios from 'axios'
+// import axios from 'axios'
 import Header from './Header';
 import Slider from './Slider'
 import Catalog from './Catalog';
