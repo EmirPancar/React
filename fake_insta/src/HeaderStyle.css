@@ -1,0 +1,227 @@
+/* Genel Sayfa Stili */
+body, html {
+  background-color: #faf9f7;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Header Ana Konteyner */
+.Header {
+  width: 100%;
+  height: 100px;
+  background-color: #f3f1ec;
+  box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.1); /* Gölge daha yumuşak yapıldı */
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1000;
+}
+
+.Header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Sol Taraf: Logo */
+.Header-left {
+    flex-shrink: 0;
+}
+
+.HeaderImage {
+  background-image: url("images/Lumina_logo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100px;
+  height: 100px;
+}
+
+/* Orta Kısım: Arama Çubuğu */
+.Header-center {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 40px;
+}
+
+.SearchBar {
+  display: flex;
+  align-items: center;
+  background-color: #e9e6e1;
+  border-radius: 25px;
+  padding: 5px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  max-width: 500px;
+}
+
+.SearchBar input {
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  width: 100%;
+  color: #5c5c5c;
+}
+
+.SearchBar input::placeholder {
+  color: #a09d99;
+}
+
+.SearchBar button {
+  border: none;
+  background-color: #d1ccc5;
+  color: #fff;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.SearchBar button:hover {
+  background-color: #c5bfb8;
+}
+
+.SearchBar button svg {
+    stroke: #5c5c5c;
+}
+
+/* Sağ Taraf: Navigasyon ve Menü */
+.Header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.Header-nav {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-button {
+  background-color: transparent;
+  border: 1px solid #d1ccc5;
+  color: #5c5c5c;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-button:hover {
+  background-color: #e9e6e1;
+  border-color: #c5bfb8;
+  color: #333;
+}
+
+/* Hamburger Menü Butonu */
+.Menu-button {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid #d1ccc5;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.Menu-button:hover {
+  background-color: #e9e6e1;
+}
+
+.menu-icon-line {
+  width: 22px;
+  height: 2px;
+  background-color: #5c5c5c;
+  border-radius: 2px;
+}
+
+/* Yandan Açılan Menü (Sidebar) */
+.Sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px; /* Başlangıçta ekran dışında */
+    width: 280px;
+    height: 100%;
+    background-color: #f3f1ec;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+    transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 1001; /* Header'ın üzerinde */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.Sidebar.open {
+  right: 0; /* 'open' class'ı eklendiğinde görünür olur */
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #888;
+    cursor: pointer;
+}
+
+.Sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin-top: 60px;
+}
+
+.Sidebar-nav li a {
+    display: block;
+    padding: 15px 20px;
+    color: #5c5c5c;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.Sidebar-nav li a:hover {
+    background-color: #e9e6e1;
+}
+
+/* Arkaplan Karartma (Overlay) */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+}
+
+/* Küçük Ekranlar İçin Düzenlemeler (Responsive) */
+@media (max-width: 768px) {
+    .Header-nav, .Header-center .SearchBar {
+        display: none; /* Butonları ve arama çubuğunu gizle */
+    }
+
+    .Header-content {
+        justify-content: space-between;
+    }
+}
