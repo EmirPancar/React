@@ -3,14 +3,15 @@ import './App.css';
 import axios from 'axios'
 import Header from './Header';
 import Slider from './Slider'
+import Catalog from './Catalog';
 
-// const URL = "https://jsonplaceholder.typicode.com"
+// const URL = "https://fakestoreapi.com"
 // const UserId = 2
 
 function App() {
 
   // const getAllUsers = async ()=>{
-  //   const response = await axios.get(`${URL}/posts`)
+  //   const response = await axios.get(`${URL}/products`)
   //   console.log(response.data)
   // }
 
@@ -28,7 +29,7 @@ function App() {
     <>
       <Header/>
       <Slider/>
-
+      <Catalog/>
     </>
 
   );

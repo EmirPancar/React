@@ -41,7 +41,7 @@ const Header = () => {
         
         <div className="Header-right" ref={menuRef}>
           <nav className="Header-nav">
-            <button className="nav-button">Kullanıcılar</button>
+            <button className="nav-button">Sepet 🛒</button>
           </nav>
           <button
             className="Menu-button"
