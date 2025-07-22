@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import './App.css';
 import axios from 'axios'
 import Header from './Header';
+import Slider from './Slider'
 
 // const URL = "https://jsonplaceholder.typicode.com"
 // const UserId = 2
@@ -26,7 +27,7 @@ function App() {
   return (
     <>
       <Header/>
-
+      <Slider/>
 
     </>
 

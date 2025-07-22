@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './HeaderStyle.css'; // Stil dosyasını import ediyoruz
+import './HeaderStyle.css'; 
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null); // Menü referansı
 
-  // Menü dışına tıklandığında menüyü kapatmak için
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -23,12 +23,12 @@ const Header = () => {
   return (
     <header className="Header">
       <div className="Header-content">
-        {/* Sol Taraf: Logo */}
+        
         <div className="Header-left">
           <div className="HeaderImage"></div>
         </div>
 
-        {/* Orta Kısım: Arama Çubuğu */}
+        
         <div className="Header-center">
           <div className="SearchBar">
             <input type="text" placeholder="Arama yap..." />
@@ -38,11 +38,10 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Sağ Taraf: Butonlar ve Menü */}
+        
         <div className="Header-right" ref={menuRef}>
           <nav className="Header-nav">
             <button className="nav-button">Kullanıcılar</button>
-            <button className="nav-button">Notlar</button>
           </nav>
           <button
             className="Menu-button"
@@ -57,7 +56,7 @@ const Header = () => {
         </div>
       </div>
 
-       {/* Yandan Açılan Menü */}
+       
        <div className={`Sidebar ${isMenuOpen ? 'open' : ''}`} >
             <button
                 className="close-button"
@@ -70,7 +69,7 @@ const Header = () => {
                 <li><a href="#3">Seçenek 3</a></li>
             </ul>
         </div>
-        {/* Menü açıkken arkaplanı karartmak için */}
+        
         {isMenuOpen && <div className="overlay" onClick={() => setIsMenuOpen(false)}></div>}
     </header>
   );
