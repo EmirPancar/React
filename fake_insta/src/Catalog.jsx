@@ -45,7 +45,6 @@ const Catalog = () => {
   };
 
   const handleAddToCart = (product) => {
-    // Sepete eklerken adedin geçerli olduğundan emin olalım (her ihtimale karşı)
     const finalQuantity = quantity < 1 ? 1 : quantity;
     dispatch(addToCart({ ...product, quantity: finalQuantity }));
     closeModal();
