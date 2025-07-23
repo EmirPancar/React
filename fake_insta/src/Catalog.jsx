@@ -1,12 +1,13 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts, setCategory, setSelectedProduct } from './redux/catalogSlice';
-import { addToCart } from './redux/cartSlice'; 
+import { addToCart } from './redux/cartSlice';
 import './redux/store';
-import './CatalogStyle.css'
+import './CatalogStyle.css';
 
 const Catalog = () => {
   const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(1);
 
   const {
     products,
@@ -17,13 +18,11 @@ const Catalog = () => {
     error
   } = useSelector((state) => state.catalog);
 
- 
   useEffect(() => {
     if (status === 'idle') {
       dispatch(fetchProducts());
     }
   }, [status, dispatch]);
-  
 
   const filteredProducts = useMemo(() => {
     if (selectedCategory === 'All') {
@@ -32,23 +31,24 @@ const Catalog = () => {
     return products.filter(product => product.category === selectedCategory);
   }, [products, selectedCategory]);
 
-  
   const handleCategoryChange = (category) => {
     dispatch(setCategory(category));
   };
 
   const openModal = (product) => {
     dispatch(setSelectedProduct(product));
+    setQuantity(1);
   };
 
   const closeModal = () => {
-    dispatch(setSelectedProduct(null)); 
+    dispatch(setSelectedProduct(null));
   };
-  
-  
+
   const handleAddToCart = (product) => {
-    dispatch(addToCart(product));
-    closeModal(); 
+    // Sepete eklerken adedin geçerli olduğundan emin olalım (her ihtimale karşı)
+    const finalQuantity = quantity < 1 ? 1 : quantity;
+    dispatch(addToCart({ ...product, quantity: finalQuantity }));
+    closeModal();
   };
 
   if (status === 'loading') {
@@ -59,7 +59,6 @@ const Catalog = () => {
     return <div className="CatalogContainer"><p className="status-info">Hata: {error}</p></div>;
   }
 
- 
   return (
     <div className="CatalogContainer">
       <h2 className="catalog-title">Mağaza Kataloğu</h2>
@@ -110,8 +109,33 @@ const Catalog = () => {
                 </span>
               </div>
               
-              <button 
-                className="add-to-cart-button" 
+              <div className="quantity-selector">
+                <button 
+                  className="quantity-button" 
+                  onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+                >
+                  -
+                </button>
+                <input 
+                  type="number" 
+                  className="quantity-input" 
+                  value={quantity} 
+                  onChange={(e) => {
+                    const numValue = Number(e.target.value);
+                    setQuantity(numValue < 1 ? 1 : numValue);
+                  }}
+                  min="1" 
+                />
+                <button 
+                  className="quantity-button" 
+                  onClick={() => setQuantity(prev => prev + 1)}
+                >
+                  +
+                </button>
+              </div>
+
+              <button
+                className="add-to-cart-button"
                 onClick={() => handleAddToCart(selectedProduct)}
               >
                 Sepete Ekle
