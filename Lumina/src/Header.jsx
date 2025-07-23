@@ -24,13 +24,9 @@ const Header = () => {
   const { cartItems, isCartOpen } = useSelector((state) => state.cart);
   const { products } = useSelector((state) => state.catalog); 
 
- 
-  
-  
   const cartItemCount = useMemo(() => {
-    return cartItems.reduce((count, item) => count + item.quantity, 0);
+    return cartItems.length;
   }, [cartItems]);
-
   
   const totalPrice = useMemo(() => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
