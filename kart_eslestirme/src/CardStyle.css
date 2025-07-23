@@ -1,0 +1,27 @@
+.Card {
+
+    border: none;
+    padding: 0;
+    
+    
+    width: 120px;
+    height: 168px;
+    
+    background-color: rgb(110, 113, 115);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    
+    
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.Card:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.Card:focus-visible {
+    outline: 3px solid rgba(0, 170, 255, 0.7);
+    outline-offset: 3px;
+}
