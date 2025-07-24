@@ -1,9 +1,6 @@
-/* src/App.css */
-
-/* Ana oyun konteyneri için Grid düzeni */
 .game-container {
   display: grid;
-  grid-template-columns: 280px minmax(auto, 950px) 280px; /* Sol panel, oyun alanı, sağ panel */
+  grid-template-columns: 280px minmax(auto, 950px) 280px;
   align-items: center;
   justify-content: center;
   gap: 30px;
@@ -19,12 +16,11 @@
   align-items: center;
 }
 
-/* Panellerin ortak stili */
 .left-panel, .right-panel {
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: space-around; /* Elemanları dikeyde dağıt */
+  justify-content: space-around; 
 }
 
 .left-panel{
@@ -39,7 +35,6 @@
     align-items: center;
 }
 
-/* Bilgi kutularının genel stili */
 .info-box {
   background-color: #2c303a;
   border: 1px solid rgba(0, 170, 255, 0.2);
@@ -60,7 +55,6 @@
   text-shadow: 0 0 5px rgba(0, 170, 255, 0.5);
 }
 
-/* Dijital Ekran Stili */
 .digital-display {
   font-family: 'Orbitron', 'monospace';
   background-color: #1a1a1a;
@@ -84,7 +78,6 @@
   text-shadow: 0 0 3px #ff8c00, 0 0 8px rgba(255, 140, 0, 0.7);
 }
 
-/* Detay istatistik kutusu */
 .stats-box {
   padding: 15px 20px;
 }
@@ -107,7 +100,6 @@
   font-size: 1.1rem;
 }
 
-/* En Yüksek Skor */
 .high-score-box {
   text-align: center;
   background: none;
@@ -126,7 +118,6 @@
   color: #f0f0f0;
 }
 
-/* 3D Buton */
 .btn-3d {
   width: 150px;
   height: 50px;
@@ -151,7 +142,6 @@
   box-shadow: 0 2px #004d73;
 }
 
-/* Nasıl Oynanır Kutusu */
 .how-to-play {
   text-align: center;
   border: 1px dashed rgba(255, 255, 255, 0.3);
@@ -166,4 +156,41 @@
   font-size: 0.9rem;
   color: #bbb;
   line-height: 1.4;
+}
+
+.high-score-accuracy {
+  color: #aaa;
+  font-size: 0.9rem;
+  display: block;
+  margin-top: 5px;
+}
+
+.game-over-message {
+  position: absolute;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 4rem;
+  font-weight: bold;
+  text-align: center;
+  animation: pop-in 0.5s ease-out;
+}
+
+.game-over-message.won {
+  color: #39ff14;
+  text-shadow: 0 0 15px #39ff14;
+}
+
+.game-over-message.lost {
+  color: #ff4d4d;
+  text-shadow: 0 0 15px #ff4d4d;
+}
+
+@keyframes pop-in {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
