@@ -1,5 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const loadHighScoreFromStorage = () => {
+  try {
+    const serializedHighScore = localStorage.getItem('highScore');
+    if (serializedHighScore === null) {
+      return { score: 0, accuracy: 0 };
+    }
+    return JSON.parse(serializedHighScore);
+  } catch (error) {
+    console.error("Could not load high score from local storage", error);
+    return { score: 0, accuracy: 0 };
+  }
+};
 
 const SUITS = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
 const RANKS = [
@@ -22,7 +34,7 @@ const initialState = {
   cards: [],
   flippedCards: [],
   score: 0,
-  highScore: { score: 0, accuracy: 0 },
+  highScore: loadHighScoreFromStorage(), 
   matchesAttempted: 0,
   correctMatches: 0,
   consecutiveMisses: 0, 
@@ -89,9 +101,7 @@ export const gameSlice = createSlice({
           pointsWon = 10; 
         } 
 
-        
         state.score += pointsWon;
-        
         state.consecutiveMisses = 0;
 
         state.cards.forEach(c => {
@@ -105,7 +115,14 @@ export const gameSlice = createSlice({
           state.isGameActive = false;
           if (state.score > state.highScore.score) {
             const accuracy = ((state.correctMatches / state.matchesAttempted) * 100).toFixed(0);
-            state.highScore = { score: state.score, accuracy: accuracy };
+            const newHighScore = { score: state.score, accuracy: accuracy };
+            state.highScore = newHighScore;
+            
+            try {
+              localStorage.setItem('highScore', JSON.stringify(newHighScore));
+            } catch (error) {
+              console.error("Could not save high score to local storage", error);
+            }
           }
         }
       } else { 
