@@ -1,24 +1,31 @@
 .Card {
-
     border: none;
     padding: 0;
-    
     
     width: 120px;
     height: 168px;
     
-    background-color: rgb(110, 113, 115);
+    
+    /* background-color: rgb(110, 113, 115); */
+    background-image: url('../public/Cards/grey_backing.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     
-    
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
     cursor: pointer;
+
+    
+    filter: brightness(75%);
 }
 
 .Card:hover {
     transform: translateY(-5px) scale(1.05);
     box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    filter: brightness(100%); 
 }
 
 .Card:focus-visible {
