@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './SliderStyle.css';
-
-
 import slide1 from './images/PCSlide.png';
 import slide2 from './images/KadınSlide.png';
 import slide3 from './images/MücevherSlide.png';
 import slide4 from './images/ErkekSlide.png';
+
 
 const defaultSlides = [
   { id: 1, image: slide1 },

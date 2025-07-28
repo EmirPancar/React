@@ -35,8 +35,8 @@ const Header = () => {
     return `$${priceInUsd.toFixed(2)}`;
   };
 
-  const cartItemCount = useMemo(() => {
-    return cartItems.reduce((count, item) => count + item.quantity, 0);
+const cartItemCount = useMemo(() => {
+    return cartItems.length;
   }, [cartItems]);
 
   const totalPrice = useMemo(() => {
