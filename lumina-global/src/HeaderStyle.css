@@ -459,3 +459,61 @@
 .purchase-button:hover {
   background-color: #0056b3;
 }
+
+
+html.rtl .search-result-image {
+  margin-right: 0;
+  margin-left: 12px;
+}
+
+
+html.rtl .lang-dropdown-menu {
+  right: auto;
+  left: 0;
+}
+
+
+html.rtl .lang-dropdown-menu button {
+  text-align: right;
+}
+
+
+html.rtl .cart-count {
+  right: auto;
+  left: -8px;
+}
+
+
+html.rtl .Sidebar {
+  right: auto;
+  left: -300px; 
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1); 
+}
+
+html.rtl .Sidebar.open {
+  right: auto;
+  left: 0; 
+}
+
+
+html.rtl .close-button {
+  right: auto;
+  left: 15px;
+}
+
+
+html.rtl .cart-item-image {
+  margin-right: 0;
+  margin-left: 15px;
+}
+
+
+html.rtl .cart-item-remove {
+  margin-left: 0;
+  margin-right: 15px;
+}
+
+
+html.rtl .cart-summary {
+  text-align: left;
+}

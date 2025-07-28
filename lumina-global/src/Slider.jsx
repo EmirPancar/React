@@ -16,7 +16,7 @@ const defaultSlides = [
 
 const Slider = ({ slides = defaultSlides }) => {
 
-  const { t } = useTranslation();
+  const { t } = useTranslation(); 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const goToPrevious = () => {
@@ -30,6 +30,7 @@ const Slider = ({ slides = defaultSlides }) => {
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
   };
+
 
   const getSliderTrackStyle = () => {
     const offset = `calc(50% - (var(--slide-width) / 2) - (var(--slide-width) + var(--slide-gap)) * ${currentIndex})`;

@@ -288,3 +288,26 @@
 .add-to-cart-button:hover {
   background-color: #218838;
 }
+
+
+html.rtl .modal-close-button {
+  right: auto;
+  left: 15px;
+}
+
+
+html.rtl .modal-details {
+  padding-right: 0;
+  padding-left: 15px;
+}
+
+
+html.rtl .modal-rating {
+    direction: ltr; 
+    text-align: right; 
+}
+
+
+html.rtl .quantity-selector {
+    justify-content: flex-start; 
+}

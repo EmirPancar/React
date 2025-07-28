@@ -153,3 +153,12 @@
   right: 20px;
   border-radius: 0 10px 10px 0;
 }
+
+html.rtl .slider-container {
+  direction: ltr;
+}
+
+html.rtl .slider-item-info {
+  direction: rtl;
+  text-align: right;
+}

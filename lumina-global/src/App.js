@@ -1,26 +1,27 @@
-// import { useEffect } from 'react';
+import { useEffect } from 'react'; 
 import './App.css';
-// import axios from 'axios'
 import Header from './Header';
 import Slider from './Slider'
 import Catalog from './Catalog';
 import { useTranslation } from 'react-i18next';
-import { use } from 'react';
-
-
 function App() {
+const { i18n } = useTranslation();
 
-  const {t,i18n} = useTranslation();
+useEffect(() => {
+const isRtl = i18n.language === 'ar';
+const htmlTag = document.documentElement;
 
+htmlTag.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+htmlTag.classList.toggle('rtl', isRtl);
+htmlTag.classList.toggle('ltr', !isRtl);
 
-  return (
-    <>
-      <Header/>
-      <Slider/>
-      <Catalog/>
-    </>
-
-  );
+}, [i18n.language]); 
+return (
+<>
+<Header/>
+<Slider/>
+<Catalog/>
+</>
+);
 }
-
 export default App;

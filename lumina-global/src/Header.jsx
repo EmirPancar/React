@@ -132,6 +132,7 @@ const cartItemCount = useMemo(() => {
                   <button onClick={() => handleLanguageChange('tr')}>{t('turkish')}</button>
                   <button onClick={() => handleLanguageChange('en')}>{t('english')}</button>
                   <button onClick={() => handleLanguageChange('zh')}>{t('chinese')}</button>
+                  <button onClick={() => handleLanguageChange('ar')}>{t('arabic')}</button>
                 </div>
               )}
             </div>
