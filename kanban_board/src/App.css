@@ -1,0 +1,22 @@
+.app-container {
+  /*
+    Bu kural, bu konteynerin yüksekliğinin EKRANIN YÜKSEKLİĞİNİN %100'ü kadar
+    olmasını zorunlu kılar. Sorunun ana çözümü budur.
+  */
+  height: 90vh;
+  width: 100%;
+  
+  /* 
+    Bu iki kural, içindeki Header ve KanbanBoard'u dikeyde sıralar
+    ve KanbanBoard'un esneyip kalan tüm boşluğu doldurmasını sağlar.
+  */
+  display: flex;
+  flex-direction: column;
+  
+  background-color: #e7e8e9; /* index.css ile aynı açık çerçeve rengi */
+  box-sizing: border-box; 
+}
+
+body,html{
+  background-color: #e7e8e9;
+}

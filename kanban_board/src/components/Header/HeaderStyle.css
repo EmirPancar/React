@@ -1,0 +1,69 @@
+.up-body {
+    width: 100%;
+    /* Başlığa daha fazla dikey alan tanımak için padding artırıldı */
+    padding: 15px 10px 25px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.up-title h1 {
+    color: #343a40; /* Rengi yeni açık temaya uyumlu hale getirildi */
+    /* Font boyutu büyütüldü */
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Üst üste duran not yığını stili (Değişiklik yok) */
+.create-note-stack {
+    position: relative;
+    width: 150px;
+    height: 50px;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-note-stack .note-stack-item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    background-color: #fff7a6;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid #e0d99f;
+    transition: transform 0.2s ease;
+}
+
+.create-note-stack .note1 { transform: rotate(-6deg); }
+.create-note-stack .note2 { transform: rotate(4deg); }
+.create-note-stack .note3 {
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    color: #5f5a3a;
+}
+.create-note-stack:hover .note1 { transform: rotate(-8deg) translateY(-3px); }
+.create-note-stack:hover .note2 { transform: rotate(6deg) translateY(-3px); }
+
+
+.up-delete {
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #de350b;
+    background-color: #ffbdad;
+    border: 2px dashed #de350b;
+    transition: all 0.2s ease-in-out;
+}
+
+.up-delete.is-over {
+    background-color: #de350b;
+    color: white;
+}

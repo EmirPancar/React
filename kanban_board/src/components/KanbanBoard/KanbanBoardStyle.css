@@ -1,0 +1,101 @@
+/* Kanban Tahtası Genel Stili */
+.kanban-board {
+  /* App.js içinde kendisine ayrılan tüm dikey alanı doldurur */
+  flex-grow: 1;
+  display: flex;
+  
+  /*
+    KRİTİK KURAL: Bu, flexbox'ın iç içe kullanıldığı durumlarda
+    içerik nedeniyle kabın taşmasını ve sayfa scrollbar'ı oluşturmasını
+    kesin olarak engeller.
+  */
+  min-height: 0; 
+  
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+/* Her Bir Kanban Sütunu */
+.kanban-column {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column; 
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Sütun Başlığı (Resmi Stil) */
+.column-title {
+  font-size: 1rem; 
+  font-weight: 700; 
+  color: #172b4d; 
+  padding: 20px;
+  flex-shrink: 0; 
+  border-bottom: 2px solid #f0f2f5;
+}
+
+/* Notların Bulunduğu Alan */
+.column-tasks {
+  /*
+    Bu kural, bu alanın ebeveyni olan .kanban-column içindeki
+    tüm boş dikey alanı doldurmasını zorunlu kılar.
+  */
+  flex-grow: 1; 
+  
+  padding: 15px;
+  
+  /*
+    SADECE BU ALANIN SCROLLBAR'I OLACAK
+    'auto', içerik sığmazsa scrollbar'ı gösterir, sığarsa göstermez.
+  */
+  overflow-y: auto;
+  
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Yapışkan Not Stili (Task Card) */
+.task-card {
+  width: auto;
+  padding: 12px;
+  padding-top: 20px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #dfe1e6;
+  font-size: 0.9rem;
+  color: #172b4d;
+  cursor: grab;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+/* Notun üstündeki renkli şerit */
+.task-card-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background-color: #495057; 
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.task-card:hover {
+  border-color: #0079bf;
+  box-shadow: 0 2px 4px rgba(9, 30, 66, 0.1);
+}
+
+.task-card:active {
+  cursor: grabbing;
+}
+
+/* Scrollbar stili */
+.column-tasks::-webkit-scrollbar { width: 8px; }
+.column-tasks::-webkit-scrollbar-track { background: transparent; }
+.column-tasks::-webkit-scrollbar-thumb { background-color: #d6dadf; border-radius: 4px; }
+.column-tasks::-webkit-scrollbar-thumb:hover { background-color: #b3bac5; }
