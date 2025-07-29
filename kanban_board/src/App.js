@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { arrayMove } from '@dnd-kit/sortable';
-import { addTask, deleteTask, moveTask } from './redux/tasksSlice';
+import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, closestCenter } from '@dnd-kit/core';
+import { 
+    addTask, 
+    deleteTask, 
+    moveTask,
+    moveSelectedTasks,
+    clearTaskSelection 
+} from './redux/tasksSlice';
 
 import Header from './components/Header/Header';
 import KanbanBoard from './components/KanbanBoard/KanbanBoard';
@@ -13,7 +18,7 @@ import './App.css';
 const NewNoteDragVisual = () => <div className="task-card new-note-visual">Yeni Not...</div>;
 
 function App() {
-  const tasks = useSelector(state => state);
+  const { tasks, selectedTaskIds } = useSelector(state => state);
   const dispatch = useDispatch();
   
   const [activeItem, setActiveItem] = useState(null);
@@ -22,11 +27,6 @@ function App() {
 
   const sensors = useSensors(useSensor(PointerSensor));
 
-  const handleDragStart = (event) => {
-    setActiveItem(event.active);
-  };
-
-  // Verilen bir task ID'sinin hangi sütunda olduğunu bulan yardımcı fonksiyon
   const findColumnForTask = (taskId) => {
     for (const columnId in tasks) {
         if (tasks[columnId].some(task => task.id === taskId)) {
@@ -36,74 +36,67 @@ function App() {
     return null;
   };
 
+  const handleDragStart = (event) => {
+    // Sürükleme başladığında tüm seçimleri temizle, bu daha temiz bir deneyim sunar.
+    dispatch(clearTaskSelection());
+    setActiveItem(event.active);
+  };
+  
   const handleDragEnd = (event) => {
     const { active, over } = event;
     setActiveItem(null);
 
     if (!over) return;
+    
+    const activeId = active.id;
+    const overId = over.id;
 
-    // ----- YENİ NOT OLUŞTURMA MANTIĞI (GÜNCELLENDİ) -----
-    // Eğer sürüklenen şey "yeni not" bloğu ise...
-    if (active.id === 'new-task-creator') {
-      let destColId = null;
-
-      // Eğer boş bir sütunun üzerine bırakıldıysa...
-      if (over.data.current?.type === 'Column') {
-        destColId = over.id;
-      } 
-      // VEYA dolu bir sütundaki bir görevin üzerine bırakıldıysa...
-      else if (over.data.current?.type === 'Task') {
-        // O görevin ait olduğu sütunu bul.
-        destColId = findColumnForTask(over.id);
+    if (activeId === 'new-task-creator') {
+      let destColId = over.data.current?.type === 'Task' ? findColumnForTask(overId) : over.id;
+      if (destColId && over.data.current?.type !== 'Task' && over.data.current?.type !== 'Column') {
+          return;
       }
-
-      // Eğer bir hedef sütun bulunduysa modalı aç.
-      if (destColId) {
-        setDestinationColumn(destColId);
-        setModalOpen(true);
-      }
-      return; // Bu işlem bitti, fonksiyonun devamına gitme.
-    }
-
-    // ----- MEVCUT GÖREVLERİ TAŞIMA MANTIĞI (AYNI KALDI) -----
-    const isActiveTask = active.data.current?.type === 'Task';
-
-    // Not silme
-    if (isActiveTask && over.id === 'delete-area') {
-      const sourceColumn = findColumnForTask(active.id);
-      if (sourceColumn) {
-        dispatch(deleteTask({ columnId: sourceColumn, taskId: active.id }));
-      }
+      setDestinationColumn(destColId);
+      setModalOpen(true);
       return;
     }
 
-    // Görev Taşıma ve Sıralama
-    const isOverColumn = over.data.current?.type === 'Column';
-    const isOverTask = over.data.current?.type === 'Task';
+    const isActiveTask = active.data.current?.type === 'Task';
+    if (!isActiveTask) return;
 
-    if (isActiveTask && (isOverColumn || isOverTask)) {
-      const sourceColumn = findColumnForTask(active.id);
-      const destColumn = isOverTask ? findColumnForTask(over.id) : over.id;
-      
-      const sourceIndex = tasks[sourceColumn].findIndex(t => t.id === active.id);
-      const destIndex = isOverTask ? tasks[destColumn].findIndex(t => t.id === over.id) : tasks[destColumn].length;
+    // ----- DÜZELTME: Çoklu taşıma mantığı basitleştirildi -----
+    // Artık sadece sürüklenen görevin kendisi taşınacak, çünkü seçimler sürükleme başında temizlendi.
+    const sourceColumn = findColumnForTask(activeId);
+    if (over.id === 'delete-area') {
+        dispatch(deleteTask({ columnId: sourceColumn, taskId: activeId }));
+        return;
+    }
+    
+    const destColumn = over.data.current?.type === 'Task' ? findColumnForTask(overId) : overId;
+    const sourceIndex = tasks[sourceColumn].findIndex(t => t.id === activeId);
+    const destIndex = over.data.current?.type === 'Task' ? tasks[destColumn].findIndex(t => t.id === overId) : tasks[destColumn].length;
 
-      if (sourceColumn !== destColumn || sourceIndex !== destIndex) {
-        dispatch(moveTask({ sourceColumn, destColumn, sourceIndex, destIndex }));
-      }
+    if (sourceColumn !== destColumn || sourceIndex !== destIndex) {
+      dispatch(moveTask({ sourceColumn, destColumn, sourceIndex, destIndex }));
     }
   };
 
   const handleSaveNewTask = (title) => {
     if(destinationColumn) {
       dispatch(addTask({ columnId: destinationColumn, title }));
+      setModalOpen(false);
     }
-    setDestinationColumn(null); // İşlem sonrası sıfırla
+    setDestinationColumn(null);
   };
 
   return (
     <div className="app-container">
-      <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <DndContext 
+        sensors={sensors} 
+        onDragStart={handleDragStart} 
+        onDragEnd={handleDragEnd}
+        collisionDetection={closestCenter}
+      >
         <Header projectTitle="Proje Yönetim Panosu" />
         <KanbanBoard tasks={tasks} />
         <DragOverlay dropAnimation={null}>

@@ -3,42 +3,47 @@ import './Modal.css';
 
 function Modal({ isOpen, onClose, onSave }) {
   const [noteText, setNoteText] = useState('');
-  
-  // Yazı alanına bir referans oluşturuyoruz.
   const textareaRef = useRef(null);
 
-  // Bu useEffect, modal'ın görünürlüğü (isOpen) değiştiğinde çalışır.
   useEffect(() => {
-    // Eğer modal açıldıysa...
     if (isOpen) {
-      // Çok küçük bir gecikme ile focus() fonksiyonunu çağırıyoruz.
-      // Bu, elemanın DOM'a tam olarak yerleşmesini bekleyerek daha garantili çalışmasını sağlar.
+      // Modal açıldığında, imlecin yazı kutusuna gelmesini sağlar.
+      // setTimeout, elemanın DOM'a tam yerleşmesini bekleyerek focus'u garantiler.
       setTimeout(() => {
         textareaRef.current?.focus();
-      }, 10);
+      }, 50); // Küçük bir gecikme yeterlidir.
+    } else {
+      // Modal kapandığında metni temizle.
+      setNoteText('');
     }
-  }, [isOpen]); // Sadece 'isOpen' değiştiğinde tekrar çalış.
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   const handleSave = () => {
     if (noteText.trim()) {
       onSave(noteText);
-      setNoteText('');
-      onClose();
     }
   };
+
+  // Enter tuşuna basıldığında kaydetmek için.
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSave();
+    }
+  }
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>Yeni Not Ekle</h2>
         <textarea
-          // Referansı textarea elemanına bağlıyoruz.
           ref={textareaRef}
           value={noteText}
           onChange={(e) => setNoteText(e.target.value)}
-          placeholder="Notunuzu buraya yazın..."
+          onKeyDown={handleKeyDown}
+          placeholder="Notunuzu buraya yazın... (Kaydetmek için Enter'a basın)"
         />
         <div className="modal-actions">
           <button onClick={onClose} className="btn-cancel">İptal</button>
