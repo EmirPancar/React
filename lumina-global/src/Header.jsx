@@ -95,30 +95,30 @@ const Header = () => {
         <div className="Header-center">
           <div className="SearchBar-container" ref={searchRef}>
             <div className="SearchBar">
-<input
-  type="text"
-  placeholder={t('searchPlaceholder')}
-  value={searchQuery}
-  onChange={(e) => {
-    const input = e.target.value;
+              <input
+                type="text"
+                placeholder={t('searchPlaceholder')}
+                value={searchQuery}
+                onChange={(e) => {
+                  const input = e.target.value;
 
-    if (i18n.language === 'ar') {
-      if (input.length < searchQuery.length) {
-        setSearchQuery((prev) => prev.slice(1));
-      } else {
-        const lastChar = input[input.length - 1] || '';
-        setSearchQuery((prev) => lastChar + prev);
-      }
-    } else {
-      setSearchQuery(input);
-    }
-  }}
-  dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}
-/>
+                  if (i18n.language === 'ar') {
+                    if (input.length < searchQuery.length) {
+                      setSearchQuery((prev) => prev.slice(1));
+                    } else {
+                      const lastChar = input[input.length - 1] || '';
+                      setSearchQuery((prev) => lastChar + prev);
+                    }
+                  } else {
+                    setSearchQuery(input);
+                  }
+                }}
+                dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}
+              />
               <button type="submit" aria-label={t('search')}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8"></circle>
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
