@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toggleTaskSelection } from '../../redux/tasksSlice';
 import Task from './Task';
 
-const Column = ({ id, title, tasks }) => {
+const Column = ({ id, title, tasks, onOpenTaskDetails }) => {
   const dispatch = useDispatch();
   const selectedTaskIds = useSelector(state => state.selectedTaskIds);
 
@@ -14,6 +14,7 @@ const Column = ({ id, title, tasks }) => {
     data: { type: 'Column' }
   });
 
+  // Ctrl/Cmd tuşu ile çoklu seçim yapmayı sağlayan fonksiyon
   const handleTaskClick = (e, taskId) => {
     if (e.ctrlKey || e.metaKey) {
         dispatch(toggleTaskSelection(taskId));
@@ -35,6 +36,7 @@ const Column = ({ id, title, tasks }) => {
               task={task}
               isSelected={selectedTaskIds.includes(task.id)}
               onTaskClick={handleTaskClick}
+              onOpenDetails={onOpenTaskDetails} // App.js'den gelen fonksiyonu Task bileşenine iletiyoruz
             />
           ))}
         </div>

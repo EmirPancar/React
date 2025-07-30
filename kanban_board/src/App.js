@@ -5,6 +5,7 @@ import {
     addTask,
     deleteTask,
     moveTask,
+    updateTask, // Yeni eklenen action
     moveSelectedTasks,
     deleteSelectedTasks,
     clearTaskSelection,
@@ -15,8 +16,10 @@ import Header from './components/Header/Header';
 import KanbanBoard from './components/KanbanBoard/KanbanBoard';
 import Task from './components/KanbanBoard/Task';
 import Modal from './components/Modal/Modal';
+import TaskDetailModal from './components/Modal/TaskDetailModal';
 import './App.css';
 
+// Dikdörtgen çarpışma kontrolü fonksiyonu
 const areRectsColliding = (rect1, rect2) => {
     return (
         rect1.x < rect2.x + rect2.width &&
@@ -26,6 +29,7 @@ const areRectsColliding = (rect1, rect2) => {
     );
 };
 
+// Sürüklenen yeni not için görsel bileşen
 const NewNoteDragVisual = () => <div className="task-card new-note-visual">Yeni Not...</div>;
 
 function App() {
@@ -33,19 +37,27 @@ function App() {
     const dispatch = useDispatch();
 
     const [activeItem, setActiveItem] = useState(null);
-    const [isModalOpen, setModalOpen] = useState(false);
+    
+    // Yeni görev oluşturma modal'ı için state'ler
+    const [isCreateModalOpen, setCreateModalOpen] = useState(false);
     const [destinationColumn, setDestinationColumn] = useState(null);
 
+    // Görev detayı/düzenleme modal'ı için state'ler
+    const [isDetailModalOpen, setDetailModalOpen] = useState(false);
+    const [activeTask, setActiveTask] = useState(null);
+    
+    // Alan seçimi (selection rectangle) için state'ler
     const [isSelecting, setIsSelecting] = useState(false);
     const [selectionRect, setSelectionRect] = useState(null);
     const initialMousePos = useRef({ x: 0, y: 0 });
 
     const sensors = useSensors(useSensor(PointerSensor, {
         activationConstraint: {
-            distance: 8,
+            distance: 8, // Sürüklemeyi başlatmak için 8px hareket gerekliliği
         },
     }));
 
+    // Yardımcı fonksiyonlar
     const findColumnForTask = (taskId) => {
         for (const columnId in tasks) {
             if (tasks[columnId].some(task => task.id === taskId)) {
@@ -54,6 +66,14 @@ function App() {
         }
         return null;
     };
+    
+    const getTaskById = (taskId) => {
+      for (const column in tasks) {
+        const task = tasks[column].find(t => t.id === taskId);
+        if (task) return task;
+      }
+      return null;
+    }
 
     const getTasksByIds = (ids) => {
         const foundTasks = [];
@@ -67,9 +87,9 @@ function App() {
         return foundTasks;
     };
 
-
+    // Dnd-kit olay yöneticileri
     const handleDragStart = (event) => {
-        if (isSelecting) {
+        if (isSelecting) { // Eğer alan seçimi aktifse sürüklemeyi başlatma
             event.preventDefault();
             return;
         }
@@ -86,22 +106,26 @@ function App() {
         const { active, over } = event;
         setActiveItem(null);
         if (!over) return;
+
         const activeId = active.id;
         const overId = over.id;
-        const activeIsTask = active.data.current?.type === 'Task';
         const activeIsNewNote = activeId === 'new-task-creator';
+
         if (activeIsNewNote) {
-            if (over.id === 'delete-area') return;
+            if (over.id === 'delete-area') return; // Yeni not silme alanına sürüklenirse işlem yapma
             let destColId = over.data.current?.type === 'Column' ? overId : findColumnForTask(overId);
             if (destColId) {
                 setDestinationColumn(destColId);
-                setModalOpen(true);
+                setCreateModalOpen(true);
             }
             return;
         }
+
+        const activeIsTask = active.data.current?.type === 'Task';
         if (!activeIsTask) return;
+
         if (over.id === 'delete-area') {
-            if (selectedTaskIds.length > 0) {
+            if (selectedTaskIds.length > 1 && selectedTaskIds.includes(activeId)) {
                 dispatch(deleteSelectedTasks());
             } else {
                 const sourceColumn = findColumnForTask(activeId);
@@ -111,8 +135,10 @@ function App() {
             }
             return;
         }
+
         const destColumn = over.data.current?.type === 'Column' ? overId : findColumnForTask(overId);
         if (!destColumn) return;
+
         const isMovingSelection = selectedTaskIds.includes(activeId) && selectedTaskIds.length > 1;
         if (isMovingSelection) {
             dispatch(moveSelectedTasks({ destColumn }));
@@ -120,28 +146,44 @@ function App() {
             const sourceColumn = findColumnForTask(activeId);
             if (!sourceColumn) return;
             const sourceIndex = tasks[sourceColumn].findIndex(t => t.id === activeId);
-            const destIndex = over.data.current?.type === 'Task' ? tasks[destColumn].findIndex(t => t.id === overId) : tasks[destColumn].length;
+            const destIndex = over.data.current?.type === 'Task' 
+                ? tasks[destColumn].findIndex(t => t.id === overId) 
+                : tasks[destColumn].length;
             if (sourceColumn !== destColumn || sourceIndex !== destIndex) {
                 dispatch(moveTask({ sourceColumn, destColumn, sourceIndex, destIndex }));
             }
         }
     };
 
-    const handleSaveNewTask = (title) => {
-        if (destinationColumn) {
-            dispatch(addTask({ columnId: destinationColumn, title }));
-            setModalOpen(false);
+    // Modal olay yöneticileri
+    const handleSaveNewTask = ({ title, assignee }) => {
+        if (destinationColumn && title.trim()) {
+            dispatch(addTask({ columnId: destinationColumn, title, assignee }));
+            setCreateModalOpen(false);
         }
         setDestinationColumn(null);
     };
 
+    const handleOpenTaskDetails = (taskId) => {
+      const task = getTaskById(taskId);
+      if (task) {
+          setActiveTask(task);
+          setDetailModalOpen(true);
+      }
+    };
+
+    const handleUpdateTask = (taskId, newTitle, newAssignee) => {
+        dispatch(updateTask({ taskId, newTitle, newAssignee }));
+    };
+
+
+    // Alan seçimi (selection rectangle) olay yöneticileri
     const handleMouseDown = (e) => {
         const target = e.target;
         const isBackgroundClick = target.classList.contains('kanban-board') || target.classList.contains('column-tasks');
         if ((e.ctrlKey || e.metaKey) && isBackgroundClick) {
             e.preventDefault();
             e.stopPropagation();
-
             setIsSelecting(true);
             initialMousePos.current = { x: e.clientX, y: e.clientY };
             setSelectionRect({ x: e.clientX, y: e.clientY, width: 0, height: 0 });
@@ -152,55 +194,48 @@ function App() {
         if (!isSelecting) return;
         e.preventDefault();
         e.stopPropagation();
-
         const currentX = e.clientX;
         const currentY = e.clientY;
         const startX = initialMousePos.current.x;
         const startY = initialMousePos.current.y;
-
         const x = Math.min(startX, currentX);
         const y = Math.min(startY, currentY);
         const width = Math.abs(currentX - startX);
         const height = Math.abs(currentY - startY);
-
         setSelectionRect({ x, y, width, height });
     };
 
     const handleMouseUp = (e) => {
-        if (!isSelecting || !selectionRect) {
+        if (isSelecting && selectionRect) {
+            e.preventDefault();
+            e.stopPropagation();
+            const selectedIds = [];
+            const taskElements = document.querySelectorAll('.task-card[data-task-id]');
+            taskElements.forEach(taskEl => {
+                const taskRect = taskEl.getBoundingClientRect();
+                const taskId = taskEl.getAttribute('data-task-id');
+                if (areRectsColliding(selectionRect, taskRect)) {
+                    selectedIds.push(taskId);
+                }
+            });
+            if (selectedIds.length > 0) {
+                dispatch(addTasksToSelection(selectedIds));
+            }
+            setIsSelecting(false);
+            setSelectionRect(null);
+        } else {
             const target = e.target;
             const isBackgroundClick = target.classList.contains('kanban-board') || target.classList.contains('column-tasks');
             if (isBackgroundClick && !e.ctrlKey && !e.metaKey) {
                 dispatch(clearTaskSelection());
             }
-            return;
         }
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        const selectedIds = [];
-        const taskElements = document.querySelectorAll('.task-card[data-task-id]');
-
-        taskElements.forEach(taskEl => {
-            const taskRect = taskEl.getBoundingClientRect();
-            const taskId = taskEl.getAttribute('data-task-id');
-
-            if (areRectsColliding(selectionRect, taskRect)) {
-                selectedIds.push(taskId);
-            }
-        });
-
-        if (selectedIds.length > 0) {
-            dispatch(addTasksToSelection(selectedIds));
-        }
-
-        setIsSelecting(false);
-        setSelectionRect(null);
     };
     
+    // Render için hesaplamalar
     const isMultiDragging = activeItem?.data.current?.type === 'Task' && selectedTaskIds.length > 1 && selectedTaskIds.includes(activeItem.id);
-
+    const columnTitles = { 'bekliyor': 'Bekliyor/Planlandı', 'yapiliyor': 'Yapılıyor', 'test': 'Test Ediliyor', 'geribildirim': 'Geri Bildirim Bekleniyor', 'tamamlandi': 'Tamamlandı' };
+    const activeTaskColumnName = activeTask ? findColumnForTask(activeTask.id) : '';
 
     return (
         <div className="app-container">
@@ -217,11 +252,12 @@ function App() {
                         onMouseDown={handleMouseDown}
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
+                        onOpenTaskDetails={handleOpenTaskDetails}
                     />
                     <DragOverlay dropAnimation={null}>
                         {activeItem?.id === 'new-task-creator' && <NewNoteDragVisual />}
                         {activeItem?.data.current?.type === 'Task' && !isMultiDragging && (
-                            <Task task={activeItem.data.current.task} isSelected={false} onTaskClick={() => { }} />
+                            <Task task={activeItem.data.current.task} isSelected={false} onTaskClick={() => {}} onOpenDetails={() => {}} />
                         )}
                         {isMultiDragging && (
                             <div className="multi-drag-overlay">
@@ -241,19 +277,22 @@ function App() {
             {selectionRect && (
                 <div
                     className="selection-rectangle"
-                    style={{
-                        left: selectionRect.x,
-                        top: selectionRect.y,
-                        width: selectionRect.width,
-                        height: selectionRect.height,
-                    }}
+                    style={{ left: selectionRect.x, top: selectionRect.y, width: selectionRect.width, height: selectionRect.height }}
                 />
             )}
 
             <Modal
-                isOpen={isModalOpen}
-                onClose={() => setModalOpen(false)}
+                isOpen={isCreateModalOpen}
+                onClose={() => setCreateModalOpen(false)}
                 onSave={handleSaveNewTask}
+            />
+
+            <TaskDetailModal
+                isOpen={isDetailModalOpen}
+                onClose={() => setDetailModalOpen(false)}
+                task={activeTask}
+                columnName={columnTitles[activeTaskColumnName]}
+                onSave={handleUpdateTask}
             />
         </div>
     );
