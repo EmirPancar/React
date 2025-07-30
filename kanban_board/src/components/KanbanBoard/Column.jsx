@@ -1,5 +1,3 @@
-// components/KanbanBoard/Column.js
-
 import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -16,12 +14,7 @@ const Column = ({ id, title, tasks }) => {
     data: { type: 'Column' }
   });
 
-  // Tıklama olayını yönetecek fonksiyon
   const handleTaskClick = (e, taskId) => {
-    // KRİTİK DÜZELTME:
-    // preventDefault ve stopPropagation kaldırıldı. Bu sayede fare olayı
-    // dnd-kit'in sürükleme sensörlerine ulaşabilir. dnd-kit,
-    // tıklama ve sürükleme arasındaki farkı ayırt edecek kadar akıllıdır.
     if (e.ctrlKey || e.metaKey) {
         dispatch(toggleTaskSelection(taskId));
     }
@@ -41,7 +34,6 @@ const Column = ({ id, title, tasks }) => {
               key={task.id} 
               task={task}
               isSelected={selectedTaskIds.includes(task.id)}
-              // onTaskClick prop'u olarak fonksiyonu Task bileşenine gönderiyoruz.
               onTaskClick={handleTaskClick}
             />
           ))}

@@ -56,7 +56,7 @@
     font-weight: 500;
     color: #de350b;
     background-color: #ffbdad;
-    border: 2px dashed #de350b;
+    border: 1px groove #de350b;
     transition: all 0.2s ease-in-out;
 }
 

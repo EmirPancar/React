@@ -1,10 +1,7 @@
-// components/KanbanBoard/KanbanBoard.js
-
 import React from 'react';
 import Column from './Column';
 import './KanbanBoardStyle.css';
 
-// DÜZELTME: Alan seçimi için fare olayı dinleyicilerini App.js'den alacak
 const KanbanBoard = ({ tasks, onMouseDown, onMouseMove, onMouseUp }) => {
   const columnTitles = {
     'bekliyor': 'Bekliyor/Planlandı', 'yapiliyor': 'Yapılıyor',
@@ -12,7 +9,6 @@ const KanbanBoard = ({ tasks, onMouseDown, onMouseMove, onMouseUp }) => {
   };
 
   return (
-    // Fare olaylarını burada dinliyoruz.
     <div 
       className="kanban-board"
       onMouseDown={onMouseDown}
@@ -24,7 +20,7 @@ const KanbanBoard = ({ tasks, onMouseDown, onMouseMove, onMouseUp }) => {
           key={columnId}
           id={columnId}
           title={columnTitles[columnId]}
-          tasks={tasks[columnId] || []} // Sütun boşsa hata vermemesi için
+          tasks={tasks[columnId] || []} 
         />
       ))}
     </div>

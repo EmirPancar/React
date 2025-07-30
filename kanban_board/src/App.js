@@ -1,5 +1,3 @@
-// App.js
-
 import React, { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, closestCenter } from '@dnd-kit/core';
@@ -19,7 +17,6 @@ import Task from './components/KanbanBoard/Task';
 import Modal from './components/Modal/Modal';
 import './App.css';
 
-// Çakışma tespiti için yardımcı fonksiyon
 const areRectsColliding = (rect1, rect2) => {
   return (
     rect1.x < rect2.x + rect2.width &&
@@ -39,7 +36,6 @@ function App() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [destinationColumn, setDestinationColumn] = useState(null);
 
-  // ALAN SEÇİMİ İÇİN STATE'LER
   const [isSelecting, setIsSelecting] = useState(false);
   const [selectionRect, setSelectionRect] = useState(null);
   const initialMousePos = useRef({ x: 0, y: 0 });
@@ -74,7 +70,6 @@ function App() {
   };
   
   const handleDragEnd = (event) => {
-    // ... Bu fonksiyonun içeriği önceki haliyle aynı, değişiklik yok ...
     const { active, over } = event;
     setActiveItem(null);
     if (!over) return;
@@ -127,17 +122,12 @@ function App() {
     setDestinationColumn(null);
   };
 
-  // --- FARE OLAYLARI İÇİN FONKSİYONLAR ---
   const handleMouseDown = (e) => {
     const target = e.target;
-    // Sadece kanban board'un arka planına veya bir sütunun boş alanına tıklandığında başla
     const isBackgroundClick = target.classList.contains('kanban-board') || target.classList.contains('column-tasks');
     if ((e.ctrlKey || e.metaKey) && isBackgroundClick) {
         e.preventDefault();
         e.stopPropagation();
-        
-        // Mevcut seçimleri temizleme, yeni seçim ekleme modu
-        // dispatch(clearTaskSelection()); 
         
         setIsSelecting(true);
         initialMousePos.current = { x: e.clientX, y: e.clientY };
@@ -165,7 +155,6 @@ function App() {
 
   const handleMouseUp = (e) => {
     if (!isSelecting || !selectionRect) {
-      // Arka plana normal tıklama (sürükleme olmadan) tüm seçimleri temizler
       const target = e.target;
       const isBackgroundClick = target.classList.contains('kanban-board') || target.classList.contains('column-tasks');
       if(isBackgroundClick && !e.ctrlKey && !e.metaKey){
@@ -216,7 +205,6 @@ function App() {
           <DragOverlay dropAnimation={null}>
             {activeItem?.id === 'new-task-creator' ? <NewNoteDragVisual /> : null}
             {activeItem?.data.current?.type === 'Task' ? (
-                // DragOverlay içindeki Task'in tıklanabilir olmasına gerek yok
                 <Task task={activeItem.data.current.task} isSelected={false} onTaskClick={() => {}} />
             ) : null}
           </DragOverlay>
