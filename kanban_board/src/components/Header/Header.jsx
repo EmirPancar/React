@@ -2,7 +2,6 @@ import React from 'react';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import './HeaderStyle.css';
 
-// Yeni not oluşturma alanı (Sürüklenebilir)
 const CreateNote = () => {
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: 'new-task-creator',
@@ -17,7 +16,6 @@ const CreateNote = () => {
   );
 };
 
-// Not silme alanı (Bırakılabilir)
 const DeleteArea = () => {
     const {isOver, setNodeRef} = useDroppable({
         id: 'delete-area',

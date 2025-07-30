@@ -1,4 +1,3 @@
-/* Kanban Tahtası Genel Stili */
 .kanban-board {
   flex-grow: 1;
   display: flex;
@@ -7,7 +6,6 @@
   box-sizing: border-box;
 }
 
-/* Her Bir Kanban Sütunu */
 .kanban-column {
   flex: 1;
   min-width: 0;
@@ -18,7 +16,6 @@
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
-/* Sütun Başlığı */
 .column-title {
   font-size: 0.9rem; 
   font-weight: 600; 
@@ -28,7 +25,6 @@
   border-bottom: 1px solid #F3F4F6;
 }
 
-/* Notların Bulunduğu Alan */
 .column-tasks {
   flex-grow: 1; 
   padding: 8px 16px 16px 16px;
@@ -38,7 +34,6 @@
   gap: 12px;
 }
 
-/* Yapışkan Not Stili (Task Card) */
 .task-card {
   width: auto;
   padding: 14px;
@@ -56,28 +51,21 @@
   height: auto;
   overflow-wrap: break-word;
   
-  /*
-    ANAHTAR KURAL: Bu kural, tarayıcının metni seçmeye çalışmasını
-    tamamen engeller. Kart artık tek bir bütün gibi davranır.
-  */
   user-select: none;
 }
 
-/* Notun üstündeki renkli şerit */
 .task-card-header {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 6px;
-  /* DÜZELTME: Renk, istediğiniz eski griye döndürüldü. */
   background-color: #495057; 
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
 
 .task-card:hover {
-  /* DÜZELTME: Hover rengi de aynı griye döndürüldü. */
   border-color: #495057;
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -87,14 +75,12 @@
     cursor: grabbing;
 }
 
-/* Seçili olan notların görünümü */
 .task-card.selected {
     border-color: #495057;
     background-color: #F8F9FA;
     box-shadow: 0 0 0 2px #495057;
 }
 
-/* Scrollbar stili */
 .column-tasks::-webkit-scrollbar { width: 6px; }
 .column-tasks::-webkit-scrollbar-track { background: transparent; }
 .column-tasks::-webkit-scrollbar-thumb { background-color: #E5E7EB; border-radius: 3px; }

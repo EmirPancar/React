@@ -6,14 +6,15 @@ import {
     deleteTask, 
     moveTask,
     moveSelectedTasks,
-    clearTaskSelection 
+    clearTaskSelection,
+    deleteSelectedTasks
 } from './redux/tasksSlice';
 
 import Header from './components/Header/Header';
 import KanbanBoard from './components/KanbanBoard/KanbanBoard';
 import Task from './components/KanbanBoard/Task';
 import Modal from './components/Modal/Modal';
-import './App.css';
+import './App.css'; 
 
 const NewNoteDragVisual = () => <div className="task-card new-note-visual">Yeni Not...</div>;
 
@@ -25,7 +26,11 @@ function App() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [destinationColumn, setDestinationColumn] = useState(null);
 
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(useSensor(PointerSensor, {
+    activationConstraint: {
+      distance: 8,
+    },
+  }));
 
   const findColumnForTask = (taskId) => {
     for (const columnId in tasks) {
@@ -37,8 +42,14 @@ function App() {
   };
 
   const handleDragStart = (event) => {
-    // Sürükleme başladığında tüm seçimleri temizle, bu daha temiz bir deneyim sunar.
-    dispatch(clearTaskSelection());
+    const { active } = event;
+    const activeId = active.id;
+    const activeIsTask = active.data.current?.type === 'Task';
+
+    if (activeIsTask && !selectedTaskIds.includes(activeId)) {
+      dispatch(clearTaskSelection());
+    }
+    
     setActiveItem(event.active);
   };
   
@@ -50,34 +61,57 @@ function App() {
     
     const activeId = active.id;
     const overId = over.id;
+    const activeIsTask = active.data.current?.type === 'Task';
+    const activeIsNewNote = activeId === 'new-task-creator';
 
-    if (activeId === 'new-task-creator') {
-      let destColId = over.data.current?.type === 'Task' ? findColumnForTask(overId) : over.id;
-      if (destColId && over.data.current?.type !== 'Task' && over.data.current?.type !== 'Column') {
-          return;
+    if (activeIsNewNote) {
+      if (over.id === 'delete-area') return;
+      let destColId = over.data.current?.type === 'Column' 
+          ? overId 
+          : findColumnForTask(overId);
+
+      if (destColId) {
+          setDestinationColumn(destColId);
+          setModalOpen(true);
       }
-      setDestinationColumn(destColId);
-      setModalOpen(true);
       return;
     }
 
-    const isActiveTask = active.data.current?.type === 'Task';
-    if (!isActiveTask) return;
+    if (!activeIsTask) return;
 
-    // ----- DÜZELTME: Çoklu taşıma mantığı basitleştirildi -----
-    // Artık sadece sürüklenen görevin kendisi taşınacak, çünkü seçimler sürükleme başında temizlendi.
-    const sourceColumn = findColumnForTask(activeId);
     if (over.id === 'delete-area') {
-        dispatch(deleteTask({ columnId: sourceColumn, taskId: activeId }));
+        if (selectedTaskIds.length > 0) {
+            dispatch(deleteSelectedTasks());
+        } else {
+            const sourceColumn = findColumnForTask(activeId);
+            if (sourceColumn) {
+                dispatch(deleteTask({ columnId: sourceColumn, taskId: activeId }));
+            }
+        }
         return;
     }
     
-    const destColumn = over.data.current?.type === 'Task' ? findColumnForTask(overId) : overId;
-    const sourceIndex = tasks[sourceColumn].findIndex(t => t.id === activeId);
-    const destIndex = over.data.current?.type === 'Task' ? tasks[destColumn].findIndex(t => t.id === overId) : tasks[destColumn].length;
+    const destColumn = over.data.current?.type === 'Column' 
+        ? overId 
+        : findColumnForTask(overId);
+        
+    if (!destColumn) return;
 
-    if (sourceColumn !== destColumn || sourceIndex !== destIndex) {
-      dispatch(moveTask({ sourceColumn, destColumn, sourceIndex, destIndex }));
+    const isMovingSelection = selectedTaskIds.includes(activeId);
+
+    if (isMovingSelection && selectedTaskIds.length > 1) {
+        dispatch(moveSelectedTasks({ destColumn }));
+    } else {
+        const sourceColumn = findColumnForTask(activeId);
+        if(!sourceColumn) return;
+        const sourceIndex = tasks[sourceColumn].findIndex(t => t.id === activeId);
+        const destIndex = over.data.current?.type === 'Task' 
+            ? tasks[destColumn].findIndex(t => t.id === overId) 
+            : tasks[destColumn].length;
+
+        if (sourceColumn !== destColumn || sourceIndex !== destIndex) {
+            dispatch(moveTask({ sourceColumn, destColumn, sourceIndex, destIndex }));
+        }
     }
   };
 
@@ -88,22 +122,31 @@ function App() {
     }
     setDestinationColumn(null);
   };
+  
 
   return (
-    <div className="app-container">
-      <DndContext 
-        sensors={sensors} 
-        onDragStart={handleDragStart} 
-        onDragEnd={handleDragEnd}
-        collisionDetection={closestCenter}
+    <div className="app-container" onClick={() => dispatch(clearTaskSelection())}>
+      <div 
+        className="dnd-context-wrapper" 
+        onClick={(e) => e.stopPropagation()}
       >
-        <Header projectTitle="Proje Yönetim Panosu" />
-        <KanbanBoard tasks={tasks} />
-        <DragOverlay dropAnimation={null}>
-          {activeItem?.id === 'new-task-creator' ? <NewNoteDragVisual /> : null}
-          {activeItem?.data.current?.type === 'Task' ? <Task task={activeItem.data.current.task} isDragging /> : null}
-        </DragOverlay>
-      </DndContext>
+        <DndContext 
+          sensors={sensors} 
+          onDragStart={handleDragStart} 
+          onDragEnd={handleDragEnd}
+          collisionDetection={closestCenter}
+        >
+          <Header projectTitle="Proje Yönetim Panosu" />
+          <KanbanBoard tasks={tasks} />
+          
+          <DragOverlay dropAnimation={null}>
+            {activeItem?.id === 'new-task-creator' ? <NewNoteDragVisual /> : null}
+            {activeItem?.data.current?.type === 'Task' ? <Task task={activeItem.data.current.task} isDragging /> : null}
+          </DragOverlay>
+
+        </DndContext>
+      </div>
+
       <Modal 
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}

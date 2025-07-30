@@ -1,6 +1,5 @@
 .up-body {
     width: 100%;
-    /* Başlığa daha fazla dikey alan tanımak için padding artırıldı */
     padding: 15px 10px 25px 10px;
     display: flex;
     justify-content: space-between;
@@ -10,14 +9,12 @@
 }
 
 .up-title h1 {
-    color: #343a40; /* Rengi yeni açık temaya uyumlu hale getirildi */
-    /* Font boyutu büyütüldü */
+    color: #343a40; 
     font-size: 2rem;
     font-weight: 600;
     text-align: center;
 }
 
-/* Üst üste duran not yığını stili (Değişiklik yok) */
 .create-note-stack {
     position: relative;
     width: 150px;

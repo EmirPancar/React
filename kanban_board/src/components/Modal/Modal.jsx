@@ -7,13 +7,10 @@ function Modal({ isOpen, onClose, onSave }) {
 
   useEffect(() => {
     if (isOpen) {
-      // Modal açıldığında, imlecin yazı kutusuna gelmesini sağlar.
-      // setTimeout, elemanın DOM'a tam yerleşmesini bekleyerek focus'u garantiler.
       setTimeout(() => {
         textareaRef.current?.focus();
-      }, 50); // Küçük bir gecikme yeterlidir.
+      }, 50); 
     } else {
-      // Modal kapandığında metni temizle.
       setNoteText('');
     }
   }, [isOpen]);
@@ -26,7 +23,6 @@ function Modal({ isOpen, onClose, onSave }) {
     }
   };
 
-  // Enter tuşuna basıldığında kaydetmek için.
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();

@@ -2,8 +2,6 @@ import React from 'react';
 import Column from './Column';
 import './KanbanBoardStyle.css';
 
-// Artık ana board'un droppable olmasına veya ref tutmasına gerek yok.
-// Sadece sütunları render edecek.
 const KanbanBoard = ({ tasks }) => {
   const columnTitles = {
     'bekliyor': 'Bekliyor/Planlandı', 'yapiliyor': 'Yapılıyor',

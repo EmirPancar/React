@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-/* TEMEL KURULUM: Sayfanın temelini hazırlar */
 html, body, #root {
   height: 100%;
   width: 100%;
@@ -9,22 +8,18 @@ html, body, #root {
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
   
-  /* EN DIŞTAKİ ARKA PLAN RENGİ */
-  /* Modern bir koyu tema için derin, desatüre bir mavi */
+
   background-color: #101828; 
 }
 
-/* ANA ÇERÇEVE: Header ve KanbanBoard'u saran konteyner */
+
 .app-container {
   height: 100%; 
   display: flex;
   flex-direction: column;
   
-  /* UYGULAMA ÇERÇEVESİNİN RENGİ */
-  /* Saf beyazdan daha yumuşak, çok açık bir gri */
   background-color: #F9FAFB;
   
-  /* Bu padding, koyu arka plan üzerinde açık bir çerçeve oluşturur */
   padding: 25px;
   
   box-sizing: border-box; 

@@ -14,11 +14,8 @@ const Column = ({ id, title, tasks }) => {
     data: { type: 'Column' }
   });
 
-  // Tıklama olayını yönetecek fonksiyon
   const handleTaskClick = (e, taskId) => {
-    // Sadece Ctrl veya Cmd tuşuna basılıysa seçim yap
     if (e.ctrlKey || e.metaKey) {
-        // Olayın daha fazla yayılmasını ve sürüklemeyi tetiklemesini engelle
         e.preventDefault(); 
         e.stopPropagation();
         dispatch(toggleTaskSelection(taskId));
@@ -39,7 +36,6 @@ const Column = ({ id, title, tasks }) => {
               key={task.id} 
               task={task}
               isSelected={selectedTaskIds.includes(task.id)}
-              // onTaskClick prop'u olarak fonksiyonu gönder
               onTaskClick={handleTaskClick}
             />
           ))}

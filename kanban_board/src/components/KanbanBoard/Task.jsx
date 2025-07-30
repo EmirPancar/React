@@ -23,8 +23,6 @@ const Task = ({ task, isDragging, isSelected, onTaskClick }) => {
   const cardClassName = isSelected ? 'task-card selected' : 'task-card';
 
   return (
-    // 'onMouseDown' olayını kullanarak, sürükleme başlamadan hemen önce tıklamayı yakalıyoruz.
-    // Bu, dnd-kit'in 'onClick' olayını yutmasını engeller.
     <div 
       ref={setNodeRef} 
       style={style} 

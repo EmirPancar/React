@@ -1,22 +1,29 @@
 .app-container {
-  /*
-    Bu kural, bu konteynerin yüksekliğinin EKRANIN YÜKSEKLİĞİNİN %100'ü kadar
-    olmasını zorunlu kılar. Sorunun ana çözümü budur.
-  */
-  height: 90vh;
+  height: 90vh; 
   width: 100%;
-  
-  /* 
-    Bu iki kural, içindeki Header ve KanbanBoard'u dikeyde sıralar
-    ve KanbanBoard'un esneyip kalan tüm boşluğu doldurmasını sağlar.
-  */
   display: flex;
   flex-direction: column;
-  
-  background-color: #e7e8e9; /* index.css ile aynı açık çerçeve rengi */
-  box-sizing: border-box; 
+  background-color: #e7e8e9;
+  box-sizing: border-box;
 }
 
-body,html{
+.dnd-context-wrapper {
+  display: flex;
+  flex-direction: column; 
+  flex-grow: 1;          
+  min-height: 0;        
+}
+
+body, html {
   background-color: #e7e8e9;
+}
+
+.task-card.new-note-visual {
+    background-color: #fff7a6;
+    border: 1px dashed #e0d99f;
+    color: #5f5a3a;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
