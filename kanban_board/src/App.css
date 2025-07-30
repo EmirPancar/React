@@ -1,17 +1,19 @@
 .app-container {
-  height: 90vh; 
+  height: 90vh; /* veya 100vh, projenize göre */
   width: 100%;
   display: flex;
   flex-direction: column;
   background-color: #e7e8e9;
   box-sizing: border-box;
+  /* Alan seçimi sırasında sayfanın seçilmesini engelle */
+  user-select: none;
 }
 
 .dnd-context-wrapper {
   display: flex;
-  flex-direction: column; 
-  flex-grow: 1;          
-  min-height: 0;        
+  flex-direction: column; /* İçindeki Header ve KanbanBoard'u dikey sıralar */
+  flex-grow: 1;          /* app-container içindeki tüm boş alanı kaplamasını sağlar */
+  min-height: 0;           /* Kanban sütunlarının taşma (overflow) olmadan doğru şekilde kaydırılabilmesi için kritiktir */
 }
 
 body, html {
@@ -26,4 +28,13 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* YENİ: Seçim dörtgeni stili */
+.selection-rectangle {
+  position: fixed; /* Sayfaya göre konumlanır */
+  border: 1px solid #007bff;
+  background-color: rgba(0, 123, 255, 0.2);
+  z-index: 9999;
+  pointer-events: none; /* Dörtgenin fare olaylarını engellememesi için */
 }

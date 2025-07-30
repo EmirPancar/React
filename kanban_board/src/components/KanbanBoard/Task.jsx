@@ -1,14 +1,17 @@
+// components/KanbanBoard/Task.js
+
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-const Task = ({ task, isDragging, isSelected, onTaskClick }) => {
+const Task = ({ task, isSelected, onTaskClick }) => {
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
+    isDragging, // isDragging'i useSortable'dan alıyoruz
   } = useSortable({
     id: task.id,
     data: { task, type: 'Task' }
@@ -27,7 +30,15 @@ const Task = ({ task, isDragging, isSelected, onTaskClick }) => {
       ref={setNodeRef} 
       style={style} 
       className={cardClassName}
-      onMouseDown={(e) => onTaskClick(e, task.id)}
+      data-task-id={task.id}
+      // DÜZELTME: Tıklama olayını buraya ekliyoruz.
+      onMouseDown={(e) => {
+        // Olayın yayılmasını durdurarak, arka plandaki seçim temizleme
+        // veya alan seçimi gibi olayların tetiklenmesini engelliyoruz.
+        e.stopPropagation();
+        onTaskClick(e, task.id);
+      }}
+      // Sürükleme için gerekli olan dnd-kit özelliklerini ekliyoruz.
       {...attributes}
       {...listeners}
     >
@@ -37,4 +48,4 @@ const Task = ({ task, isDragging, isSelected, onTaskClick }) => {
   );
 };
 
-export default Task
+export default Task;
