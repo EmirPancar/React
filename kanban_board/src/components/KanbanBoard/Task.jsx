@@ -3,23 +3,31 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useSelector } from 'react-redux';
 import { useDndContext } from '@dnd-kit/core';
+import { getTextColorForBackground } from '../../utils/colorUtils';
 
-// YENİ: Atanan kişi rozeti bileşeni
-const AssigneeBadge = ({ assignee }) => {
-  if (!assignee) return null;
-  const initial = assignee.charAt(0).toUpperCase();
-  return <div className="assignee-badge">{initial}</div>;
+const AssigneeBadge = ({ styleInfo }) => {
+  if (!styleInfo) return null;
+
+  const { color, initials } = styleInfo;
+  const textColor = getTextColorForBackground(color);
+
+  return (
+    <div 
+        className="assignee-badge" 
+        style={{ 
+            backgroundColor: color, 
+            color: textColor 
+        }}
+    >
+        {initials}
+    </div>
+  );
 };
 
-
-const Task = ({ task, isSelected, onTaskClick, onOpenDetails }) => { // onOpenDetails eklendi
+// 'conflictingInitials' yerine 'assigneeStyles' bekleniyor ve varsayılan değer atanıyor.
+const Task = ({ task, isSelected, onTaskClick, onOpenDetails, assigneeStyles = new Map() }) => {
   const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
+    attributes, listeners, setNodeRef, transform, transition, isDragging,
   } = useSortable({
     id: task.id,
     data: { task, type: 'Task' }
@@ -45,14 +53,12 @@ const Task = ({ task, isSelected, onTaskClick, onOpenDetails }) => { // onOpenDe
   const cardClassName = isSelected ? 'task-card selected' : 'task-card';
 
   const handleCardClick = (e) => {
-    // Sadece sürükleme değil, basit bir tıklama ise detayları aç
-    if (!e.ctrlKey && !e.metaKey) {
-        // Eğer bir sürükleme işlemi başlamadıysa modalı aç.
-        // dnd-kit sürüklemeyi başlatmak için bir miktar fare hareketi gerektirir (distance > 0).
-        // Bu yüzden bu tıklama genellikle sürüklemeden önce tetiklenir.
+    if (!e.ctrlKey && !e.metaKey && !isDragging) {
         onOpenDetails(task.id);
     }
   }
+  
+  const styleInfo = task.assignee ? assigneeStyles.get(task.assignee) : null;
 
   return (
     <div
@@ -60,18 +66,18 @@ const Task = ({ task, isSelected, onTaskClick, onOpenDetails }) => { // onOpenDe
       style={style}
       className={cardClassName}
       data-task-id={task.id}
-      // Mevcut onMouseDown seçim için kalıyor. onClick detay için eklendi.
-      onMouseDown={(e) => {
-        e.stopPropagation();
-        onTaskClick(e, task.id);
-      }}
-      onClick={handleCardClick} // YENİ
+      onMouseDown={(e) => { e.stopPropagation(); onTaskClick(e, task.id); }}
+      onClick={handleCardClick}
       {...attributes}
       {...listeners}
     >
       <div className="task-card-header"></div>
-      {task.title}
-      <AssigneeBadge assignee={task.assignee} /> {/* YENİ */}
+      
+      <div className="task-title-content">
+        {task.title}
+      </div>
+      
+      <AssigneeBadge styleInfo={styleInfo} />
     </div>
   );
 };
