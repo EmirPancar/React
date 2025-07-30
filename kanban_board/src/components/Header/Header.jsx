@@ -11,7 +11,7 @@ const CreateNote = () => {
     <div className="create-note-stack" ref={setNodeRef} {...listeners} {...attributes}>
         <div className="note-stack-item note1"></div>
         <div className="note-stack-item note2"></div>
-        <div className="note-stack-item note3">Sürükle & Bırak</div>
+        <div className="note-stack-item note3">Sürükle & Oluştur</div>
     </div>
   );
 };

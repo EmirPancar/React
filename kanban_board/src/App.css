@@ -20,9 +20,9 @@ body, html {
 }
 
 .task-card.new-note-visual {
-    background-color: #fff7a6;
-    border: 1px dashed #e0d99f;
-    color: #5f5a3a;
+    background-color: #eeeeee;
+    border: 1px dashed #bcbcbc;
+    color: #3b3929;
     font-weight: 500;
     display: flex;
     align-items: center;
