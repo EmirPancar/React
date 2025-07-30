@@ -20,7 +20,6 @@ const Task = ({ task, isSelected, onTaskClick }) => {
   const { active } = useDndContext();
   const selectedTaskIds = useSelector(state => state.selectedTaskIds);
 
-  // Çoklu sürüklemenin aktif olup olmadığını kontrol et
   const isMultiDragActive =
     active?.data.current?.type === 'Task' &&
     selectedTaskIds.includes(active.id) &&
@@ -31,9 +30,6 @@ const Task = ({ task, isSelected, onTaskClick }) => {
     transition,
   };
 
-  // Bir kart şu durumlarda gizlenmelidir:
-  // 1. Fiziksel olarak sürüklenen kartın kendisiyse (isDragging).
-  // 2. Fiziksel olarak sürüklenmiyor ama aktif bir çoklu sürüklemenin parçasıysa.
   if (isDragging || (isMultiDragActive && selectedTaskIds.includes(task.id))) {
       style.visibility = 'hidden';
   }

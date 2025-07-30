@@ -1,16 +1,14 @@
-/* Ana Pano Konteyneri */
 .kanban-board {
-  flex-grow: 1; /* App.js'deki ana konteynerde kalan tüm alanı kaplar */
+  flex-grow: 1; 
   display: flex;
-  min-height: 0; /* Flexbox'ın küçülmesine izin verir */
-  gap: 20px; /* Sütunlar arası boşluk */
+  min-height: 0; 
+  gap: 20px; 
   box-sizing: border-box;
 }
 
-/* Kanban Sütunları */
 .kanban-column {
-  flex: 1; /* Sütunların mevcut alanı eşit paylaşmasını sağlar */
-  min-width: 0; /* Sütunların gerektiğinde daralabilmesini sağlar */
+  flex: 1; 
+  min-width: 0; 
   display: flex;
   flex-direction: column;
   background-color: #FFFFFF;
@@ -18,18 +16,16 @@
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
-/* Sütun Başlıkları */
 .column-title {
   font-size: 1.2rem;
   font-weight: 600;
   color: #374151;
   padding: 20px 24px;
-  flex-shrink: 0; /* Başlığın küçülmesini engeller */
+  flex-shrink: 0; 
   position: relative;
   text-align: center;
 }
 
-/* Sütun Başlığı Altındaki Çizgi */
 .column-title::after {
   content: '';
   position: absolute;
@@ -42,21 +38,19 @@
   border-radius: 2px;
 }
 
-/* Görevleri İçeren Alan */
 .column-tasks {
-  flex-grow: 1; /* Sütun içinde kalan alanı doldurur */
+  flex-grow: 1; 
   padding: 8px 16px 16px 16px;
-  overflow-y: auto; /* Görevler sığmazsa kaydırma çubuğu çıkar */
+  overflow-y: auto; 
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Görev kartları arası boşluk */
+  gap: 12px; 
 }
 
-/* Görev Kartları */
 .task-card {
   width: auto;
   padding: 14px;
-  padding-top: 22px; /* Üst başlık için boşluk */
+  padding-top: 22px; 
   box-sizing: border-box;
   background: #FFFFFF;
   border-radius: 8px;
@@ -64,15 +58,14 @@
   border: 1px solid #E5E7EB;
   font-size: 0.9rem;
   color: #374151;
-  cursor: grab; /* Sürükleme imleci */
+  cursor: grab; 
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   height: auto;
-  overflow-wrap: break-word; /* Uzun metinlerin taşmasını engeller */
-  user-select: none; /* Metin seçimini engeller */
+  overflow-wrap: break-word; 
+  user-select: none; 
 }
 
-/* Görev Kartının Üst Renkli Şeridi */
 .task-card-header {
   position: absolute;
   top: 0;
@@ -84,35 +77,29 @@
   border-top-right-radius: 8px;
 }
 
-/* Fare ile üzerine gelince görev kartı stili */
 .task-card:hover {
   border-color: #495057;
-  transform: translateY(-2px); /* Hafif yukarı kalkma efekti */
+  transform: translateY(-2px); 
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-/* Sürükleme anında görev kartı stili */
 .task-card:active {
-    cursor: grabbing; /* Sürüklerken elin kapanma imleci */
+    cursor: grabbing; 
 }
 
-/* Seçili görev kartı stili */
 .task-card.selected {
     border-color: #495057;
     background-color: #F8F9FA;
-    box-shadow: 0 0 0 2px #495057; /* Seçimi belirginleştiren çerçeve */
+    box-shadow: 0 0 0 2px #495057; 
 }
 
-/* Kaydırma Çubuğu Stilleri */
 .column-tasks::-webkit-scrollbar { width: 6px; }
 .column-tasks::-webkit-scrollbar-track { background: transparent; }
 .column-tasks::-webkit-scrollbar-thumb { background-color: #E5E7EB; border-radius: 3px; }
 .column-tasks::-webkit-scrollbar-thumb:hover { background-color: #D1D5DB; }
 
 
-/* -------- ÇOKLU SÜRÜKLEME ANİMASYON STİLLERİ -------- */
 
-/* DragOverlay içindeki ana kapsayıcı */
 .multi-drag-overlay {
   position: relative;
   display: flex;
@@ -120,9 +107,8 @@
   align-items: center;
 }
 
-/* DragOverlay içindeki her bir sahte görev kartı */
 .task-card-drag-preview {
-  width: 250px; /* Sürükleme görselinin genişliği */
+  width: 250px; 
   padding: 14px;
   padding-top: 22px;
   box-sizing: border-box;
@@ -132,11 +118,10 @@
   border: 1px solid #E5E7EB;
   font-size: 0.9rem;
   color: #374151;
-  position: absolute; /* Görev kartlarını üst üste bindirmek için */
+  position: absolute; 
   transition: transform 0.2s ease-in-out;
 }
 
-/* Sahte görev kartlarının da renkli şeridi olması için */
 .task-card-drag-preview .task-card-header {
   position: absolute;
   top: 0;
@@ -148,7 +133,7 @@
   border-top-right-radius: 8px;
 }
 
-/* Seçili görev sayısını gösteren rozet */
+
 .task-count-badge {
     position: absolute;
     top: -10px;
@@ -164,5 +149,5 @@
     font-size: 0.8rem;
     font-weight: bold;
     z-index: 10;
-    box-shadow: 0 0 0 2px white; /* Rozetin etrafında beyaz bir halka */
+    box-shadow: 0 0 0 2px white; 
 }
