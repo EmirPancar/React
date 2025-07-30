@@ -30,6 +30,10 @@ body, html {
 }
 
 
+.task-card.new-note-visual:hover{
+  cursor: grabbing;
+}
+
 .selection-rectangle {
   position: fixed; 
   border: 1px solid #007bff;

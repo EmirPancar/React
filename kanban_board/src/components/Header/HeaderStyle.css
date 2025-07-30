@@ -25,6 +25,10 @@
     justify-content: center;
 }
 
+.create-note-stack:active{
+    cursor: grabbing;
+}
+
 .create-note-stack .note-stack-item {
     position: absolute;
     width: 100%;
