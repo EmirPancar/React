@@ -54,7 +54,11 @@ function App() {
         uniqueNames.forEach(name => {
             const firstInitial = name.charAt(0).toUpperCase();
             const needsTwoInitials = conflictingInitials.has(firstInitial);
-            const initials = (needsTwoInitials && name.length > 1) ? name.substring(0, 2) : firstInitial;
+
+            const initials = (needsTwoInitials && name.length > 1) 
+                ? `${name.charAt(0).toUpperCase()}${name.charAt(1).toLowerCase()}` 
+                : firstInitial;
+
             let color, hashIndex = simpleHash(name) % PALETTE.length;
             while (true) {
                 const potentialColor = PALETTE[hashIndex];
@@ -181,20 +185,7 @@ function App() {
                     </DragOverlay>
                 </DndContext>
             </div>
-
-            {/* --- SEÇİM DÖRTGENİ İÇİN DÜZELTİLMİŞ KOD --- */}
-            {selectionRect && (
-                <div
-                    className="selection-rectangle"
-                    style={{
-                        left: selectionRect.x,
-                        top: selectionRect.y,
-                        width: selectionRect.width,
-                        height: selectionRect.height,
-                    }}
-                />
-            )}
-
+            {selectionRect && <div className="selection-rectangle" style={{ left: selectionRect.x, top: selectionRect.y, width: selectionRect.width, height: selectionRect.height }} />}
             <Modal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} onSave={handleSaveNewTask} />
             <TaskDetailModal isOpen={isDetailModalOpen} onClose={() => setDetailModalOpen(false)} task={activeTask} columnName={columnTitles[activeTaskColumnName]} onSave={handleUpdateTask} />
         </div>

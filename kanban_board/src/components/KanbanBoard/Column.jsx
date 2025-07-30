@@ -5,8 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toggleTaskSelection } from '../../redux/tasksSlice';
 import Task from './Task';
 
-// --- ANA DÜZELTME BURADA ---
-// 'conflictingInitials' yerine artık doğru prop olan 'assigneeStyles' bekleniyor.
 const Column = ({ id, title, tasks, onOpenTaskDetails, assigneeStyles }) => { 
   const dispatch = useDispatch();
   const selectedTaskIds = useSelector(state => state.selectedTaskIds);
@@ -38,7 +36,6 @@ const Column = ({ id, title, tasks, onOpenTaskDetails, assigneeStyles }) => {
               isSelected={selectedTaskIds.includes(task.id)}
               onTaskClick={handleTaskClick}
               onOpenDetails={onOpenTaskDetails}
-              // Ve doğru prop Task bileşenine iletiliyor.
               assigneeStyles={assigneeStyles}
             />
           ))}

@@ -25,7 +25,6 @@ const KanbanBoard = ({ tasks, onMouseDown, onMouseMove, onMouseUp, onOpenTaskDet
           title={columnTitles[columnId]}
           tasks={tasks[columnId] || []}
           onOpenTaskDetails={onOpenTaskDetails}
-          // Burası doğru, 'assigneeStyles' prop'unu iletiyor.
           assigneeStyles={assigneeStyles}
         />
       ))}

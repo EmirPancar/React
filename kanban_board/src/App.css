@@ -35,9 +35,9 @@ body, html {
 }
 
 .selection-rectangle {
-  position: fixed; /* Konumlandırmayı viewport'a göre yapar */
-  border: 1px solid #007bff; /* Mavi bir çerçeve */
-  background-color: rgba(0, 123, 255, 0.2); /* Yarı saydam mavi bir arka plan */
-  z-index: 9999; /* Her şeyin üzerinde olmasını sağlar */
-  pointer-events: none; /* Dörtgenin fare olaylarını engellememesini sağlar */
+  position: fixed; 
+  border: 1px solid #007bff; 
+  background-color: rgba(0, 123, 255, 0.2); 
+  z-index: 9999; 
+  pointer-events: none; 
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './TaskDetailModal.css'; // Bu CSS dosyasını bir sonraki adımda güncelleyeceğiz
+import './TaskDetailModal.css';
 
 const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
   const [editableTask, setEditableTask] = useState({ title: '', assignee: '' });
@@ -9,7 +9,6 @@ const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
     if (task) {
       setEditableTask({ title: task.title, assignee: task.assignee || '' });
     } else {
-        // Modal kapandığında veya görev olmadığında geçmişi de kapat
         setShowHistory(false);
     }
   }, [task]);
@@ -22,10 +21,9 @@ const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
   };
 
   const handleSave = () => {
-    // Sadece başlık doluysa kaydet
     if (editableTask.title.trim()) {
         onSave(task.id, editableTask.title, editableTask.assignee);
-        onClose(); // Kaydettikten sonra modal'ı kapat
+        onClose(); 
     } else {
         alert("Görev başlığı boş bırakılamaz.");
     }
@@ -39,7 +37,6 @@ const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
   };
 
   return (
-    // Tıklayınca kapanması için overlay ve tıklamanın içeri yayılmasını önlemek için content yapısı
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content detail-modal-content" onClick={(e) => e.stopPropagation()}>
         
@@ -63,6 +60,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
             onChange={handleChange}
             className="detail-input"
             placeholder="Atanan Kişi"
+            autoComplete="off"
           />
         </div>
 

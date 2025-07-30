@@ -1,17 +1,14 @@
-// src/redux/tasksSlice.js
-
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  // Örnek görevlere yeni alanları ekleyelim
   tasks: {
     bekliyor: [{ 
       id: 'task-1', 
       title: 'Yeni kullanıcı profili tasarımı',
-      assignee: 'Ali V.', // YENİ
-      createdAt: '2024-07-28T10:00:00Z', // YENİ
-      updatedAt: '2024-07-28T10:00:00Z', // YENİ
-      history: [] // YENİ
+      assignee: 'Ali V.', 
+      createdAt: '2024-07-28T10:00:00Z', 
+      updatedAt: '2024-07-28T10:00:00Z', 
+      history: [] 
     }],
     yapiliyor: [{ 
       id: 'task-3', 
@@ -32,7 +29,6 @@ const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    // MODIFIED: addTask artık 'assignee' de alıyor
     addTask(state, action) {
       const { columnId, title, assignee } = action.payload;
       if (state.tasks[columnId]) {
@@ -48,7 +44,6 @@ const tasksSlice = createSlice({
       }
     },
 
-    // YENİ: updateTask reducer'ı
     updateTask(state, action) {
       const { taskId, newTitle, newAssignee } = action.payload;
       for (const columnId in state.tasks) {
@@ -56,20 +51,18 @@ const tasksSlice = createSlice({
         if (taskIndex !== -1) {
           const task = state.tasks[columnId][taskIndex];
           
-          // Geçmiş kaydı oluştur
           const historyEntry = {
             timestamp: task.updatedAt,
             oldTitle: task.title,
             oldAssignee: task.assignee
           };
-          task.history.unshift(historyEntry); // Geçmişi en üste ekle
+          task.history.unshift(historyEntry); 
 
-          // Görevi güncelle
           task.title = newTitle;
           task.assignee = newAssignee;
           task.updatedAt = new Date().toISOString();
           
-          return; // Görev bulundu ve güncellendi, döngüden çık
+          return; 
         }
       }
     },
@@ -85,7 +78,6 @@ const tasksSlice = createSlice({
       const { sourceColumn, destColumn, sourceIndex, destIndex } = action.payload;
       if (state.tasks[sourceColumn] && state.tasks[destColumn]) {
         const [movedItem] = state.tasks[sourceColumn].splice(sourceIndex, 1);
-        // Taşınan görevin updatedAt tarihini de güncelleyebiliriz (opsiyonel)
         movedItem.updatedAt = new Date().toISOString();
         state.tasks[destColumn].splice(destIndex, 0, movedItem);
       }
@@ -110,7 +102,6 @@ const tasksSlice = createSlice({
             const remainingTasks = [];
             for (const task of state.tasks[columnId]) {
                 if (state.selectedTaskIds.includes(task.id)) {
-                    // Taşınan görevlerin updatedAt tarihini güncelle
                     task.updatedAt = new Date().toISOString();
                     tasksToMove.push(task);
                 } else {
@@ -157,7 +148,7 @@ export const {
     deleteSelectedTasks,
     clearTaskSelection,
     addTasksToSelection,
-    updateTask // YENİ action'ı export et
+    updateTask 
 } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

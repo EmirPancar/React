@@ -7,7 +7,6 @@
   padding: 0 10px 10px 10px;
 }
 
-/* Tek Bir Sütun */
 .kanban-column {
   flex: 1; 
   min-width: 0; 
@@ -18,7 +17,6 @@
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
-/* Sütun Başlığı */
 .column-title {
   font-size: 1.2rem;
   font-weight: 600;
@@ -42,7 +40,6 @@
   border-radius: 2px;
 }
 
-/* Görevlerin bulunduğu alan */
 .column-tasks {
   flex-grow: 1; 
   padding: 8px 16px 16px 16px;
@@ -52,7 +49,6 @@
   gap: 12px; 
 }
 
-/* Görev Kartı */
 .task-card {
   width: auto;
   padding: 14px;
@@ -71,13 +67,9 @@
   user-select: none; 
 }
 
-/* --- ANA DÜZELTME BÖLÜMÜ --- */
-/* Her bir katmana kendi render katmanını ve sırasını veriyoruz. */
-
-/* Katman 0: En alttaki renkli çubuk */
 .task-card-header {
   position: absolute;
-  z-index: 0; /* En altta */
+  z-index: 0;
   top: 0;
   left: 0;
   width: 100%;
@@ -87,16 +79,31 @@
   border-top-right-radius: 8px;
 }
 
-/* Katman 1: Ortadaki başlık içeriği */
 .task-title-content {
-  position: relative; /* Kendi katmanını oluşturması için */
-  z-index: 1; /* Ortada */
+  position: relative;
+  z-index: 1;
   font-size: 0.9rem;
-  overflow-wrap: break-word; /* Uzun kelimelerin taşmasını engelle */
+  overflow-wrap: break-word;
 }
 
+.assignee-badge {
+  position: absolute;
+  z-index: 2;
+  bottom: 6px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  user-select: none;
+}
 
-/* Kart Etkileşim Stilleri */
 .task-card:hover {
   border-color: #495057;
   transform: translateY(-2px); 
@@ -113,33 +120,12 @@
     box-shadow: 0 0 0 2px #3B82F6; 
 }
 
-/* Diğer Stiller */
 .column-tasks::-webkit-scrollbar { width: 6px; }
 .column-tasks::-webkit-scrollbar-track { background: transparent; }
 .column-tasks::-webkit-scrollbar-thumb { background-color: #E5E7EB; border-radius: 3px; }
 .column-tasks::-webkit-scrollbar-thumb:hover { background-color: #D1D5DB; }
 
-/* Atanan Kişi Rozeti */
-.assignee-badge {
-    position: absolute;
-    z-index: 2; 
-    bottom: 6px;
-    right: 8px;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase; 
-    border-radius: 50%;
-    border: 2px solid white;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-    user-select: none; 
-}
 
-/* Çoklu Sürükleme Görsel Efektleri */
 .multi-drag-overlay {
   position: relative;
   display: flex;
@@ -147,7 +133,6 @@
   align-items: center;
 }
 
-/* Çoklu sürüklemede görünen görev kartı önizlemesi */
 .task-card-drag-preview {
   width: 250px; 
   padding: 14px;
@@ -174,7 +159,6 @@
   border-top-right-radius: 8px;
 }
 
-/* Çoklu sürüklemedeki görev sayısı rozeti */
 .task-count-badge {
     position: absolute;
     top: -10px;

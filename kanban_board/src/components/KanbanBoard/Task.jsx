@@ -24,7 +24,6 @@ const AssigneeBadge = ({ styleInfo }) => {
   );
 };
 
-// 'conflictingInitials' yerine 'assigneeStyles' bekleniyor ve varsayılan değer atanıyor.
 const Task = ({ task, isSelected, onTaskClick, onOpenDetails, assigneeStyles = new Map() }) => {
   const {
     attributes, listeners, setNodeRef, transform, transition, isDragging,
