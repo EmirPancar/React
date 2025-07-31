@@ -1,0 +1,114 @@
+.MainFooter {
+    width: 94.5%;
+    background-color: #F8F9FA;
+    border-top: 1px solid #E9ECEF;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 40px;
+    flex-shrink: 0; /* Daralmasını engeller */
+}
+
+.navButton {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #ADB5BD;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.navButton:hover {
+    border-color: #007BFF;
+    background-color: #007BFF;
+}
+
+.navButton::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-top: 3px solid #ADB5BD;
+    border-right: 3px solid #ADB5BD;
+    transition: all 0.2s ease;
+}
+
+.navButton:hover::after {
+    border-color: white;
+}
+
+.prevButton::after {
+    transform: translateX(2px) rotate(-135deg);
+}
+
+.nextButton::after {
+    transform: translateX(-2px) rotate(45deg);
+}
+
+.navButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.finishButton {
+    padding: 8px 22px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    border: none;
+    background-color: #28A745;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.finishButton:hover {
+    background-color: #218838;
+}
+
+.StepIndicator {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.step {
+    width: 35px;
+    height: 35px;
+    background-color: #E9ECEF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    color: #6C757D;
+}
+
+.step.current {
+    background-color: #007BFF;
+    color: white;
+    transform: scale(1.2);
+}
+
+.step.answered {
+    background-color: #28A745;
+    color: white;
+}
+
+.step.answered::after {
+    content: '✔';
+    font-size: 20px;
+}
+
+.Timer {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #007BFF;
+}

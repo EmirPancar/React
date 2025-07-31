@@ -1,0 +1,12 @@
+[
+  { "question": "Fransa'nın başkenti neresidir?", "options": ["Berlin", "Madrid", "Paris", "Roma"], "answer": "Paris" },
+  { "question": "Japonya'nın başkenti neresidir?", "options": ["Pekin", "Seul", "Tokyo", "Bangkok"], "answer": "Tokyo" },
+  { "question": "Kanada'nın başkenti neresidir?", "options": ["Toronto", "Vancouver", "Ottawa", "Montreal"], "answer": "Ottawa" },
+  { "question": "Avustralya'nın başkenti neresidir?", "options": ["Sydney", "Melbourne", "Canberra", "Perth"], "answer": "Canberra" },
+  { "question": "Brezilya'nın başkenti neresidir?", "options": ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"], "answer": "Brasília" },
+  { "question": "Mısır'ın başkenti neresidir?", "options": ["Kahire", "İskenderiye", "Gize", "Luksor"], "answer": "Kahire" },
+  { "question": "İtalya'nın başkenti neresidir?", "options": ["Milano", "Napoli", "Roma", "Venedik"], "answer": "Roma" },
+  { "question": "Rusya'nın başkenti neresidir?", "options": ["Sankt Peterburg", "Moskova", "Kazan", "Novosibirsk"], "answer": "Moskova" },
+  { "question": "Hindistan'ın başkenti neresidir?", "options": ["Mumbai", "Yeni Delhi", "Kalküta", "Bangalore"], "answer": "Yeni Delhi" },
+  { "question": "Türkiye'nin başkenti neresidir?", "options": ["İstanbul", "İzmir", "Bursa", "Ankara"], "answer": "Ankara" }
+]
