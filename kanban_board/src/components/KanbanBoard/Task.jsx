@@ -56,8 +56,6 @@ const Task = ({ task, isSelected, onTaskClick, onOpenDetails, assigneeStyles = n
         onOpenDetails(task.id);
     }
   }
-  
-  const styleInfo = task.assignee ? assigneeStyles.get(task.assignee) : null;
 
   return (
     <div
@@ -76,7 +74,14 @@ const Task = ({ task, isSelected, onTaskClick, onOpenDetails, assigneeStyles = n
         {task.title}
       </div>
       
-      <AssigneeBadge styleInfo={styleInfo} />
+      {/* YENİ: Çoklu rozetler için sarmalayıcı */}
+      <div className="assignee-badges-container">
+        {task.assignee && task.assignee.map(name => {
+          const styleInfo = assigneeStyles.get(name);
+          // Her atanan için bir rozet oluştur
+          return <AssigneeBadge key={name} styleInfo={styleInfo} />;
+        })}
+      </div>
     </div>
   );
 };

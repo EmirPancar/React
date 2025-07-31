@@ -1,34 +1,36 @@
 import React, { useState, useEffect } from 'react';
+import AssigneeInputManager from './AssigneeInputManager'; // YENİ
 import './TaskDetailModal.css';
 
 const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
-  const [editableTask, setEditableTask] = useState({ title: '', assignee: '' });
+  // State'leri ayırdık
+  const [title, setTitle] = useState('');
+  const [assignees, setAssignees] = useState(['']);
   const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
     if (task) {
-      setEditableTask({ title: task.title, assignee: task.assignee || '' });
+      setTitle(task.title);
+      // Eğer görevde atanmış kimse yoksa, boş bir input göster
+      setAssignees(task.assignee && task.assignee.length > 0 ? task.assignee : ['']);
     } else {
-        setShowHistory(false);
+      setShowHistory(false);
     }
   }, [task]);
 
   if (!isOpen || !task) return null;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditableTask(prev => ({ ...prev, [name]: value }));
-  };
-
   const handleSave = () => {
-    if (editableTask.title.trim()) {
-        onSave(task.id, editableTask.title, editableTask.assignee);
-        onClose(); 
+    if (title.trim()) {
+      // Boş inputları filtreleyerek temizlenmiş diziyi gönder
+      const finalAssignees = assignees.filter(a => a.trim() !== '');
+      onSave(task.id, title, finalAssignees);
+      onClose();
     } else {
-        alert("Görev başlığı boş bırakılamaz.");
+      alert("Görev başlığı boş bırakılamaz.");
     }
   };
-  
+
   const formatDate = (dateString) => {
     if (!dateString) return 'Tarih bilgisi yok';
     return new Date(dateString).toLocaleString('tr-TR', {
@@ -39,7 +41,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content detail-modal-content" onClick={(e) => e.stopPropagation()}>
-        
+
         <div className="detail-header">
           <span className="detail-date">Son Güncelleme: {formatDate(task.updatedAt)}</span>
           <span className="detail-column">Kolon: <strong>{columnName}</strong></span>
@@ -47,20 +49,15 @@ const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
 
         <div className="detail-body">
           <textarea
-            name="title"
-            value={editableTask.title}
-            onChange={handleChange}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="detail-textarea"
             placeholder="Görev Açıklaması"
           />
-          <input
-            type="text"
-            name="assignee"
-            value={editableTask.assignee}
-            onChange={handleChange}
-            className="detail-input"
-            placeholder="Atanan Kişi"
-            autoComplete="off"
+          {/* YENİ: Dinamik Atanan Kişi Yöneticisi */}
+          <AssigneeInputManager
+            assignees={assignees}
+            onAssigneesChange={setAssignees}
           />
         </div>
 
@@ -83,17 +80,16 @@ const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
                   <li key={index}>
                     <strong>{formatDate(entry.timestamp)}</strong>
                     <p><span>Başlık:</span> "{entry.oldTitle}"</p>
-                    <p><span>Atanan:</span> "{entry.oldAssignee}"</p>
+                    <p><span>Atanan:</span> "{entry.oldAssignee?.join(', ')}"</p>
                   </li>
                 ))}
               </ul>
             ) : (
               <p className="no-history">Bu görev için geçmiş değişiklik bulunmuyor.</p>
             )}
-             <p className="history-creation-note">İlk Oluşturulma: {formatDate(task.createdAt)}</p>
+            <p className="history-creation-note">İlk Oluşturulma: {formatDate(task.createdAt)}</p>
           </div>
         )}
-
       </div>
     </div>
   );

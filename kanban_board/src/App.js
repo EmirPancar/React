@@ -39,8 +39,10 @@ function App() {
     const assigneeStyles = useMemo(() => {
         const styles = new Map();
         const assignedColors = new Set();
-        const allAssigneeNames = Object.values(tasks).flat().map(t => t.assignee).filter(Boolean);
+        // Değişiklik: flatMap ile tüm atananları tek bir diziye al
+        const allAssigneeNames = Object.values(tasks).flat().flatMap(t => t.assignee).filter(Boolean);
         const uniqueNames = [...new Set(allAssigneeNames)];
+        
         const namesByInitial = {};
         uniqueNames.forEach(name => {
             const initial = name.charAt(0).toUpperCase();

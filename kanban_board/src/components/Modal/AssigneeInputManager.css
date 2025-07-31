@@ -1,0 +1,71 @@
+.assignee-manager {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.assignee-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4B5563;
+    margin-bottom: 4px;
+}
+
+.assignee-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.assignee-input-row input {
+  flex-grow: 1; /* Input'un kalan tüm boşluğu kaplamasını sağlar */
+  width: 100%; /* Flexbox içinde esneklik için */
+  margin: 0;
+  /* `SharedModalStyles.css`'den gelen stilleri kullanır */
+}
+
+.btn-assignee {
+  flex-shrink: 0; /* Butonların küçülmesini engeller */
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #D1D5DB;
+  background-color: #F9FAFB;
+  color: #4B5563;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.btn-assignee:hover {
+  border-color: #9CA3AF;
+  transform: scale(1.05);
+}
+
+.add-btn {
+  background-color: #E0F2FE; /* Açık Mavi */
+  border-color: #7DD3FC;
+  color: #0369A1;
+}
+
+.add-btn:hover {
+  background-color: #BAE6FD;
+  border-color: #38BDF8;
+}
+
+.remove-btn {
+  background-color: #FEE2E2; /* Açık Kırmızı */
+  border-color: #FCA5A5;
+  color: #B91C1C;
+}
+
+.remove-btn:hover {
+  background-color: #FECACA;
+  border-color: #F87171;
+}

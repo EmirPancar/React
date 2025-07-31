@@ -5,7 +5,7 @@ const initialState = {
     bekliyor: [{ 
       id: 'task-1', 
       title: 'Yeni kullanıcı profili tasarımı',
-      assignee: 'Ali V.', 
+      assignee: ['Ali V.', 'Ayşe K.'], // Veri yapısı bir dizi
       createdAt: '2024-07-28T10:00:00Z', 
       updatedAt: '2024-07-28T10:00:00Z', 
       history: [] 
@@ -13,7 +13,7 @@ const initialState = {
     yapiliyor: [{ 
       id: 'task-3', 
       title: 'API entegrasyonu dokümantasyonunu oku',
-      assignee: 'Zeynep Y.',
+      assignee: ['Zeynep Y.'], // Tek elemanlı bir dizi de olabilir
       createdAt: '2024-07-27T14:30:00Z',
       updatedAt: '2024-07-27T14:30:00Z',
       history: []
@@ -31,11 +31,13 @@ const tasksSlice = createSlice({
   reducers: {
     addTask(state, action) {
       const { columnId, title, assignee } = action.payload;
+      // Artık virgülle ayrılmış metni işlemeye gerek yok.
+      // `assignee` doğrudan modal'dan temiz bir dizi olarak geliyor.
       if (state.tasks[columnId]) {
         const newTask = {
           id: `task-${Date.now()}`,
           title,
-          assignee,
+          assignee, // Gelen diziyi direkt ata
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           history: []
@@ -46,6 +48,8 @@ const tasksSlice = createSlice({
 
     updateTask(state, action) {
       const { taskId, newTitle, newAssignee } = action.payload;
+      // Artık virgülle ayrılmış metni işlemeye gerek yok.
+      // `newAssignee` doğrudan modal'dan temiz bir dizi olarak geliyor.
       for (const columnId in state.tasks) {
         const taskIndex = state.tasks[columnId].findIndex(t => t.id === taskId);
         if (taskIndex !== -1) {
@@ -54,12 +58,12 @@ const tasksSlice = createSlice({
           const historyEntry = {
             timestamp: task.updatedAt,
             oldTitle: task.title,
-            oldAssignee: task.assignee
+            oldAssignee: task.assignee // Eski atananlar (dizi)
           };
           task.history.unshift(historyEntry); 
 
           task.title = newTitle;
-          task.assignee = newAssignee;
+          task.assignee = newAssignee; // Yeni atananları (dizi) kaydet
           task.updatedAt = new Date().toISOString();
           
           return; 
