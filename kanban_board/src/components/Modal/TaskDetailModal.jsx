@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import AssigneeInputManager from './AssigneeInputManager'; // YENİ
+import AssigneeInputManager from './AssigneeInputManager'; 
 import './TaskDetailModal.css';
 
 const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
-  // State'leri ayırdık
   const [title, setTitle] = useState('');
   const [assignees, setAssignees] = useState(['']);
   const [showHistory, setShowHistory] = useState(false);
@@ -11,7 +10,6 @@ const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
   useEffect(() => {
     if (task) {
       setTitle(task.title);
-      // Eğer görevde atanmış kimse yoksa, boş bir input göster
       setAssignees(task.assignee && task.assignee.length > 0 ? task.assignee : ['']);
     } else {
       setShowHistory(false);
@@ -22,7 +20,6 @@ const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
 
   const handleSave = () => {
     if (title.trim()) {
-      // Boş inputları filtreleyerek temizlenmiş diziyi gönder
       const finalAssignees = assignees.filter(a => a.trim() !== '');
       onSave(task.id, title, finalAssignees);
       onClose();
@@ -54,7 +51,6 @@ const TaskDetailModal = ({ isOpen, onClose, task, columnName, onSave }) => {
             className="detail-textarea"
             placeholder="Görev Açıklaması"
           />
-          {/* YENİ: Dinamik Atanan Kişi Yöneticisi */}
           <AssigneeInputManager
             assignees={assignees}
             onAssigneesChange={setAssignees}

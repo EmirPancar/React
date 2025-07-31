@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import AssigneeInputManager from './AssigneeInputManager'; // YENİ
+import AssigneeInputManager from './AssigneeInputManager'; 
 import './Modal.css';
 
 function Modal({ isOpen, onClose, onSave }) {
@@ -13,7 +13,6 @@ function Modal({ isOpen, onClose, onSave }) {
         textareaRef.current?.focus();
       }, 50);
     } else {
-      // Modal kapanınca tüm alanları temizle
       setTitle('');
       setAssignees(['']);
     }
@@ -23,7 +22,6 @@ function Modal({ isOpen, onClose, onSave }) {
 
   const handleSave = () => {
     if (title.trim()) {
-      // Boş inputları filtreleyerek temizlenmiş diziyi gönder
       const finalAssignees = assignees.filter(a => a.trim() !== '');
       onSave({ title, assignee: finalAssignees });
     }
@@ -47,7 +45,6 @@ function Modal({ isOpen, onClose, onSave }) {
           onKeyDown={handleKeyDown}
           placeholder="Görevi buraya yazın..."
         />
-        {/* YENİ: Dinamik Atanan Kişi Yöneticisi */}
         <AssigneeInputManager
           assignees={assignees}
           onAssigneesChange={setAssignees}
