@@ -8,7 +8,6 @@ const leaderboardSlice = createSlice({
     reducers: {
         addScore: (state, action) => {
             state.scores.push(action.payload);
-            // Puanları yüksekten düşüğe sırala
             state.scores.sort((a, b) => b.score - a.score);
         }
     }

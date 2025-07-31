@@ -16,7 +16,6 @@ const Content = () => {
 
     return (
         <div className='MainContent'>
-            {/* YENİ EKLENEN BAŞLIK */}
             <h2 className='QuestionTitle'>
                 {`${currentQuestionIndex + 1}. Soru`}
             </h2>

@@ -22,13 +22,12 @@
 
 .answers-review {
     text-align: left;
-    max-width: 90%; /* DÜZENLENDİ: Genişliği artırdık */
+    max-width: 90%; 
     margin: 0 auto 40px auto;
     
-    /* DÜZENLENDİ: BURASI GRID LAYOUT'U OLUŞTURUYOR */
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 eşit genişlikte sütun oluştur */
-    gap: 20px; /* Sütunlar ve satırlar arasına boşluk koy */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px; 
 }
 
 .answers-review h3 {
@@ -37,7 +36,6 @@
     border-bottom: 2px solid #E9ECEF;
     padding-bottom: 10px;
     
-    /* DÜZENLENDİ: Başlığın 2 sütunu da kaplamasını sağlar */
     grid-column: 1 / -1; 
 }
 
@@ -46,7 +44,6 @@
     border-left: 5px solid;
     padding: 15px;
     border-radius: 8px;
-    /* DÜZENLENDİ: margin-bottom'a gerek kalmadı, 'gap' hallediyor */
 }
 
 .review-item.correct {
@@ -64,7 +61,7 @@
 
 .review-item p {
     margin: 5px 0;
-    font-size: 0.9rem; /* DÜZENLENDİ: Yazı boyutunu biraz küçülttük */
+    font-size: 0.9rem;
 }
 
 .restart-button {

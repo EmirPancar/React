@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-// YOLU GÜNCELLE: ../redux/quizSlice
 import { startQuiz } from '../redux/quizSlice'; 
-// EKSİK OLAN SATIR BU: Modal'ın kendi stillerini import et
 import './ModalStyle.css'; 
 
 const StartModal = ({ isOpen, onClose }) => {
@@ -17,18 +15,15 @@ const StartModal = ({ isOpen, onClose }) => {
         }
         const fullName = `${firstName.trim()} ${lastName.trim()}`.trim();
         dispatch(startQuiz(fullName));
-        onClose(); // Modalı kapat
+        onClose(); 
     };
 
-    // Bu mantık sayesinde modal sadece 'isOpen' true ise render edilir.
     if (!isOpen) {
         return null;
     }
 
     return (
-        // onClick={onClose} sayesinde modalın dışına tıklayınca kapanır
         <div className="modal-overlay" onClick={onClose}>
-            {/* e.stopPropagation() sayesinde modalın içine tıklayınca kapanmaz */}
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <h2>Teste Başla</h2>
                 <p>Başlamadan önce lütfen adınızı girin. Soyadınız isteğe bağlıdır.</p>
@@ -37,7 +32,7 @@ const StartModal = ({ isOpen, onClose }) => {
                     placeholder="İsim (Zorunlu)"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    autoFocus // Modal açılınca direkt bu alana odaklansın
+                    autoFocus 
                 />
                 <input
                     type="text"

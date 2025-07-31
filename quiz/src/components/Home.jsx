@@ -13,7 +13,7 @@ const Home = () => {
 
             <div className="welcome-section">
                 <h1>Ülkelerin Başkentleri Quizi</h1>
-                <p>Bilgini test etmeye hazır mısın? 10 soruyu cevaplamak için 2 dakikan var!</p>
+                <p>Bilgini test etmeye hazır mısın? 10 soruyu cevaplamak için 1 dakikan var!</p>
                 <button className="start-button" onClick={() => setModalOpen(true)}>
                     Testi Başlat
                 </button>
@@ -23,7 +23,7 @@ const Home = () => {
                 <h2>🏆 Liderlik Tablosu</h2>
                 {scores.length > 0 ? (
                     <ol>
-                        {scores.slice(0, 5).map((score, index) => ( // Sadece ilk 5'i göster
+                        {scores.slice(0, 5).map((score, index) => (
                             <li key={index}>
                                 <span>{score.name}</span>
                                 <span>{score.score} Puan</span>

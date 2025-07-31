@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 15px 40px;
-    flex-shrink: 0; /* Daralmasını engeller */
+    flex-shrink: 0; 
 }
 
 .navButton {

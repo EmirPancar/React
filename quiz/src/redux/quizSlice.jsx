@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import questions from '../questions.json'; // Soruları bir JSON dosyasından alacağız
+import questions from '../questions.json'; 
 
 const initialState = {
   questions,
   currentQuestionIndex: 0,
   userAnswers: [],
   timer: 120,
-  status: 'idle', // idle, active, finished
+  status: 'idle', 
   userName: '',
 };
 

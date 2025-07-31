@@ -2,21 +2,19 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addScore } from '../redux/leaderboardSlice';
 import { resetQuiz } from '../redux/quizSlice';
-import './ResultsStyle.css'; // Sonuçlar için özel stiller
+import './ResultsStyle.css';
 
 const Results = () => {
     const dispatch = useDispatch();
     const { questions, userAnswers, userName } = useSelector((state) => state.quiz);
 
-    // Skoru hesapla
     let score = 0;
     userAnswers.forEach(answer => {
         if (questions[answer.questionIndex].answer === answer.answer) {
-            score += 10; // Her doğru cevap 10 puan
+            score += 10; 
         }
     });
 
-    // Component ilk render edildiğinde skoru liderlik tablosuna ekle
     useEffect(() => {
         dispatch(addScore({ name: userName, score }));
     }, [dispatch, userName, score]);
