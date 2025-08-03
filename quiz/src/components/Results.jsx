@@ -10,14 +10,18 @@ const Results = () => {
 
     let score = 0;
     userAnswers.forEach(answer => {
-        if (questions[answer.questionIndex].answer === answer.answer) {
+        const question = questions[answer.questionIndex];
+        if (question && question.answer === answer.answer) {
             score += 10; 
         }
     });
 
     useEffect(() => {
-        dispatch(addScore({ name: userName, score }));
-    }, [dispatch, userName, score]);
+        if (userName && userName.trim() !== '') {
+            dispatch(addScore({ name: userName, score }));
+        }
+        
+    }, []); 
 
     const handleRestart = () => {
         dispatch(resetQuiz());
@@ -47,7 +51,7 @@ const Results = () => {
                     );
                 })}
             </div>
-
+                
             <button className="restart-button" onClick={handleRestart}>
                 Yeniden Başla
             </button>

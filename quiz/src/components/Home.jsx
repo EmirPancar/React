@@ -23,7 +23,7 @@ const Home = () => {
                 <h2>🏆 Liderlik Tablosu</h2>
                 {scores.length > 0 ? (
                     <ol>
-                        {scores.slice(0, 5).map((score, index) => (
+                        {scores.map((score, index) => (
                             <li key={index}>
                                 <span>{score.name}</span>
                                 <span>{score.score} Puan</span>
