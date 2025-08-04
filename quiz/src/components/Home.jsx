@@ -13,7 +13,7 @@ const Home = () => {
 
             <div className="welcome-section">
                 <h1>Ülkelerin Başkentleri Quizi</h1>
-                <p>Bilgini test etmeye hazır mısın? 10 soruyu cevaplamak için 1 dakikan var!</p>
+                <p>Bilgini test etmeye hazır mısın? 10 soruyu cevaplamak için 90 saniyen var!</p>
                 <button className="start-button" onClick={() => setModalOpen(true)}>
                     Testi Başlat
                 </button>

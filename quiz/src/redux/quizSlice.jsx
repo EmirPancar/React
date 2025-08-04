@@ -40,7 +40,7 @@ const quizSlice = createSlice({
           ...question, 
           options: shuffledOptions, 
         };
-      });
+      }); 
 
       
       state.status = 'active';
