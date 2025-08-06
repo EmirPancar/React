@@ -1,0 +1,21 @@
+.HeaderContainer{
+    width: 100%;
+    height: 80px;
+
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    padding-top: 20px;
+    
+    display: flex;
+}
+
+
+.LeaderBoardButton{
+    width: 60px;
+    height: 60px;
+
+    background-color:rgb(78, 80, 83);
+    margin-left: 40px;
+}

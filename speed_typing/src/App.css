@@ -1,0 +1,25 @@
+body,html{
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgb(98, 105, 113);
+
+}
+
+
+.MainContainer{
+  width: 202vh;
+  height: 95vh;
+
+  background-color: rgb(147, 157, 169);
+
+  border-radius: 10px;
+  box-shadow: 0 0 10px 5px rgba(75, 75, 75, 0.6);
+
+  display: flex;
+  flex-direction: column;
+  
+}
