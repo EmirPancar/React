@@ -1,35 +1,51 @@
-.ContentContainer{
+.ContentContainer {
     width: 100%;
-    height: 100%;
-
+    flex-grow: 1;
     display: flex;
     align-items: center;
     flex-direction: column;
-
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-.TextArea{
-    width: 1200px;
-    height: 120px;
+.TextArea {
+    /* Değişken, JS'in de bu değere göre çalışmasını sağlar */
+    --line-height: 2.4rem;
+    
+    width: 80%;
+    max-width: 1200px;
+    /* YÜKSEKLİĞİ TAM OLARAK 2 SATIRA KİLİTLİYORUZ */
+    height: calc(var(--line-height) * 2);
+    overflow: hidden; /* Bu, 2 satırdan fazlasının görünmesini KESİNLİKLE engeller */
+    
+    background-color: rgba(0, 0, 0, 0.2);
+    margin-top: 40px;
+    padding: 25px;
+    box-sizing: content-box;
 
-    background-color: bisque;
-    margin-top: 80px;
+    border-radius: 10px;
+    font-size: 1.8rem;
+    line-height: var(--line-height);
+    color: var(--text-color);
 }
 
-.Timer{
-    width: 120px;
-    height: 70px;
-
-    background-color: bisque;
-
-    margin-top: 50px;
+.TextArea p {
+    margin: 0;
+    padding: 0;
+    /* ARTIK KAYDIRMA ANİMASYONU YOK */
+    /* transition ve transform özellikleri kaldırıldı */
 }
 
-.InputField{
-    width: 1000px;
-    height: 60px;
-
-    background-color: antiquewhite;
-
-    margin-top: 30px;
-}
+/* Diğer stillerde değişiklik yok */
+.TextArea .word { margin-right: 10px; margin-bottom: 12px; display: inline-block; }
+.word.correct-word { color: #a5d6a7; }
+.word.incorrect-word { color: #ef9a9a; text-decoration: line-through; }
+.word.current-word { color: var(--primary-color); background-color: rgba(255, 255, 255, 0.1); border-radius: 4px; padding: 2px 4px; }
+.InputField { width: 70%; max-width: 1000px; height: 60px; background-color: var(--bg-light); color: var(--text-dark); border: none; border-radius: 8px; margin-top: 30px; padding: 0 20px; font-size: 1.5rem; outline: none; transition: box-shadow 0.3s; }
+.InputField:focus { box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.5); }
+.InputField:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+.ControlsContainer { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 30px; }
+.Timer, .ResetButton { height: 55px; padding: 0 25px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; box-sizing: border-box; }
+.Timer { background-color: transparent; border: 2px solid var(--primary-color); color: var(--primary-color); font-size: 1.5rem; }
+.ResetButton { background-color: var(--secondary-color); color: white; border: none; cursor: pointer; transition: background-color 0.3s; font-size: 1.3rem; }
+.ResetButton:hover { background-color: #c0392b; }
