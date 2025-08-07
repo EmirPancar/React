@@ -9,16 +9,13 @@
 }
 
 .TextArea {
-    /* Değişken, JS'in de bu değere göre çalışmasını sağlar */
     --line-height: 2.4rem;
-
+    
     width: 80%;
     max-width: 1200px;
-    /* YÜKSEKLİĞİ TAM OLARAK 2 SATIRA KİLİTLİYORUZ */
     height: calc(var(--line-height) * 2);
-    overflow: hidden;
-    /* EN ÖNEMLİ KURAL: Fazlasını gizle! */
-
+    overflow: hidden; 
+    
     background-color: rgba(0, 0, 0, 0.2);
     margin-top: 40px;
     padding: 25px;
@@ -30,18 +27,16 @@
     color: var(--text-color);
 }
 
-.TextArea p {
-    margin: 0;
-    padding: 0;
-    /* ARTIK KAYDIRMA ANİMASYONU YOK */
-    /* transition ve transform özellikleri tamamen kaldırıldı */
+.word-line {
+    display: flex;
+    flex-wrap: wrap; 
 }
 
-/* Diğer stiller aynı kalabilir */
+
+
 .TextArea .word {
     margin-right: 10px;
     margin-bottom: 12px;
-    display: inline-block;
 }
 
 .word.correct-word {
@@ -92,8 +87,7 @@
     margin-top: 30px;
 }
 
-.Timer,
-.ResetButton {
+.Timer, .ResetButton {
     height: 55px;
     padding: 0 25px;
     display: flex;
