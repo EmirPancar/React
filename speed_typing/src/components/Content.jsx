@@ -11,10 +11,9 @@ const Content = () => {
   const { allWords, wordStatuses, currentWordIndex, userInput, timer, gameStatus } = useSelector((state) => state.game);
   
   // Ekranda gösterilen kelime bloğunun başlangıç indeksini tutan state.
-  // Bu, "snap" efektinin temelidir.
   const [viewStartIndex, setViewStartIndex] = useState(0);
 
-  // Zamanlayıcı ve oyun bitiş mantığı (hatasız versiyon)
+  // ZAMANLAYICI VE OYUN BİTİŞ MANTIĞI
   useEffect(() => {
     let interval = null;
     if (gameStatus === 'running' && timer > 0) {
@@ -28,19 +27,17 @@ const Content = () => {
   }, [gameStatus, timer, dispatch]);
 
 
-  // KUSURSUZ "SNAP" MANTIĞI:
-  // Bu useEffect, sadece `currentWordIndex` değiştiğinde çalışır.
+  // ÇÖZÜM 1: "TEKRAR OYNAT" SORUNUNU GİDEREN useEffect
+  // Bu useEffect, Redux'taki oyun sıfırlandığında (currentWordIndex 0 olduğunda)
+  // bu bileşenin yerel state'ini de (viewStartIndex) sıfırlar.
   useEffect(() => {
-    // Koşul: Mevcut kelime indeksi, satırın başlangıcından 11 kelime ileride mi?
-    // Örnek: viewStartIndex = 0 iken, currentWordIndex 11 olduğunda bu koşul sağlanır.
-    // Örnek: viewStartIndex = 11 iken, currentWordIndex 22 olduğunda bu koşul sağlanır.
-    if (currentWordIndex > 0 && (currentWordIndex - viewStartIndex) >= WORDS_PER_LINE) {
-      // Yeni görünümün başlangıcını, biten satırın sonrasına ayarla.
-      setViewStartIndex(prev => prev + WORDS_PER_LINE);
+    if (currentWordIndex === 0) {
+      setViewStartIndex(0);
     }
-  }, [currentWordIndex, viewStartIndex]);
+  }, [currentWordIndex]);
 
-  
+
+  // KULLANICI GİRDİSİNİ VE "SNAP" EFEKTİNİ YÖNETEN FONKSİYON
   const handleInputChange = (e) => {
     const value = e.target.value;
     if (gameStatus === 'finished') return;
@@ -50,12 +47,22 @@ const Content = () => {
       dispatch(startGame());
     }
 
-    // Space'e basıldıysa kelimeyi işle, basılmadıysa sadece input'u güncelle.
-    if (value.endsWith(' ')) {
-      dispatch(processCurrentWord());
-    } else {
+    // Eğer kullanıcı boşluk tuşuna basmadıysa, sadece input'u güncelle ve devam etme.
+    if (!value.endsWith(' ')) {
       dispatch(setUserInput(value));
+      return;
     }
+
+    // ÇÖZÜM 2: KUSURSUZ "SNAP" MANTIĞI
+    // Eğer mevcut kelime, görünen satırın SON kelimesi ise...
+    if (currentWordIndex === viewStartIndex + WORDS_PER_LINE - 1) {
+      // Bir sonraki render için başlangıç indeksini bir satır ileri taşı.
+      // Bu, eski satırın render edilmemesini sağlayarak "snap" efektini yaratır.
+      setViewStartIndex(prev => prev + WORDS_PER_LINE);
+    }
+    
+    // Tüm kontrollerden sonra, kelimeyi işle.
+    dispatch(processCurrentWord());
   };
   
   const formatTime = (seconds) => {
@@ -66,7 +73,6 @@ const Content = () => {
 
   // Ekranda gösterilecek kelimeleri `viewStartIndex`'e göre keserek oluştur.
   const wordsToRender = useMemo(() => {
-    // Ekranda her zaman 2 satır + alttan gelecekler için küçük bir tampon render et.
     const wordsInView = WORDS_PER_LINE * 2 + 5; 
     return allWords
       .slice(viewStartIndex, viewStartIndex + wordsInView)
@@ -86,7 +92,7 @@ const Content = () => {
     <div className='ContentContainer'>
       
       <div className='TextArea'>
-        {/* Artık `transform` stili yok. Sadece render edilen kelimeler değişiyor. */}
+        {/* Render edilen kelimeler anında değiştiği için "snap" efekti oluşur */}
         <p>{wordsToRender}</p>
       </div>
 
@@ -102,7 +108,7 @@ const Content = () => {
       <div className="ControlsContainer">
         <button className="ResetButton" onClick={() => {
           dispatch(resetGame());
-          // Oyunu sıfırlarken başlangıç penceresini de mutlaka sıfırla!
+          // Butona basıldığında da yerel state'i sıfırlamak iyi bir pratiktir.
           setViewStartIndex(0);
         }}>
             Yenile
