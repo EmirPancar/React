@@ -1,30 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
 import wordList from '../words.json';
 
-const WORD_COUNT_IN_VIEW = 40; 
-
-
-const generateRandomWords = (count) => {
-  let words = [];
-  for (let i = 0; i < count; i++) {
-    const randomIndex = Math.floor(Math.random() * wordList.length);
-    words.push(wordList[randomIndex]);
-  }
-  return words;
-};
-
+const WORDS_PER_LINE = 11;
 
 const getNewGameState = () => {
-  const initialWords = generateRandomWords(WORD_COUNT_IN_VIEW);
+  let initialWords = [];
+  for (let i = 0; i < 200; i++) {
+    const randomIndex = Math.floor(Math.random() * wordList.length);
+    initialWords.push(wordList[randomIndex]);
+  }
+
   return {
-    wordsToDisplay: initialWords, 
+    allWords: initialWords,
     wordStatuses: Array(initialWords.length).fill(null),
     currentWordIndex: 0,
     userInput: '',
     timer: 60,
     gameStatus: 'waiting',
     isModalOpen: false,
-    stats: { wpm: 0, correctWords: 0, wrongWords: 0, accuracy: 0 },
+    stats: {
+      wpm: 0,
+      correctWords: 0,
+      wrongWords: 0,
+      accuracy: 0,
+    },
   };
 };
 
@@ -38,20 +37,22 @@ const gameSlice = createSlice({
     setUserInput: (state, action) => {
       state.userInput = action.payload;
     },
-
     processCurrentWord: (state) => {
-      const currentWord = state.wordsToDisplay[state.currentWordIndex];
+      const currentWord = state.allWords[state.currentWordIndex];
       const isCorrect = currentWord === state.userInput.trim();
       
       state.wordStatuses[state.currentWordIndex] = isCorrect;
       state.currentWordIndex++;
       state.userInput = '';
 
-
-      if (state.currentWordIndex > state.wordsToDisplay.length / 2) {
-          const newWords = generateRandomWords(20); 
-          state.wordsToDisplay.push(...newWords);
-          state.wordStatuses.push(...Array(newWords.length).fill(null));
+      if (state.currentWordIndex > state.allWords.length - (WORDS_PER_LINE * 5)) {
+          let newWords = [];
+          for (let i = 0; i < 50; i++) {
+              const randomIndex = Math.floor(Math.random() * wordList.length);
+              newWords.push(wordList[randomIndex]);
+          }
+          state.allWords.push(...newWords);
+          state.wordStatuses.push(...Array(50).fill(null));
       }
     },
     startGame: (state) => {
@@ -65,30 +66,41 @@ const gameSlice = createSlice({
       }
     },
     endGame: (state) => {
-        if (state.gameStatus !== 'running') return;
-        state.gameStatus = 'finished';
-        state.isModalOpen = true;
+      if (state.gameStatus !== 'running') return;
+      state.gameStatus = 'finished';
+      state.isModalOpen = true;
 
-        const typedWordsCount = state.currentWordIndex;
-        const correctWords = state.wordStatuses.filter(s => s === true).length;
-        const wrongWords = state.wordStatuses.filter(s => s === false).length;
-        const accuracy = typedWordsCount > 0 ? (correctWords / typedWordsCount) * 100 : 0;
-        
-        const totalCorrectChars = state.wordsToDisplay
-            .slice(0, state.currentWordIndex)
-            .reduce((acc, word, index) => {
-                return state.wordStatuses[index] === true ? acc + word.length + 1 : acc;
-            }, 0);
+      const typedWordsCount = state.currentWordIndex;
+      const correctWords = state.wordStatuses.filter(s => s === true).length;
+      const wrongWords = state.wordStatuses.filter(s => s === false).length;
+      const accuracy = typedWordsCount > 0 ? (correctWords / typedWordsCount) * 100 : 0;
+      
+      let totalCorrectChars = 0;
+      for (let i = 0; i < state.currentWordIndex; i++) {
+          if (state.wordStatuses[i] === true) {
+              totalCorrectChars += state.allWords[i].length;
+          }
+      }
+      
+      const wpm = Math.round(totalCorrectChars / 5);
 
-        state.stats = {
-            wpm: Math.round(totalCorrectChars / 5),
-            correctWords,
-            wrongWords,
-            accuracy: Math.round(accuracy),
-        };
-    },
+      state.stats = {
+          wpm: wpm,
+          correctWords: correctWords,
+          wrongWords: wrongWords,
+          accuracy: Math.round(accuracy),
+      };
+    }
   },
 });
 
-export const { resetGame, setUserInput, processCurrentWord, startGame, decrementTimer, endGame } = gameSlice.actions;
+export const { 
+    resetGame, 
+    setUserInput, 
+    processCurrentWord, 
+    startGame, 
+    decrementTimer, 
+    endGame 
+} = gameSlice.actions;
+
 export default gameSlice.reducer;
