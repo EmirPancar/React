@@ -1,14 +1,48 @@
-.FooterContainer{
+.FooterContainer {
     width: 100%;
     height: 120px;
-
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-
     margin-top: auto;
-    margin-bottom: 0px;
-
     border-top-style: solid;
     border-top-color: black;
     border-top-width: 5px;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+.FooterText {
+    font-family: 'Lobster', cursive;
+    font-size: 2.5rem;
+
+    
+    /* background: linear-gradient(45deg, #c09f6b, #e0c9a6, #c09f6b); */
+    background: linear-gradient(45deg, #b1b0b0, #7a9c94);
+    /* background: linear-gradient(60deg, #dcd2ef, #bbdefb, #b2dfdb); */
+    /* background: linear-gradient(60deg, #b39ddb, #e3f2fd, #4dd0e1); */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+
+    
+    -webkit-text-stroke: 0.2px rgb(119, 119, 119); 
+    --text-stroke: 0.5px rgb(119, 119, 119);
+
+  
+    text-shadow: 
+      2px 2px 2px rgba(0, 0, 0, 0.3),
+      3px 5px 6px rgba(0, 0, 0, 0.2);
+
+
+    margin: 0;
+}
+
+.FooterImage {
+    height: 90px;
+    width: auto;
+    object-fit: contain;
 }

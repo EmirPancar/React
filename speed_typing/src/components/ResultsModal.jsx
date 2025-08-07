@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// resetGame eylemini import ediyoruz
 import { resetGame } from '../redux/gameSlice';
 import { addScore } from '../redux/leaderboardSlice';
-// Artık words.json'a burada ihtiyacımız yok.
-// import words from '../words.json';
 import './ResultsModal.css';
 
 const ResultsModal = () => {
@@ -18,11 +15,9 @@ const ResultsModal = () => {
             return;
         }
         dispatch(addScore({ name, wpm: stats.wpm }));
-        // Skor kaydedildikten sonra oyunu sıfırla
         dispatch(resetGame());
     };
 
-    // Tekrar oyna butonu sadece oyunu sıfırlar
     const handlePlayAgain = () => {
         dispatch(resetGame());
     };

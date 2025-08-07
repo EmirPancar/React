@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import wordList from '../words.json';
 
-const WORD_COUNT_IN_VIEW = 40; // Ekranda aynı anda bulunacak yaklaşık kelime sayısı
+const WORD_COUNT_IN_VIEW = 40; 
 
-// Verilen sayıda rastgele kelime üreten yardımcı fonksiyon
+
 const generateRandomWords = (count) => {
   let words = [];
   for (let i = 0; i < count; i++) {
@@ -13,12 +13,12 @@ const generateRandomWords = (count) => {
   return words;
 };
 
-// Başlangıç durumunu oluşturan fonksiyon
+
 const getNewGameState = () => {
   const initialWords = generateRandomWords(WORD_COUNT_IN_VIEW);
   return {
-    wordsToDisplay: initialWords, // Ekranda gösterilecek kelimelerin listesi
-    wordStatuses: Array(initialWords.length).fill(null), // null: yazılmadı, true: doğru, false: yanlış
+    wordsToDisplay: initialWords, 
+    wordStatuses: Array(initialWords.length).fill(null),
     currentWordIndex: 0,
     userInput: '',
     timer: 60,
@@ -38,7 +38,7 @@ const gameSlice = createSlice({
     setUserInput: (state, action) => {
       state.userInput = action.payload;
     },
-    // Kelime işleme mantığı tamamen değişti
+
     processCurrentWord: (state) => {
       const currentWord = state.wordsToDisplay[state.currentWordIndex];
       const isCorrect = currentWord === state.userInput.trim();
@@ -47,10 +47,9 @@ const gameSlice = createSlice({
       state.currentWordIndex++;
       state.userInput = '';
 
-      // Kelime listesinin sonuna yaklaştığımızda yeni kelimeler ekle
-      // Bu, "sonsuz" hissini verir.
+
       if (state.currentWordIndex > state.wordsToDisplay.length / 2) {
-          const newWords = generateRandomWords(20); // 20 yeni kelime ekle
+          const newWords = generateRandomWords(20); 
           state.wordsToDisplay.push(...newWords);
           state.wordStatuses.push(...Array(newWords.length).fill(null));
       }
@@ -78,7 +77,7 @@ const gameSlice = createSlice({
         const totalCorrectChars = state.wordsToDisplay
             .slice(0, state.currentWordIndex)
             .reduce((acc, word, index) => {
-                return state.wordStatuses[index] === true ? acc + word.length + 1 : acc; // +1 boşluk için
+                return state.wordStatuses[index] === true ? acc + word.length + 1 : acc;
             }, 0);
 
         state.stats = {

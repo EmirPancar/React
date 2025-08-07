@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <div className="HeaderContainer">
-      <div className="Logo">Yaz Bakim Nası Yazıyon</div>
+      <div className="Logo">Hızlı Yazma Testi</div>
       <button className='LeaderBoardButton' onClick={() => dispatch(toggleLeaderboard())}>
         <FontAwesomeIcon icon={faTrophy} />
       </button>

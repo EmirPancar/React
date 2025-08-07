@@ -1,9 +1,16 @@
-import './FooterStyle.css'
+import './FooterStyle.css';
 
 const Footer = () => {
+    return (
+        <div className='FooterContainer'>
+            <p className='FooterText'>-Emir Pancar</p>
 
-    return(
-        <div className='FooterContainer'></div>
+            <img 
+                src={`${process.env.PUBLIC_URL}/Images/Footer_emoji.png`} 
+                alt="Footer Emoji" 
+                className='FooterImage' 
+            />
+        </div>
     );
 }
 
