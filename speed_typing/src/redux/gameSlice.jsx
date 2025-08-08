@@ -2,12 +2,55 @@ import { createSlice } from '@reduxjs/toolkit';
 import wordList from '../words.json';
 
 const WORDS_PER_LINE = 11;
+const TARGET_WORD_COUNT = 200; 
+const MIN_LINE_CHARS = 45; 
+const MAX_LINE_CHARS = 65; 
+
+
+const generateBalancedWordSet = () => {
+  const finalWords = [];
+  let currentLine = [];
+  let currentLength = 0;
+
+  let safetyBreak = 0; 
+  
+  while (finalWords.length < TARGET_WORD_COUNT && safetyBreak < TARGET_WORD_COUNT * 5) {
+    safetyBreak++;
+    
+    const randomWord = wordList[Math.floor(Math.random() * wordList.length)];
+    
+    const potentialLength = currentLength + randomWord.length + (currentLine.length > 0 ? 1 : 0);
+
+    if (potentialLength <= MAX_LINE_CHARS) {
+      currentLine.push(randomWord);
+      currentLength = potentialLength;
+    } 
+    else {
+      if (currentLength >= MIN_LINE_CHARS) {
+        finalWords.push(...currentLine);
+      }
+      
+      currentLine = [randomWord];
+      currentLength = randomWord.length;
+    }
+  }
+
+  if (currentLine.length > 0 && currentLength >= MIN_LINE_CHARS) {
+      finalWords.push(...currentLine);
+  }
+
+  return finalWords;
+};
+
 
 const getNewGameState = () => {
-  let initialWords = [];
-  for (let i = 0; i < 200; i++) {
-    const randomIndex = Math.floor(Math.random() * wordList.length);
-    initialWords.push(wordList[randomIndex]);
+  const initialWords = generateBalancedWordSet();
+
+  if (initialWords.length < 45) {
+      for (let i = initialWords.length; i < 200; i++) {
+        const randomIndex = Math.floor(Math.random() * wordList.length);
+        initialWords.push(wordList[randomIndex]);
+      }
   }
 
   return {
@@ -15,7 +58,7 @@ const getNewGameState = () => {
     wordStatuses: Array(initialWords.length).fill(null),
     currentWordIndex: 0,
     userInput: '',
-    timer: 60,
+    timer: 10,
     gameStatus: 'waiting',
     isModalOpen: false,
     stats: {
@@ -47,12 +90,12 @@ const gameSlice = createSlice({
 
       if (state.currentWordIndex > state.allWords.length - (WORDS_PER_LINE * 5)) {
           let newWords = [];
-          for (let i = 0; i < 50; i++) {
+          for (let i = 0; i < 45; i++) {
               const randomIndex = Math.floor(Math.random() * wordList.length);
               newWords.push(wordList[randomIndex]);
           }
           state.allWords.push(...newWords);
-          state.wordStatuses.push(...Array(50).fill(null));
+          state.wordStatuses.push(...Array(45).fill(null));
       }
     },
     startGame: (state) => {

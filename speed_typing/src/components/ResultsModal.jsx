@@ -8,12 +8,12 @@ const ResultsModal = () => {
     const { isModalOpen, stats } = useSelector((state) => state.game);
     const dispatch = useDispatch();
     const [name, setName] = useState('');
-
     const [isSaved, setIsSaved] = useState(false);
 
     useEffect(() => {
         if (isModalOpen) {
             setIsSaved(false);
+            setName('');
         }
     }, [isModalOpen]);
 
