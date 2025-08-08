@@ -24,7 +24,8 @@ const areRectsColliding = (rect1, rect2) => (
 const NewNoteDragVisual = () => <div className="task-card new-note-visual">Yeni Not...</div>;
 
 function App() {
-    const { tasks, selectedTaskIds } = useSelector(state => state);
+    const tasks = useSelector(state => state.tasks);
+    const selectedTaskIds = useSelector(state => state.selectedTaskIds);
     const dispatch = useDispatch();
     const [activeItem, setActiveItem] = useState(null);
     const [isCreateModalOpen, setCreateModalOpen] = useState(false);

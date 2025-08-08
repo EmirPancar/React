@@ -15,7 +15,7 @@ const getNewGameState = () => {
     wordStatuses: Array(initialWords.length).fill(null),
     currentWordIndex: 0,
     userInput: '',
-    timer: 60,
+    timer: 10,
     gameStatus: 'waiting',
     isModalOpen: false,
     stats: {

@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   tasks: {
     bekliyor: [],
+    yapiliyor: [],
     test: [],
     geribildirim: [],
     tamamlandi: []

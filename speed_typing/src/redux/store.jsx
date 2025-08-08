@@ -6,7 +6,7 @@ import leaderboardReducer from './leaderboardSlice';
 import gameReducer from './gameSlice';
 
 const persistConfig = {
-  key: 'root',
+  key: 'hizli-yazma-leaderboard',
   storage,
   whitelist: ['leaderboard'],
 };

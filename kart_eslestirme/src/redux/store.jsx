@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
 });
 
 const persistConfig = {
-  key: 'root',
+  key: 'card-match',
   storage,
 };
 

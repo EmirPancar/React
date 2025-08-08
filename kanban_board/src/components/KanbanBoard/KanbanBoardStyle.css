@@ -65,10 +65,10 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   user-select: none;
-
   display: flex;
   flex-direction: column;
-  min-height: 80px;
+  justify-content: space-between; 
+  gap: 4px; 
 }
 
 .task-card-header {
@@ -88,7 +88,6 @@
   z-index: 1;
   font-size: 0.9rem;
   overflow-wrap: break-word;
-  flex-grow: 1;
 }
 
 .assignee-badges-container {
@@ -96,7 +95,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  margin-top: 12px; 
 }
 
 .assignee-badge {

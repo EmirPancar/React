@@ -28,7 +28,7 @@ const migrations = {
 };
 
 const persistConfig = {
-  key: 'root',
+  key: 'kanban-board',
   version: 1, 
   storage,
   migrate: createMigrate(migrations, { debug: true }), 

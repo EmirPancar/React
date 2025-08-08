@@ -9,13 +9,21 @@ const ResultsModal = () => {
     const dispatch = useDispatch();
     const [name, setName] = useState('');
 
+    const [isSaved, setIsSaved] = useState(false);
+
+    useEffect(() => {
+        if (isModalOpen) {
+            setIsSaved(false);
+        }
+    }, [isModalOpen]);
+
     const handleSaveScore = () => {
         if (name.trim() === '') {
             alert('Lütfen bir isim girin.');
             return;
         }
         dispatch(addScore({ name, wpm: stats.wpm }));
-        dispatch(resetGame());
+        setIsSaved(true);
     };
 
     const handlePlayAgain = () => {
@@ -40,8 +48,14 @@ const ResultsModal = () => {
                         placeholder="İsminizi girin..."
                         value={name}
                         onChange={(e) => setName(e.target.value)}
+                        disabled={isSaved}
                     />
-                    <button onClick={handleSaveScore}>Skoru Kaydet</button>
+                    <button
+                        onClick={handleSaveScore}
+                        disabled={isSaved}
+                    >
+                        {isSaved ? 'Skor Kaydedildi!' : 'Skoru Kaydet'}
+                    </button>
                 </div>
                 <button className="play-again-button" onClick={handlePlayAgain}>
                     Tekrar Oyna

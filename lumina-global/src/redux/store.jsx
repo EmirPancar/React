@@ -7,7 +7,7 @@ import cartReducer from './cartSlice';
 
 
 const persistConfig = {
-  key: 'root', 
+  key: 'lumina-global', 
   storage, 
   whitelist: ['cart'] 
 };
