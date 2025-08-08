@@ -1,74 +1,147 @@
 .LeaderboardContainer {
-position: fixed;
-top: 0;
-left: 0;
-width: 350px;
-height: 100%;
-background-color: var(--bg-dark);
-color: var(--text-color);
-padding: 20px;
-box-sizing: border-box;
-transform: translateX(-100%);
-transition: transform 0.4s ease-in-out;
-z-index: 1000;
-display: flex;
-flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 350px;
+    height: 100%;
+    background-color: var(--bg-dark);
+    color: var(--text-color);
+    padding: 20px;
+    box-sizing: border-box;
+    transform: translateX(-100%);
+    transition: transform 0.4s ease-in-out;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
 }
+
 .LeaderboardContainer.open {
-transform: translateX(0);
+    transform: translateX(0);
 }
+
 .overlay {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0,0,0,0.6);
-opacity: 0;
-visibility: hidden;
-transition: opacity 0.4s ease, visibility 0.4s ease;
-z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    z-index: 999;
 }
+
 .overlay.show {
-opacity: 1;
-visibility: visible;
+    opacity: 1;
+    visibility: visible;
 }
+
 .LeaderboardContainer h2 {
-color: var(--primary-color);
-text-align: center;
-border-bottom: 2px solid var(--primary-color);
-padding-bottom: 10px;
+    color: var(--primary-color);
+    text-align: center;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+    margin-top: 0;
 }
+
 .ScoreList {
-list-style: none;
-padding: 0;
-margin-top: 20px;
-flex-grow: 1;
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    flex-grow: 1;
+    overflow-y: auto; 
 }
+
+
 .ScoreList li {
-display: flex;
-justify-content: space-between;
-padding: 15px 10px;
-border-radius: 5px;
-font-size: 1.1rem;
-transition: background-color 0.2s;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 10px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    transition: background-color 0.2s;
 }
+
 .ScoreList li:nth-child(odd) {
-background-color: var(--bg-medium);
+    background-color: var(--bg-medium);
 }
+
 .ScoreList li:hover {
-background-color: var(--primary-color);
+    background-color: var(--primary-color);
 }
+
+.score-main {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+
+.score-details-tooltip {
+    position: absolute;
+    top: calc(100% + 8px); 
+    left: 50%;
+    
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    
+    width: max-content; 
+    z-index: 10;
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateX(-50%) translateY(-10px); 
+}
+
+.score-details-tooltip p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    white-space: nowrap; 
+}
+
+.score-details-tooltip p strong {
+    color: #f1c40f; 
+}
+
+
+.ScoreList li:hover .score-details-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0); 
+}
+
+.score-details-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%; 
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent var(--primary-color) transparent;
+}
+
+
+
 .LeaderboardContainer button {
-padding: 10px 20px;
-background-color: var(--secondary-color);
-color: white;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 1rem;
-transition: background-color 0.3s;
+    margin-top: auto; 
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
 }
+
 .LeaderboardContainer button:hover {
-background-color: #c0392b;
+    background-color: #c0392b;
 }

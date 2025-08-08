@@ -14,9 +14,16 @@ const LeaderboardMenu = () => {
                 <ul className='ScoreList'>
                     {scores.length > 0 ? (
                         scores.map((score, index) => (
-                            <li key={index}>
-                                <span>#{index + 1} {score.name}</span>
-                                <span>{score.wpm} WPM</span>
+                            <li key={score.id}> 
+                                <div className="score-main">
+                                    <span>#{index + 1} {score.name}</span>
+                                    <span>{score.wpm} WPM</span>
+                                </div>
+                                <div className="score-details-tooltip">
+                                    <p>Doğruluk: <strong>%{score.accuracy}</strong></p>
+                                    <p>Doğru Kelime: <strong>{score.correctWords}</strong></p>
+                                    <p>Yanlış Kelime: <strong>{score.wrongWords}</strong></p>
+                                </div>
                             </li>
                         ))
                     ) : (

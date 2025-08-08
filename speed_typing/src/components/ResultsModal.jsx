@@ -22,7 +22,11 @@ const ResultsModal = () => {
             alert('Lütfen bir isim girin.');
             return;
         }
-        dispatch(addScore({ name, wpm: stats.wpm }));
+        dispatch(addScore({ 
+            id: Date.now(), 
+            name, 
+            ...stats 
+        }));
         setIsSaved(true);
     };
 

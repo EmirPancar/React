@@ -14,7 +14,13 @@ const leaderboardSlice = createSlice({
     },
     addScore: (state, action) => {
       state.scores.push(action.payload);
-      state.scores.sort((a, b) => b.wpm - a.wpm);
+      
+      state.scores.sort((a, b) => {
+        if (a.wpm !== b.wpm) {
+          return b.wpm - a.wpm;
+        }
+        return b.accuracy - a.accuracy;
+      });
     },
   },
 });
