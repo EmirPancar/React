@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import Content from './components/Content';
 import LeaderboardMenu from './components/LeaderboardMenu';
 import ResultsModal from './components/ResultsModal';
+import app from "./firebase";
 
 function App() {
   return (

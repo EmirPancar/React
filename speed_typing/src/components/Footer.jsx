@@ -1,4 +1,5 @@
 import './FooterStyle.css';
+import FooterEmoji from '../Images/Footer_Emoji.png'
 
 const Footer = () => {
     return (
@@ -6,7 +7,7 @@ const Footer = () => {
             <p className='FooterText'>-Emir Pancar</p>
 
             <img 
-                src={`${process.env.PUBLIC_URL}/Images/Footer_emoji.png`} 
+                src={FooterEmoji} 
                 alt="Footer Emoji" 
                 className='FooterImage' 
             />

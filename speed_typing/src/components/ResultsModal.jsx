@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetGame } from '../redux/gameSlice';
-import { addScore } from '../redux/leaderboardSlice';
+import { saveScore } from '../redux/leaderboardSlice';
 import './ResultsModal.css';
 
 const ResultsModal = () => {
@@ -10,6 +10,8 @@ const ResultsModal = () => {
     const [name, setName] = useState('');
     const [isSaved, setIsSaved] = useState(false);
 
+    const MAX_NAME_LENGTH = 12;
+
     useEffect(() => {
         if (isModalOpen) {
             setIsSaved(false);
@@ -17,15 +19,18 @@ const ResultsModal = () => {
         }
     }, [isModalOpen]);
 
+    const handleNameChange = (e) => {
+        setName(e.target.value.slice(0, MAX_NAME_LENGTH));
+    };
+
     const handleSaveScore = () => {
         if (name.trim() === '') {
             alert('Lütfen bir isim girin.');
             return;
         }
-        dispatch(addScore({ 
-            id: Date.now(), 
-            name, 
-            ...stats 
+        dispatch(saveScore({
+            name: name.trim(),
+            ...stats
         }));
         setIsSaved(true);
     };
@@ -46,21 +51,31 @@ const ResultsModal = () => {
                     <p><strong>Doğru Kelime:</strong> {stats.correctWords}</p>
                     <p><strong>Yanlış Kelime:</strong> {stats.wrongWords}</p>
                 </div>
+
                 <div className="save-score-section">
-                    <input
-                        type="text"
-                        placeholder="İsminizi girin..."
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        disabled={isSaved}
-                    />
+                    
+                    <div className="input-with-counter">
+                        <input
+                            type="text"
+                            placeholder="İsminizi girin..."
+                            value={name}
+                            onChange={handleNameChange} 
+                            disabled={isSaved}
+                        />
+                        
+                        <span className="char-counter">
+                            {name.length}/{MAX_NAME_LENGTH}
+                        </span>
+                    </div>
+
                     <button
                         onClick={handleSaveScore}
-                        disabled={isSaved}
+                        disabled={isSaved || name.trim() === ''} 
                     >
                         {isSaved ? 'Skor Kaydedildi!' : 'Skoru Kaydet'}
                     </button>
                 </div>
+
                 <button className="play-again-button" onClick={handlePlayAgain}>
                     Tekrar Oyna
                 </button>
