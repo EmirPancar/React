@@ -1,91 +1,44 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import {
   format, addMonths, subMonths, startOfMonth,
   startOfWeek, eachDayOfInterval, isSameMonth, isSameDay
 } from 'date-fns';
 import { tr } from 'date-fns/locale';
+import HabitModal from './HabitModal';
 import './Calendar.css';
 
 const today = new Date();
 
+const getContrastColor = (hexColor) => {
+  if (!hexColor) return '#f0f0f0';
+  const r = parseInt(hexColor.substr(1, 2), 16);
+  const g = parseInt(hexColor.substr(3, 2), 16);
+  const b = parseInt(hexColor.substr(5, 2), 16);
+  const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+  return (yiq >= 128) ? '#1c1c1c' : '#f0f0f0';
+};
+
 const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectionStyle, setSelectionStyle] = useState({ opacity: 0 });
 
   const gridRef = useRef(null);
   const highlightRef = useRef(null);
-  const rafIdRef = useRef(null);
-  const gridRectRef = useRef(null);
+  
+  const colorsByDate = useSelector(state => state.habits.colorsByDate);
+  const habitsByDate = useSelector(state => state.habits.habitsByDate);
 
-  // Seçili tarih string cache
-  const selectedDateStr = useMemo(
-    () => format(selectedDate, 'yyyy-MM-dd'),
-    [selectedDate]
-  );
+  const selectedDateStr = useMemo(() => format(selectedDate, 'yyyy-MM-dd'), [selectedDate]);
 
-  // Grid ölçülerini cache
-  useEffect(() => {
-    if (gridRef.current) {
-      gridRectRef.current = gridRef.current.getBoundingClientRect();
-    }
-    const handleResize = () => {
-      if (gridRef.current) {
-        gridRectRef.current = gridRef.current.getBoundingClientRect();
+  const handleDayClick = (day) => {
+      if (!isSameMonth(day, currentMonth)) {
+          return;
       }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Seçili gün vurgusu
-  useEffect(() => {
-    if (isSameDay(selectedDate, today)) {
-      setSelectionStyle({ opacity: 0 });
-      return;
-    }
-    if (!gridRef.current) return;
-
-    const selectedCell = gridRef.current.querySelector(
-      `.day-cell[data-date="${selectedDateStr}"]`
-    );
-    if (selectedCell) {
-      const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = selectedCell;
-      setSelectionStyle({
-        opacity: 1,
-        width: `${offsetWidth}px`,
-        height: `${offsetHeight}px`,
-        transform: `translate(${offsetLeft}px, ${offsetTop}px)`,
-      });
-    }
-  }, [selectedDate, selectedDateStr]);
-
-  // Mouse hareketi optimize ve güvenli
-  const handleMouseMove = (e) => {
-    if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
-
-    rafIdRef.current = requestAnimationFrame(() => {
-      const highlightEl = highlightRef.current;
-
-      if (!highlightEl || !gridRectRef.current) return;
-
-      const cell = e.target.closest('.day-cell');
-      if (cell && cell.dataset.date !== selectedDateStr) {
-        const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = cell;
-        highlightEl.style.opacity = '1';
-        highlightEl.style.width = `${offsetWidth}px`;
-        highlightEl.style.height = `${offsetHeight}px`;
-        highlightEl.style.transform = `translate(${offsetLeft}px, ${offsetTop}px)`;
-      } else {
-        highlightEl.style.opacity = '0';
-      }
-    });
-  };
-
-  const handleMouseLeave = () => {
-    if (highlightRef.current) {
-      highlightRef.current.style.opacity = '0';
-    }
+    setSelectedDate(day);
+    setIsModalOpen(true);
   };
 
   const renderHeader = () => (
@@ -109,12 +62,11 @@ const Calendar = () => {
     );
   };
 
-  // Ay günlerini cache
   const daysInGrid = useMemo(() => {
     const monthStart = startOfMonth(currentMonth);
     const startDate = startOfWeek(monthStart, { weekStartsOn: 1 });
     const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 41); // 42 gün
+    endDate.setDate(startDate.getDate() + 41);
     return eachDayOfInterval({ start: startDate, end: endDate });
   }, [currentMonth]);
 
@@ -122,31 +74,39 @@ const Calendar = () => {
     const monthStart = startOfMonth(currentMonth);
 
     return (
-      <div
-        ref={gridRef}
-        className="calendar-grid"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
+      <div ref={gridRef} className="calendar-grid">
         <div ref={highlightRef} className="highlight-border"></div>
         <div className="selection-border" style={selectionStyle}></div>
 
         {daysInGrid.map((day) => {
+          const dayStr = format(day, 'yyyy-MM-dd');
+          const dayColor = colorsByDate[dayStr];
+          const textColor = getContrastColor(dayColor);
+
+          const habitsForDay = habitsByDate[dayStr] || [];
+          const areAllTasksCompleted = habitsForDay.length > 0 && habitsForDay.every(h => h.completed);
+
           const classNames = [
             'day-cell',
             isSameDay(day, today) && 'is-today',
             isSameDay(day, selectedDate) && 'is-selected',
             !isSameMonth(day, monthStart) && 'not-current-month',
+            isSameDay(day, today) && !dayColor && 'is-today-color'
           ].filter(Boolean).join(' ');
 
           return (
             <div
               key={day.toString()}
               className={classNames}
-              data-date={format(day, 'yyyy-MM-dd')}
-              onClick={() => setSelectedDate(day)}
+              data-date={dayStr}
+              onClick={() => handleDayClick(day)}
+              style={{ 
+                backgroundColor: dayColor, 
+                color: isSameDay(day, today) && !dayColor ? 'black' : textColor 
+              }}
             >
               <span>{format(day, 'd')}</span>
+              {areAllTasksCompleted && <div className="all-done-tick">✓</div>}
             </div>
           );
         })}
@@ -159,6 +119,12 @@ const Calendar = () => {
       {renderHeader()}
       {renderWeekDays()}
       {renderCells()}
+      {isModalOpen && (
+        <HabitModal 
+          date={selectedDate} 
+          onClose={() => setIsModalOpen(false)} 
+        />
+      )}
     </div>
   );
 };

@@ -1,30 +1,23 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // localStorage'ı kullanır
-import habitsReducer from './habitsSlice'; // './habitsSlice.js' dosyasından import ediyoruz
-
-// Eğer ileride başka reducer'lar eklenirse diye combineReducers kullanmak iyi bir pratiktir.
-const rootReducer = combineReducers({
-  habits: habitsReducer,
-  // user: userReducer, (örnek)
-});
+import { configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; 
+import habitsReducer from './habitsSlice';
 
 const persistConfig = {
-  key: 'root', // localStorage'da verinin saklanacağı anahtar
+  key: 'Habits-Persist',
   storage,
-  // whitelist: ['habits'] // Sadece 'habits' slice'ını kalıcı yap gibi seçenekler de var
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, habitsReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer, // persist yapılandırılmasıyla sarmalanmış reducer'ı kullan
+  reducer: {
+    habits: persistedReducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      // Redux Persist eylemleri (PERSIST, REHYDRATE vb.) serileştirilemeyen değerler içerir.
-      // Bu kontrolü kapatarak konsoldaki uyarıları engelliyoruz.
       serializableCheck: {
-        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
 });
