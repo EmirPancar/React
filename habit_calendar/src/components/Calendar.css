@@ -1,0 +1,171 @@
+/* Ana Değişkenler: Renkler ve Boyutlar */
+:root {
+    --calendar-bg: #1c1c1c;
+    --text-color-primary: #f0f0f0;
+    --text-color-muted: #808080;
+    --today-bg-color: #0078d4;
+    /* Bugünün arkaplan rengi (her zaman mavi) */
+    --selected-border-color: #0078d4;
+    /* Seçili günün çerçeve rengi (mavi) */
+    --border-color-rgb: 160, 160, 160;
+    --grid-gap: 4px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* TAKVİM KONTEYNERİ */
+.calendar-container {
+    width: 95vw;
+    max-width: 900px;
+    background-color: var(--calendar-bg);
+    padding: 32px 36px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+/* TAKVİM GRID'İ */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--grid-gap);
+    text-align: center;
+    position: relative;
+    --mouse-x: -999px;
+    --mouse-y: -999px;
+}
+
+/* GÜN HÜCRELERİ */
+.day-cell {
+    background-color: transparent;
+    border: none;
+    color: var(--text-color-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    aspect-ratio: 1.6 / 1;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: none;
+    position: relative;
+    /* İçindeki outline için */
+}
+
+.day-cell.not-current-month {
+    color: var(--text-color-muted);
+}
+
+.day-cell span {
+    pointer-events: none;
+}
+
+/* ------ YENİ GÜN DURUMU STİLLERİ ------ */
+
+/* 1. "Bugün" olan hücrenin arkaplanı her zaman mavidir */
+.day-cell.is-today {
+    background-color: var(--today-bg-color);
+    color: #fff;
+    font-weight: 600;
+}
+
+/* 2. "Bugün" AYNI ZAMANDA seçiliyse (iç siyah çerçeve) */
+.day-cell.is-today.is-selected {
+    outline: 3px solid black;
+    outline-offset: -5px;
+    /* Çerçeveyi içeri çeker */
+}
+
+/* Başlık ve diğer stiller (değişiklik yok) */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 28px;
+}
+
+.calendar-header .current-month {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.calendar-header .nav-buttons button {
+    background: transparent;
+    border: none;
+    color: var(--text-color-primary);
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    line-height: 48px;
+    transition: background-color 0.2s ease;
+}
+
+.calendar-header .nav-buttons button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.week-day {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color-muted);
+    padding-bottom: 12px;
+}
+
+/* ------- EFEKT KATMANLARI ------- */
+
+/* Maskeli soluk çerçeve katmanı (değişiklik yok) */
+.border-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(circle 100px at var(--mouse-x) var(--mouse-y), black, transparent);
+    mask-image: radial-gradient(circle 100px at var(--mouse-x) var(--mouse-y), black, transparent);
+    transition: none;
+}
+
+.border-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--grid-gap);
+    width: 100%;
+    height: 100%;
+}
+
+.border-grid>div {
+    border: 3px solid rgba(var(--border-color-rgb), 0.55);
+    border-radius: 8px;
+}
+
+/* Fareyi takip eden belirgin vurgu çerçevesi */
+.highlight-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0;
+    transition: none;
+    border: 3px solid rgba(var(--border-color-rgb), 0.7);
+}
+
+/* "Başka bir gün seçili" olduğunda gösterilecek kalıcı mavi çerçeve */
+.selection-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0;
+    /* JS tarafından 1 yapılacak */
+    border: 3px solid var(--selected-border-color);
+}

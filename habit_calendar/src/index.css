@@ -1,0 +1,23 @@
+:root {
+  --page-bg: #1c1c1c; 
+  --font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --text-color: #f0f0f0;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--page-bg);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
