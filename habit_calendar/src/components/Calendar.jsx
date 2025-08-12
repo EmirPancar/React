@@ -1,31 +1,54 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import {
-  format, addMonths, subMonths, startOfMonth, endOfMonth,
-  startOfWeek, endOfWeek, eachDayOfInterval, isSameMonth, isSameDay
+  format, addMonths, subMonths, startOfMonth,
+  startOfWeek, eachDayOfInterval, isSameMonth, isSameDay
 } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import './Calendar.css';
 
+const today = new Date();
+
 const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [highlightStyle, setHighlightStyle] = useState({ opacity: 0 });
   const [selectionStyle, setSelectionStyle] = useState({ opacity: 0 });
-  const gridRef = useRef(null);
-  const today = new Date();
 
-  // Bu useEffect, seçili gün değiştiğinde MAVİ çerçevenin konumunu günceller
+  const gridRef = useRef(null);
+  const highlightRef = useRef(null);
+  const rafIdRef = useRef(null);
+  const gridRectRef = useRef(null);
+
+  // Seçili tarih string cache
+  const selectedDateStr = useMemo(
+    () => format(selectedDate, 'yyyy-MM-dd'),
+    [selectedDate]
+  );
+
+  // Grid ölçülerini cache
   useEffect(() => {
-    // Eğer seçilen gün "bugün" ise, mavi çerçeveyi gösterme.
+    if (gridRef.current) {
+      gridRectRef.current = gridRef.current.getBoundingClientRect();
+    }
+    const handleResize = () => {
+      if (gridRef.current) {
+        gridRectRef.current = gridRef.current.getBoundingClientRect();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Seçili gün vurgusu
+  useEffect(() => {
     if (isSameDay(selectedDate, today)) {
       setSelectionStyle({ opacity: 0 });
       return;
     }
+    if (!gridRef.current) return;
 
-    // Seçilen günü DOM'da bul
-    const dateString = format(selectedDate, 'yyyy-MM-dd');
-    const selectedCell = gridRef.current?.querySelector(`.day-cell[data-date="${dateString}"]`);
-
+    const selectedCell = gridRef.current.querySelector(
+      `.day-cell[data-date="${selectedDateStr}"]`
+    );
     if (selectedCell) {
       const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = selectedCell;
       setSelectionStyle({
@@ -35,48 +58,41 @@ const Calendar = () => {
         transform: `translate(${offsetLeft}px, ${offsetTop}px)`,
       });
     }
-  }, [selectedDate, today]); // selectedDate değiştiğinde bu kod yeniden çalışır
+  }, [selectedDate, selectedDateStr]);
 
-
+  // Mouse hareketi optimize ve güvenli
   const handleMouseMove = (e) => {
-    if (!gridRef.current) return;
-    const gridRect = gridRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - gridRect.left;
-    const mouseY = e.clientY - gridRect.top;
-    
-    // 1. Maskenin konumunu anlık olarak güncelle
-    gridRef.current.style.setProperty('--mouse-x', `${mouseX}px`);
-    gridRef.current.style.setProperty('--mouse-y', `${mouseY}px`);
-    
-    const cell = e.target.closest('.day-cell');
-    
-    // İmleç seçili olan günün üzerindeyse, hover efektini gösterme
-    if (cell && cell.dataset.date !== format(selectedDate, 'yyyy-MM-dd')) {
-      const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = cell;
-      setHighlightStyle({
-        opacity: 1,
-        width: `${offsetWidth}px`,
-        height: `${offsetHeight}px`,
-        transform: `translate(${offsetLeft}px, ${offsetTop}px)`,
-      });
-    } else {
-      // İmleç bir hücre üzerinde değilse veya seçili hücre üzerindeyse vurguyu gizle
-      setHighlightStyle({ opacity: 0 });
-    }
+    if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+
+    rafIdRef.current = requestAnimationFrame(() => {
+      const highlightEl = highlightRef.current;
+
+      if (!highlightEl || !gridRectRef.current) return;
+
+      const cell = e.target.closest('.day-cell');
+      if (cell && cell.dataset.date !== selectedDateStr) {
+        const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = cell;
+        highlightEl.style.opacity = '1';
+        highlightEl.style.width = `${offsetWidth}px`;
+        highlightEl.style.height = `${offsetHeight}px`;
+        highlightEl.style.transform = `translate(${offsetLeft}px, ${offsetTop}px)`;
+      } else {
+        highlightEl.style.opacity = '0';
+      }
+    });
   };
 
   const handleMouseLeave = () => {
-    // İmleç grid'den ayrılınca hem maskeyi hem vurguyu gizle
-    if (gridRef.current) {
-      gridRef.current.style.setProperty('--mouse-x', `-9999px`);
-      gridRef.current.style.setProperty('--mouse-y', `-9999px`);
+    if (highlightRef.current) {
+      highlightRef.current.style.opacity = '0';
     }
-    setHighlightStyle({ opacity: 0 });
   };
 
   const renderHeader = () => (
     <div className="calendar-header">
-      <div className="current-month">{format(currentMonth, 'MMMM yyyy', { locale: tr })}</div>
+      <div className="current-month">
+        {format(currentMonth, 'MMMM yyyy', { locale: tr })}
+      </div>
       <div className="nav-buttons">
         <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} aria-label="Önceki ay">‹</button>
         <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} aria-label="Sonraki ay">›</button>
@@ -86,33 +102,36 @@ const Calendar = () => {
 
   const renderWeekDays = () => {
     const days = ['Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct', 'Pa'];
-    return <div className="calendar-grid">{days.map(day => <div key={day} className="week-day">{day}</div>)}</div>;
+    return (
+      <div className="calendar-grid">
+        {days.map(day => <div key={day} className="week-day">{day}</div>)}
+      </div>
+    );
   };
 
-  const renderCells = () => {
+  // Ay günlerini cache
+  const daysInGrid = useMemo(() => {
     const monthStart = startOfMonth(currentMonth);
     const startDate = startOfWeek(monthStart, { weekStartsOn: 1 });
     const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 41);
-    const days = eachDayOfInterval({ start: startDate, end: endDate });
+    endDate.setDate(startDate.getDate() + 41); // 42 gün
+    return eachDayOfInterval({ start: startDate, end: endDate });
+  }, [currentMonth]);
+
+  const renderCells = () => {
+    const monthStart = startOfMonth(currentMonth);
 
     return (
-      <div ref={gridRef} className="calendar-grid" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-        {/* KATMAN 1: Maskeli, soluk çerçeveler */}
-        <div className="border-overlay">
-          <div className="border-grid">
-            {Array.from({ length: 42 }).map((_, index) => <div key={index}></div>)}
-          </div>
-        </div>
-        
-        {/* KATMAN 2: Fareyi takip eden gri vurgu çerçevesi */}
-        <div className="highlight-border" style={highlightStyle}></div>
-
-        {/* KATMAN 3: Başka bir gün seçiliyken gösterilecek kalıcı MAVİ çerçeve */}
+      <div
+        ref={gridRef}
+        className="calendar-grid"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div ref={highlightRef} className="highlight-border"></div>
         <div className="selection-border" style={selectionStyle}></div>
 
-        {/* KATMAN 4: Tıklanabilir, görünür hücreler */}
-        {days.map((day) => {
+        {daysInGrid.map((day) => {
           const classNames = [
             'day-cell',
             isSameDay(day, today) && 'is-today',

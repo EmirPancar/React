@@ -34,8 +34,6 @@
     gap: var(--grid-gap);
     text-align: center;
     position: relative;
-    --mouse-x: -999px;
-    --mouse-y: -999px;
 }
 
 /* GÜN HÜCRELERİ (DAHA DİKDÖRTGEN HALE GETİRİLDİ) */
@@ -113,32 +111,7 @@
     padding-bottom: 12px;
 }
 
-/* Efekt Katmanları (Değişiklik yok) */
-.border-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    -webkit-mask-image: radial-gradient(circle 100px at var(--mouse-x) var(--mouse-y), black, transparent);
-    mask-image: radial-gradient(circle 100px at var(--mouse-x) var(--mouse-y), black, transparent);
-    transition: none;
-}
-
-.border-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: var(--grid-gap);
-    width: 100%;
-    height: 100%;
-}
-
-.border-grid>div {
-    border: 3px solid rgba(var(--border-color-rgb), 0.55);
-    border-radius: 8px;
-}
-
+/* VURGU VE SEÇİM KENARLIĞI (Değişiklik yok) */
 .highlight-border {
     position: absolute;
     top: 0;
