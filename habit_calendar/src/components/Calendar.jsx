@@ -1,14 +1,19 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+// src/components/Calendar.js
+
+import React, { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import {
   format, addMonths, subMonths, startOfMonth,
-  startOfWeek, eachDayOfInterval, isSameMonth, isSameDay
+  startOfWeek, eachDayOfInterval, isSameMonth, isSameDay,
+  isBefore, startOfDay // Değişiklik: isBefore ve startOfDay eklendi
 } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import HabitModal from './HabitModal';
 import './Calendar.css';
 
 const today = new Date();
+// Değişiklik: Günün başlangıcını almak, saat farkından etkilenmemek için önemlidir.
+const startOfToday = startOfDay(new Date()); 
 
 const getContrastColor = (hexColor) => {
   if (!hexColor) return '#f0f0f0';
@@ -23,15 +28,9 @@ const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectionStyle, setSelectionStyle] = useState({ opacity: 0 });
-
-  const gridRef = useRef(null);
-  const highlightRef = useRef(null);
   
   const colorsByDate = useSelector(state => state.habits.colorsByDate);
   const habitsByDate = useSelector(state => state.habits.habitsByDate);
-
-  const selectedDateStr = useMemo(() => format(selectedDate, 'yyyy-MM-dd'), [selectedDate]);
 
   const handleDayClick = (day) => {
       if (!isSameMonth(day, currentMonth)) {
@@ -74,22 +73,20 @@ const Calendar = () => {
     const monthStart = startOfMonth(currentMonth);
 
     return (
-      <div ref={gridRef} className="calendar-grid">
-        <div ref={highlightRef} className="highlight-border"></div>
-        <div className="selection-border" style={selectionStyle}></div>
-
+      <div className="calendar-grid">
         {daysInGrid.map((day) => {
           const dayStr = format(day, 'yyyy-MM-dd');
-          const dayColor = colorsByDate[dayStr];
-          const textColor = getContrastColor(dayColor);
-
           const habitsForDay = habitsByDate[dayStr] || [];
+
           const areAllTasksCompleted = habitsForDay.length > 0 && habitsForDay.every(h => h.completed);
+          const isPastAndIncomplete = isBefore(day, startOfToday) && habitsForDay.length > 0 && !areAllTasksCompleted;
+          const dayColor = isPastAndIncomplete ? undefined : colorsByDate[dayStr];
+          
+          const textColor = getContrastColor(dayColor);
 
           const classNames = [
             'day-cell',
             isSameDay(day, today) && 'is-today',
-            isSameDay(day, selectedDate) && 'is-selected',
             !isSameMonth(day, monthStart) && 'not-current-month',
             isSameDay(day, today) && !dayColor && 'is-today-color'
           ].filter(Boolean).join(' ');
@@ -107,6 +104,7 @@ const Calendar = () => {
             >
               <span>{format(day, 'd')}</span>
               {areAllTasksCompleted && <div className="all-done-tick">✓</div>}
+              {isPastAndIncomplete && <div className="incomplete-mark">✗</div>}
             </div>
           );
         })}

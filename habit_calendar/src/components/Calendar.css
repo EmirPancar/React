@@ -7,6 +7,7 @@
     --border-color-rgb: 160, 160, 160;
     --grid-gap: 4px;
     --success-green: #38b000;
+    --failure-red: #d90429; 
 }
 
 *,
@@ -96,6 +97,17 @@
     font-weight: bold;
     pointer-events: none; 
     line-height: 1;      
+}
+
+.incomplete-mark {
+    position: absolute; 
+    bottom: 5px;       
+    right: 8px;        
+    font-size: 1.1rem;
+    color: var(--failure-red);
+    font-weight: bold;
+    pointer-events: none; 
+    line-height: 1; 
 }
 
 .calendar-header {
