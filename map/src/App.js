@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import MapChart from './components/MapChart';
 import Sidebar from './components/Sidebar';
-import { FaBars } from 'react-icons/fa'; // Menü ikonu
-import './App.css'; // Yeni CSS dosyasını import et
+import { FaBars } from 'react-icons/fa'; 
+import './App.css'; 
 
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -13,13 +13,11 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* Sidebar'ı ve toggle butonunu render et */}
       <button onClick={toggleSidebar} className="sidebar-toggle-btn">
         <FaBars />
       </button>
       <Sidebar isOpen={isSidebarOpen} toggle={toggleSidebar} />
       
-      {/* Harita component'i */}
       <MapChart />
     </div>
   );
