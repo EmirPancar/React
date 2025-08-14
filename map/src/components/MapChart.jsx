@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl, GeoJSON } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl, GeoJSON, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import turkeyProvinces from '../turkey-provinces.json';
 
@@ -10,6 +10,12 @@ L.Icon.Default.mergeOptions({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
+
+const hiddenIcon = new L.DivIcon({
+    className: 'hidden-marker-icon',
+    iconSize: [0, 0] 
+});
+
 
 function ChangeView({ center, zoom }) {
   const map = useMap();
@@ -25,10 +31,12 @@ function MapResizer() {
   }, [map]);
   return null;
 }
+// --- ---
 
 const MapChart = () => {
   const { selectedCity } = useSelector((state) => state.map);
   const [hoveredCity, setHoveredCity] = useState(null);
+  const [tooltipPosition, setTooltipPosition] = useState(null);
 
   const turkeyBounds = [ [35.5, 25.0], [42.5, 45.0] ];
 
@@ -37,39 +45,32 @@ const MapChart = () => {
     
     if (selectedCity && cityName === selectedCity.name) {
       return {
-        fillColor: '#3498db',
-        weight: 3,
-        color: '#2980b9',
-        fillOpacity: 0.7,
+        fillColor: '#3498db', weight: 3, color: '#2980b9', fillOpacity: 0.7,
       };
     }
     if (cityName === hoveredCity) {
       return {
-        fillColor: '#f1c40f',
-        weight: 2,
-        color: '#f39c12',
-        fillOpacity: 0.6,
+        fillColor: '#f1c40f', weight: 2, color: '#f39c12', fillOpacity: 0.6,
       };
     }
     return {
-      fillColor: '#95a5a6',
-      weight: 1,
-      color: 'white',
-      fillOpacity: 0.4,
+      fillColor: '#95a5a6', weight: 1, color: 'white', fillOpacity: 0.4,
     };
   };
 
   const onEachFeature = (feature, layer) => {
     const cityName = feature?.properties?.name;
     if (cityName) {
-      layer.bindTooltip(cityName, {
-        sticky: true, 
-        className: 'custom-tooltip' 
-      });
-
       layer.on({
-        mouseover: () => setHoveredCity(cityName),
-        mouseout: () => setHoveredCity(null),
+        mouseover: (event) => {
+          const center = event.target.getBounds().getCenter();
+          setTooltipPosition(center);
+          setHoveredCity(cityName);
+        },
+        mouseout: () => {
+          setTooltipPosition(null);
+          setHoveredCity(null);
+        },
       });
     }
   };
@@ -103,6 +104,19 @@ const MapChart = () => {
         style={getStyle} 
         onEachFeature={onEachFeature}
       />
+
+      {hoveredCity && tooltipPosition && (
+        <Marker position={tooltipPosition} icon={hiddenIcon}>
+          <Tooltip
+            permanent
+            direction="center"
+            offset={[0, 0]} 
+            className="city-tooltip"
+          >
+            {hoveredCity}
+          </Tooltip>
+        </Marker>
+      )}
 
       {selectedCity && (
         <Marker position={selectedCity.coordinates}>
