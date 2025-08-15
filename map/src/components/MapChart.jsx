@@ -54,7 +54,7 @@ const MapChart = () => {
       };
     }
     return {
-      fillColor: '#95a5a6', weight: 1, color: 'white', fillOpacity: 0.4,
+      fillColor: 'rgba(149, 165, 166, 0)', weight: 1, color: 'white', fillOpacity: 0,
     };
   };
 
