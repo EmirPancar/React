@@ -1,27 +1,27 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { resetGame, setUserInput, processCurrentWord, startGame, decrementTimer, endGame } from '../redux/gameSlice';
+import { resetGame, setUserInput, processCurrentWord, startGame, decrementTimer, endGame, toggleEndlessMode } from '../redux/gameSlice';
 import './ContentStyle.css';
 
 const WORDS_PER_LINE = 10;
 
 const Content = () => {
   const dispatch = useDispatch();
-  const { allWords, wordStatuses, currentWordIndex, userInput, timer, gameStatus } = useSelector((state) => state.game);
+  const { allWords, wordStatuses, currentWordIndex, userInput, timer, gameStatus, isEndless } = useSelector((state) => state.game);
   
   const [viewStartIndex, setViewStartIndex] = useState(0);
 
   useEffect(() => {
     let interval = null;
-    if (gameStatus === 'running' && timer > 0) {
+    if (gameStatus === 'running' && timer > 0 && !isEndless) {
       interval = setInterval(() => {
         dispatch(decrementTimer());
       }, 1000);
-    } else if (timer === 0 && gameStatus === 'running') {
+    } else if (timer === 0 && gameStatus === 'running' && !isEndless) {
       dispatch(endGame());
     }
     return () => clearInterval(interval);
-  }, [gameStatus, timer, dispatch]);
+  }, [gameStatus, timer, dispatch, isEndless]);
 
   useEffect(() => {
     if (currentWordIndex === 0) {
@@ -97,7 +97,10 @@ const Content = () => {
         <button className="ResetButton" onClick={() => dispatch(resetGame())}>
             Yenile
         </button>
-        <div className='Timer'>{formatTime(timer)}</div>
+        <button className="ResetButton" onClick={() => dispatch(toggleEndlessMode())}>
+            {isEndless ? 'Süreli' : 'Sonsuz'}
+        </button>
+        {!isEndless && <div className='Timer'>{formatTime(timer)}</div>}
       </div>
     </div>
   );

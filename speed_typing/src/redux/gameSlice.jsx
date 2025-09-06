@@ -61,6 +61,7 @@ const getNewGameState = () => {
     timer: 60,
     gameStatus: 'waiting',
     isModalOpen: false,
+    isEndless: false,
     stats: {
       wpm: 0,
       correctWords: 0,
@@ -75,7 +76,14 @@ const gameSlice = createSlice({
   initialState: getNewGameState(),
   reducers: {
     resetGame: (state) => {
+      const isEndless = state.isEndless;
       Object.assign(state, getNewGameState());
+      state.isEndless = isEndless;
+    },
+    toggleEndlessMode: (state) => {
+        const newIsEndlessState = !state.isEndless;
+        Object.assign(state, getNewGameState());
+        state.isEndless = newIsEndlessState;
     },
     setUserInput: (state, action) => {
       state.userInput = action.payload;
@@ -143,7 +151,8 @@ export const {
     processCurrentWord, 
     startGame, 
     decrementTimer, 
-    endGame 
+    endGame,
+    toggleEndlessMode
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
